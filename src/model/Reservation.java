@@ -14,6 +14,9 @@ public class Reservation {
     private int durationMinute;
 
     public void update(Reservation reservation) {
-        //set
+        this.manager = reservation.manager;
+        this.users = reservation.users;
+        this.startDate = reservation.startDate;
+        this.durationMinute = reservation.durationMinute;
     }
 }
