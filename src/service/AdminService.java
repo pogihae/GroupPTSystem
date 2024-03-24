@@ -15,10 +15,11 @@ public class AdminService {
     //1. 회원가입 신청 목록
     public void getRegistrationRequests(){
         List<User> users = groupPTRepository.findAllUsers();
-//        for(User user : users) {
-//            if(user.getRole().equals(role)) {
-//            }
-//        }
+        for(User user : users) {
+            if(user.getRole().equals("NONMEMBER")) {
+
+            }
+        }
     }
 
     //2. 회원 목록 보기
