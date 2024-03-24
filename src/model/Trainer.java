@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Trainer extends User {
-    public Trainer(String name, String phoneNumber, String age, String sex, String id, String pw) {
-        super(name, phoneNumber, age, sex, id, pw);
+    public Trainer(String name, String phoneNumber, String age, String sex, String id, String pw, Role role) {
+        super(name, phoneNumber, age, sex, id, pw, role);
         this.grade = null;
         this.lessonDay = null;
     }
