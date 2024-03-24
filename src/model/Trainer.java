@@ -1,13 +1,15 @@
 package model;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 @Setter
 @AllArgsConstructor
 public class Trainer extends User {
     public Trainer(String name, String phoneNumber, String age, String sex, String id, String pw) {
-        super(name, phoneNumber, age, sex, id, pw);
+//        super(name, phoneNumber, age, sex, id, pw);
     }
 
     enum TrainerGrade{
