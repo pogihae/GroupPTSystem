@@ -6,6 +6,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Trainer extends User {
+    public Trainer(String name, String phoneNumber, String age, String sex, String id, String pw) {
+        super(name, phoneNumber, age, sex, id, pw);
+    }
+
     enum TrainerGrade{
         A, B, C
     }
