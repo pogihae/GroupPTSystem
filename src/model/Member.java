@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Member extends User{
+    Scanner sc = new Scanner(System.in);
     int remainSessionCount;//남은수업횟수
     Payment payment;//결제 객체
     LocalDate paymentTime;
@@ -21,7 +22,6 @@ public class Member extends User{
     }
     //수업결제
     public void payForClass(){
-        Scanner sc = new Scanner(System.in);
         System.out.println("결제 단위를 선택해주세요");
         System.out.println("1. 10회 - 90일 - 총가격 ₩700,000");
         System.out.println("2. 20회 - 120일 - 총가격 ₩1,200,000");
@@ -62,12 +62,18 @@ public class Member extends User{
         }
         //1. 트레이너 선택 메뉴(이름, 등급, 성별)
         List<Trainer> allTrainersList = repository.findAllTrainers();
+        System.out.println("예약을 원하는 트레이너의 번호를 입력해주세요");
         for(int i=0; i<allTrainersList.size();i++) {
             Trainer trainer = allTrainersList.get(i);
-            System.out.printf("%d. %s 트레이너/ 등급 %s/ %s", i+1, trainer.getName(), trainer.getGrade()
+            System.out.printf("%d. %s 트레이너/ 등급 %s/ %s\n", i+1, trainer.getName(), trainer.getGrade()
             , trainer.getSex());
-            System.out.println();
         }
+        System.out.print("번호 입력: ");
+        int choice = sc.nextInt();
+
+        //유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함
+        Trainer selectedTrainer = allTrainersList.get(choice-1);
+
 
 
 
