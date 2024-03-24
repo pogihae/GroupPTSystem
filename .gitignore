@@ -129,6 +129,8 @@ fabric.properties
 
 *.iml
 
+.idea
+
 # Package Files #
 *.jar
 *.war
