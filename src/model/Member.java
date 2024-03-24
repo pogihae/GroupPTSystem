@@ -1,14 +1,13 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Scanner;
 
 public class Member extends User{
     int remainSessionCount;//남은수업횟수
     Payment payment;//결제 객체
     LocalDate paymentTime;
-    PaymentOption selectedOption;
+    Payment.PaymentOption selectedOption;
 
     public Member(User user) {//회원가입신청할 때 생성
         super(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw());
@@ -29,13 +28,13 @@ public class Member extends User{
 
         switch (choice) {
             case 1:
-                selectedOption = PaymentOption.OPTION_1;
+                selectedOption = Payment.PaymentOption.OPTION_1;
                 break;
             case 2:
-                selectedOption = PaymentOption.OPTION_2;
+                selectedOption = Payment.PaymentOption.OPTION_2;
                 break;
             case 3:
-                selectedOption = PaymentOption.OPTION_3;
+                selectedOption = Payment.PaymentOption.OPTION_3;
                 break;
             default:
                 System.out.println("잘못된 선택입니다. 다시 선택해주세요.");

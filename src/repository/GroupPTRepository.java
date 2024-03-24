@@ -38,7 +38,7 @@ public class GroupPTRepository {
 
     public void updateTrainer(Trainer trainer) {
         findAllTrainers().stream()
-                .filter(t -> t.getPhone().equals(trainer.getPhone()))
+                .filter(t -> t.getPhoneNumber().equals(trainer.getPhoneNumber()))
                 .findFirst()
                 .ifPresent(org -> org.update(trainer));
     }
@@ -93,13 +93,13 @@ public class GroupPTRepository {
     }
 
     public List<Reservation> findReservationsByTrainer(Trainer trainer) {
-        return findReservationsByPhone(trainer.getPhone());
+        return findReservationsByPhone(trainer.getPhoneNumber());
     }
 
     public List<Reservation> findReservationsByPhone(String phone) {
         return findAllReservations().stream()
                 .filter(reservation ->
-                    reservation.getManager().getPhone().equals(phone)
+                    reservation.getManager().getPhoneNumber().equals(phone)
                 )
                 .collect(Collectors.toList());
     }
