@@ -14,7 +14,7 @@ public class Member extends User{
     Payment.PaymentOption selectedOption;
 
     public Member(User user) {//회원가입신청할 때 생성
-        super(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw());
+        super(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw(), user.getRole());
         this.remainSessionCount = 0; // 예시로 0으로 설정
         this.payment = null; // 초기값으로 null 설정
         this.paymentTime = null; // 현재 날짜로 초기화, 필요에 따라 다른 값을 사용할 수 있음
