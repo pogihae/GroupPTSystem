@@ -9,7 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Trainer extends User {
     public Trainer(String name, String phoneNumber, String age, String sex, String id, String pw) {
-//        super(name, phoneNumber, age, sex, id, pw);
+        super(name, phoneNumber, age, sex, id, pw);
+        this.grade = null;
+        this.lessonDay = null;
     }
 
     enum TrainerGrade{
@@ -19,7 +21,7 @@ public class Trainer extends User {
         Mon, Tue, Wed, Thu, Fri, Sat, Sun
     }
     private User user;
-    private String grade; //트레이너 등급
+    private TrainerGrade grade; //트레이너 등급
     private String[] lessonDay; //수업할 요일
 
 
