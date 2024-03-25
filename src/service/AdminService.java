@@ -1,4 +1,5 @@
 package service;
+
 import model.*;
 import repository.GroupPTRepository;
 
@@ -7,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -223,17 +223,17 @@ public class AdminService {
         int monthlyRevenue = calculateMonthlyRevenue(currentMonth, currentYear);
 
         // 총 인건비 계산
-        int totalLaborCost = calculateTotalLaborCost(currentMonth, currentYear);
+        //int totalLaborCost = calculateTotalLaborCost(currentMonth, currentYear);
 
         // 현재까지 총 매출 계산
         int totalRevenue = calculateTotalRevenue();
 
         // 관리자의 순이익 계산
-        int adminProfit = monthlyRevenue - totalLaborCost;
+        //int adminProfit = monthlyRevenue - totalLaborCost;
 
         // 결과 출력
         System.out.println("[한달 총 매출]: " + monthlyRevenue);
-        System.out.println("[관리자의 이익]: " + adminProfit);
+        //System.out.println("[관리자의 이익]: " + adminProfit);
         System.out.println("[현재까지 총 매출]: " + totalRevenue);
     }
 
@@ -246,17 +246,6 @@ public class AdminService {
             }
         }
         return monthlyRevenue;
-    }
-
-    private int calculateTotalLaborCost(int month, int year) {
-        // 트레이너별 인건비 총합
-        Map<Trainer, Integer> incomeByTrainer = trainerService.calculateIncomeByTrainer(month);
-
-        // 모든 트레이너의 수입을 더함
-        int totalRevenue = incomeByTrainer.values().stream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        return totalRevenue;
     }
 
     private int calculateTotalRevenue() {

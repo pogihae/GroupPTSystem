@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import util.Utils;
 
-import java.time.DayOfWeek;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,6 +15,10 @@ public class Trainer extends User {
         super(name, phoneNumber, age, sex, id, pw, role);
         this.grade = null;
         this.lessonDays = null;
+    }
+
+    public Trainer(User user) {
+        this(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw(), user.getRole());
     }
 
     @AllArgsConstructor

@@ -2,11 +2,13 @@ package model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import util.Utils;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 @Getter
 public class Reservation implements Serializable {
@@ -17,10 +19,15 @@ public class Reservation implements Serializable {
     private Type type;
     private User manager;
     private List<User> users;
-    private List<User> attendants;
     private List<User> attendants; //출석체크된 사람
     private LocalDateTime startDate;
     private int durationMinute;
+
+    public Reservation(Trainer selectedTrainer, LocalDateTime selectedDateTime) {
+        this.id = new Random().nextLong(Long.MAX_VALUE);
+        this.manager = selectedTrainer;
+        this.startDate = selectedDateTime;
+    }
 
     @AllArgsConstructor
     public enum Type {
