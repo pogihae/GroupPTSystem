@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class User {
+public class User implements Serializable {
 
     public enum Role{
         TRAINER, MEMBER, USER, ADMIN, NONMEMBER
@@ -17,7 +19,7 @@ public class User {
 
     private String name;
     private String phoneNumber;
-    private String age;
+    private int age;
     private String sex;
     private String id;
     private String pw;

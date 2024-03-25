@@ -1,22 +1,36 @@
 package model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import util.Utils;
 
 import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.*;
 
 @Getter
-public class Reservation {
+public class Reservation implements Serializable {
+    private static final int MAX_CLASS_NUM = 4;
+    private static final int MAX_CONSULT_NUM = 1;
+
     private final Long id;
+    private Type type;
     private User manager;
     private List<User> users;
     private List<User> attendants; //출석체크된 사람
     private LocalDateTime startDate;
     private int durationMinute;
 
-    public Reservation(User manager, LocalDateTime startDate) {
+    @AllArgsConstructor
+    public enum Type {
+        CLASS(4), CONSULT(1);
+
+        final int maxNum;
+    }
+
+    public Reservation(Type type, User manager, Date startDate, int durationMinute) {
         this.id = new Random().nextLong(Long.MAX_VALUE);
+        this.type = type;
         this.manager = manager;
         this.users = new ArrayList<>();//4
         this.attendants = new ArrayList<>();
@@ -34,6 +48,7 @@ public class Reservation {
         if (!reservation.id.equals(this.id)) {
             throw new IllegalArgumentException("NO MATCHED RESERVATION");
         }
+        this.type = reservation.type;
         this.manager = reservation.manager;
         this.users = reservation.users;
         this.attendants = reservation.attendants;
@@ -70,10 +85,31 @@ public class Reservation {
     }
 
     /**
-     * 유저가 예약한 수업(상담) 여부를 알 수 있다.
+     * 유저가 예약한 수업(상담)인지 여부를 알 수 있다.
      * */
     public boolean isReservedUser(User user) {
         return users.contains(user);
+    }
+
+    /**
+     * 유저가 해당 예약을 취소할 수 있다.
+     * @param user 취소할 유저
+     * @return 취소 성공: true | 예약하지 않은 유저 : false
+     * */
+    public boolean cancelReservation(User user) {
+        if (!isReservedUser(user)) return false;
+        return users.remove(user);
+    }
+
+    /**
+     * 가득찬 예약인지를 확인할 수 있다.
+     * */
+    public boolean isFull() {
+        return users.size() >= type.maxNum;
+    }
+
+    public boolean isClass() {
+        return this.type.equals(Type.CLASS);
     }
 }
 

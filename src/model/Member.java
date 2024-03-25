@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Member extends User{
+public class Member extends User {
     Scanner sc = new Scanner(System.in);
     GroupPTRepository repository = GroupPTRepository.getInstance();
     int remainSessionCount;//남은수업횟수
