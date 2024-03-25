@@ -1,11 +1,13 @@
 package model;
 
 import repository.GroupPTRepository;
+import util.Utils;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Member extends User {
     Scanner sc = new Scanner(System.in);
@@ -86,8 +88,7 @@ public class Member extends User {
                 .toList();
 
         // 트레이너의 근무 요일 배열을 DayOfWeek 타입의 리스트로 변환
-        List<DayOfWeek> workDays = java.util.Arrays.stream(selectedTrainer.getLessonDay())
-                .map(Trainer.Day::toDayOfWeek)
+        List<Utils.Day> workDays = Arrays.stream(selectedTrainer.getLessonDays())
                 .toList();
 
         // 예약 가능한 시간대 목록 생성

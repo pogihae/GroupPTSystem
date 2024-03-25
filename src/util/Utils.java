@@ -2,8 +2,8 @@ package util;
 
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Utils {
@@ -41,21 +41,15 @@ public class Utils {
         return cur.before(date);
     }
 
-    public static int getMonth(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.MONTH);
+    public static int getMonth(LocalDateTime date) {
+        return date.getMonth().getValue();
     }
 
-    public static Day getDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return Day.of(calendar.get(Calendar.DAY_OF_WEEK));
+    public static Day getDay(LocalDateTime date) {
+        return Day.of(date.getDayOfWeek().getValue());
     }
 
-    public static int getDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.DATE);
+    public static int getDate(LocalDateTime date) {
+        return date.getDayOfMonth();
     }
 }

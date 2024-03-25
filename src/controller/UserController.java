@@ -12,7 +12,7 @@ public class UserController {
     //GroupPTRepository repo = new GroupPTRepository();
     Scanner sc = new Scanner(System.in);
 
-    private UserService userService;
+    private final UserService userService = new UserService();
 
     public void signUp(){
         view.showSignupMenu();
@@ -30,7 +30,7 @@ public class UserController {
         String phoneNumber = sc.nextLine();
         view.requestRole();
         User.Role role = User.Role.valueOf(sc.nextLine());
-        User user = new User(name,age,sex,id,pw,phoneNumber,role);
+        User user = new User(name,phoneNumber, Integer.parseInt(age), sex, id, pw, role);
 
         userService.signUp(user);
 //        repo.saveMember(member);
@@ -72,8 +72,7 @@ public class UserController {
         for(int i = 0;i<trainerSchedule.size();i++){
             schedule = trainerSchedule.get(i);
             //1시 부터 7시까지 예약가능한 시간만 출력해 보여준다.
-            scheduledDate.setTime(schedule.getStartDate());
-            if(availableTime.contains(scheduledDate.get(Calendar.HOUR_OF_DAY))){
+            if(availableTime.contains(schedule.getStartDate().getHour())){
                 availableTime.remove(i);
             }
         }
