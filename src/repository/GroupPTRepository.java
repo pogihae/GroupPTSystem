@@ -3,6 +3,9 @@ package repository;
 import model.*;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +13,7 @@ import java.util.stream.Collectors;
 public class GroupPTRepository {
 
     /*-----------파일 저장 위치-----------*/
-    private static final String DIRECTORY = "./data/";
+    private static final String DIRECTORY = "data/";
     private static final String MEMBER_FILE = "members.dat";
     private static final String TRAINER_FILE = "trainers.dat";
     private static final String RESERVATION_FILE = "reservations.dat";
@@ -22,6 +25,29 @@ public class GroupPTRepository {
         if (instance == null) {
             instance = new GroupPTRepository();
         }
+
+        // 파일 생성
+        File[] files = {
+                new File(DIRECTORY + MEMBER_FILE),
+                new File(DIRECTORY + TRAINER_FILE),
+                new File(DIRECTORY + RESERVATION_FILE),
+                new File(DIRECTORY + PAYMENT_FILE)
+        };
+        try {
+            if (!new File(DIRECTORY).exists()) {
+                Files.createDirectory(Paths.get(DIRECTORY));
+            }
+            for (File file : files) {
+                if (!file.exists()) {
+                    if (!file.createNewFile()) {
+                        throw new IOException("파일 생성 실패");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return instance;
     }
 
@@ -125,6 +151,10 @@ public class GroupPTRepository {
     public List<Reservation> findAllReservations() {
         List<Reservation> reservations = (List<Reservation>) readFile(RESERVATION_FILE);
 
+        if (reservations == null) {
+            reservations = new ArrayList<>();
+        }
+
         reservations.forEach(r -> {
             List<User> mUsers = r.getUsers();
             mUsers.forEach(u -> u.update(findUserById(u.getId())));
@@ -141,6 +171,7 @@ public class GroupPTRepository {
      * @param reservation 저장할 예약 정보
      * */
     public void saveReservation(Reservation reservation) {
+        System.out.println(reservation);
         addObjectToFile(RESERVATION_FILE, reservation);
     }
 
@@ -224,6 +255,9 @@ public class GroupPTRepository {
     @SuppressWarnings("unchecked")
     private void addObjectToFile(String fileName, Object object) {
         List<Object> objects = (List<Object>) readFile(fileName);
+        if (objects == null) {
+            objects = new ArrayList<>();
+        }
         objects.add(object);
         writeFile(fileName, objects);
     }
@@ -231,8 +265,8 @@ public class GroupPTRepository {
     private Object readFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
             return ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (ClassNotFoundException | IOException e2) {
+            return null;
         }
     }
 
@@ -240,7 +274,7 @@ public class GroupPTRepository {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
             oos.writeObject(object);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 

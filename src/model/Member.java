@@ -10,8 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Member extends User {
-    Scanner sc = new Scanner(System.in);
-    GroupPTRepository repository = GroupPTRepository.getInstance();
+    transient Scanner sc = new Scanner(System.in);
+    transient GroupPTRepository repository = GroupPTRepository.getInstance();
     int remainSessionCount;//남은수업횟수
     Payment payment;//결제 객체
     LocalDate paymentTime;
@@ -60,7 +60,7 @@ public class Member extends User {
         //1. 트레이너 선택메뉴 => 선택
         //2. 해당 트레이너의 수업 예약 가능한 시간 목록 출력 => 선택
         //3. 예약 확정 => 예약확정 메세지 출력
-        if(selectedOption.getSessions()==0){
+        if(remainSessionCount==0){
             System.out.println("남은 횟수가 없습니다. 재결제가 필요합니다");
             return;
         }
@@ -101,8 +101,10 @@ public class Member extends User {
         Map<Integer, LocalDateTime> slotIndexToDateTimeMap = new HashMap<>();
         int slotIndex = 1;
 
+
+
         for (LocalDate date = today.plusDays(1); date.isBefore(endDay); date = date.plusDays(1)) {
-            if (workDays.contains(date.getDayOfWeek())) {
+            if (workDays.contains(Utils.getDay(date.atStartOfDay()))) {
                 System.out.println(date + "의 예약 가능한 시간:");
                 System.out.println("--------------------------------------------");
                 //해당 시간: tempStartTime

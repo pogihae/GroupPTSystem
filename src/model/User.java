@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 public class User implements Serializable {
 
-    public enum Role{
+    public enum Role {
         TRAINER, MEMBER, USER, ADMIN, NONMEMBER
     }//User 모델 안에 들어가야한다.
 
