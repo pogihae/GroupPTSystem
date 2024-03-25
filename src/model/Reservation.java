@@ -2,6 +2,7 @@ package model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 @Getter
+@ToString
 public class Reservation implements Serializable {
     private static final int MAX_CLASS_NUM = 4;
     private static final int MAX_CONSULT_NUM = 1;
@@ -26,7 +28,10 @@ public class Reservation implements Serializable {
     public Reservation(Trainer selectedTrainer, LocalDateTime selectedDateTime) {
         this.id = new Random().nextLong(Long.MAX_VALUE);
         this.manager = selectedTrainer;
+        this.users = new ArrayList<>();//4
+        this.attendants = new ArrayList<>();
         this.startDate = selectedDateTime;
+        this.durationMinute = 60;
     }
 
     @AllArgsConstructor

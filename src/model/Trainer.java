@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 import util.Utils;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
-public class Trainer extends User {
+public class Trainer extends User implements Serializable {
     private static final int MAX_LESSON_DAY = 3;
 
     public Trainer(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
@@ -22,7 +24,7 @@ public class Trainer extends User {
     }
 
     @AllArgsConstructor
-    public enum Grade{
+    public enum Grade {
         A(40000), B(30000), C(20000);
 
         public final int incomePerClass;

@@ -19,7 +19,7 @@ public class UserService {
         return loginedUser.getRole();
     }
 
-    private GroupPTRepository repository;
+    private GroupPTRepository repository = GroupPTRepository.getInstance();
 
     public void login(User user) {
         if (loginedUser != null) {
@@ -49,7 +49,9 @@ public class UserService {
     public void chooseAvailableTime(){
 
     }
-
+    public void saveReservation(User user){
+        //addUser(user);
+    }
     public List<Reservation> findAllReservations(){
         List<Reservation> list = repository.findAllReservations();
         return list;

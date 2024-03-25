@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 public class User implements Serializable {
 
-    public enum Role{
+    public enum Role {
         TRAINER, MEMBER, USER, ADMIN, NONMEMBER
     }//User 모델 안에 들어가야한다.
 
@@ -40,6 +40,7 @@ public class User implements Serializable {
     }
 
     public void update(User user) {
+        if (user == null) return;
         this.name = user.name;
         this.phoneNumber = user.phoneNumber;
         this.age = user.age;
