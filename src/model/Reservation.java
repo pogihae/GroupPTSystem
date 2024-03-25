@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import util.Utils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -16,7 +17,7 @@ public class Reservation {
     private User manager;
     private List<User> users;
     private List<User> attendants;
-    private Date startDate;
+    private LocalDateTime startDate;
     private int durationMinute;
 
     @AllArgsConstructor
@@ -26,7 +27,7 @@ public class Reservation {
         final int maxNum;
     }
 
-    public Reservation(Type type, User manager, Date startDate, int durationMinute) {
+    public Reservation(Type type, User manager, LocalDateTime startDate, int durationMinute) {
         this.id = new Random().nextLong(Long.MAX_VALUE);
         this.type = type;
         this.manager = manager;
@@ -77,7 +78,8 @@ public class Reservation {
      * */
     public boolean isNoShowUser(User user) {
         if (!isReservedUser(user)) return false;
-        if (Utils.isOverDate(startDate)) return false;
+        //if (Utils.isOverDate(startDate)) return false;
+        if (!LocalDateTime.now().isAfter(startDate)) return false;
         return !attendants.contains(user);
     }
 

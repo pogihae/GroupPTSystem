@@ -205,6 +205,17 @@ public class GroupPTRepository {
         addObjectToFile(PAYMENT_FILE, payment);
     }
 
+    public Payment findPaymentByPhoneNumber(String phoneNumber) {
+        List<Payment> payments = findAllPayments();
+        for (Payment payment : payments) {
+            if (payment.getMemberPhoneNumber().equals(phoneNumber)) {
+                return payment;
+            }
+        }
+        return null; // 해당하는 결제 정보가 없을 경우 null 반환
+    }
+
+
     @SuppressWarnings("unchecked")
     public List<Payment> findAllPayments() {
         return (List<Payment>) readFile(PAYMENT_FILE);
