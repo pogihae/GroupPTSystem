@@ -116,6 +116,8 @@ fabric.properties
 
 .idea/
 
+data/
+
 ### Java ###
 # Compiled class file
 *.class
