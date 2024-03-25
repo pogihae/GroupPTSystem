@@ -30,7 +30,6 @@ public class TrainerView extends BaseView {
     public Utils.Day[] requestLessonDays(){
         System.out.println("원하는 요일을 선택하세요 (,로 구분): ");
         System.out.println(Arrays.toString(Utils.Day.values()));
-        System.out.println(Utils.Day.of("MON"));
         return Arrays.stream(readLine().split(","))
                 .map(String::trim)
                 .map(Utils.Day::of)

@@ -3,12 +3,14 @@ package model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import util.Utils;
 
 import java.io.Serializable;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 public class Trainer extends User implements Serializable {
     private static final int MAX_LESSON_DAY = 3;
@@ -16,7 +18,7 @@ public class Trainer extends User implements Serializable {
     public Trainer(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
         super(name, phoneNumber, age, sex, id, pw, role);
         this.grade = Grade.C;
-        this.lessonDays = null;
+        this.lessonDays = new Utils.Day[0];
     }
 
     public Trainer(User user) {
@@ -48,5 +50,7 @@ public class Trainer extends User implements Serializable {
 
     public void update(Trainer trainer) {
         //update all prop by setter
+        System.out.println(trainer);
+        this.lessonDays = trainer.lessonDays;
     }
 }

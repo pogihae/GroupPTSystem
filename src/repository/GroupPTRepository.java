@@ -126,10 +126,14 @@ public class GroupPTRepository {
      * @param trainer 수정할 트레이너
      * */
     public void updateTrainer(Trainer trainer) {
+        List<Trainer> trainers = findAllTrainers();
+
         findAllTrainers().stream()
                 .filter(t -> t.getPhoneNumber().equals(trainer.getPhoneNumber()))
                 .findFirst()
-                .ifPresent(org -> org.update(trainer));
+                .ifPresentOrElse(org -> org.update(trainer), () -> System.out.println("트레이너 없다"));
+
+        writeFile(TRAINER_FILE, trainers);
     }
 
     /**

@@ -78,12 +78,14 @@ public class UserController {
 
         view.trainersListMenu();
         String choice = sc.nextLine();
-        trainer = trainers.get(Integer.parseInt(choice)-1);
+        trainer = trainers.get(Integer.parseInt(choice) - 1);
+        System.out.println(trainer.getLessonDays());
         chooseAvailableTime(trainer);
     }
 
     private void chooseAvailableTime(Trainer trainer){
         Utils.Day[] lessonDays = trainer.getLessonDays();
+        System.out.println(Arrays.toString(lessonDays));
         List<LocalDate> availableDays = new ArrayList<>();
         LocalDate start = LocalDate.now().plusDays(1);
         LocalDate end = start.plusDays(6);
