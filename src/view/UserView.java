@@ -2,6 +2,7 @@ package view;
 
 import model.Reservation;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -79,9 +80,9 @@ public class UserView {
     (3)3~4 (6)6~7
     ####################
     */
-    public void showAvailableTime(List<Integer> availableTime){
+    public void showAvailableTime(List<LocalDateTime> availableTime){
         for (int i = 0; i < availableTime.size(); i++) {
-            int startHour = availableTime.get(i);
+            int startHour = availableTime.get(i).getHour();
             int endHour = (startHour + 1) % 24;
             int nextIndex = (i + 1) % availableTime.size();
 
