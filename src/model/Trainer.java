@@ -13,7 +13,9 @@ public class Trainer extends User {
         this.grade = null;
         this.lessonDay = null;
     }
-
+    public  Trainer(User user){
+        this(user.getName(), user.getPhoneNumber(),user.getAge(),user.getSex(),user.getId(),user.getPw(),user.getRole());
+    }
     public enum TrainerGrade{
         A, B, C
     }

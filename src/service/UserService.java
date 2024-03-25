@@ -1,12 +1,13 @@
 package service;
 
 import model.Member;
+import model.Reservation;
 import model.Trainer;
 import model.User;
 import repository.GroupPTRepository;
 
 import java.util.List;
-
+//view를 불러서는 안된다. repository에 직접적으로 접근하는 녀석
 public class UserService {
 
     public static User loginedUser = null;
@@ -29,14 +30,19 @@ public class UserService {
 
     public void signUp(User user) {
         if (user.getRole().equals(User.Role.TRAINER)) {
-//            repository.saveTrainer(new Trainer(user));
+            repository.saveTrainer(new Trainer(user));
         } else {
             repository.saveMember(new Member(user));
         }
     }
 
-    public List<Trainer> reserveConsultation(){
+    public List<Trainer> findAllTrainers(){
         List<Trainer> list = repository.findAllTrainers();
+        return list;
+    }
+
+    public List<Reservation> findReservationsByTrainer(Trainer trainer){
+        List<Reservation> list =  repository.findReservationsByTrainer(trainer);
         return list;
     }
 
@@ -44,8 +50,9 @@ public class UserService {
 
     }
 
-    public void checkMyReservation(){
-
+    public List<Reservation> findAllReservations(){
+        List<Reservation> list = repository.findAllReservations();
+        return list;
     }
 
     public void changeReservation(){

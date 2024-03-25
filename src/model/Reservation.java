@@ -14,6 +14,7 @@ public class Reservation {
     private Date startDate;
     private int durationMinute;
 
+
     public Reservation(User manager, Date startDate, int durationMinute) {
         this.id = new Random().nextLong(Long.MAX_VALUE);
         this.manager = manager;
