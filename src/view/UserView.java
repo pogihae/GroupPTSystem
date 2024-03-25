@@ -21,6 +21,14 @@ public class UserView {
         System.out.println("*************************************************");
     }
 
+    public void printLoginFailed() {
+        System.out.println("로그인 실패");
+    }
+
+    public void printLoginSuccess() {
+        System.out.println("로그인 성공");
+    }
+
     public void requestName() {
         System.out.print("이름: ");
     }
