@@ -17,6 +17,7 @@ public class Reservation implements Serializable {
     private Type type;
     private User manager;
     private List<User> users;
+    private List<User> attendants;
     private List<User> attendants; //출석체크된 사람
     private LocalDateTime startDate;
     private int durationMinute;
@@ -28,7 +29,7 @@ public class Reservation implements Serializable {
         final int maxNum;
     }
 
-    public Reservation(Type type, User manager, Date startDate, int durationMinute) {
+    public Reservation(Type type, User manager, LocalDateTime startDate, int durationMinute) {
         this.id = new Random().nextLong(Long.MAX_VALUE);
         this.type = type;
         this.manager = manager;

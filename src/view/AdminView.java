@@ -5,9 +5,10 @@ public class AdminView {
     public void adminMenu(){
         System.out.println("1. 회원가입 신청 목록");
         System.out.println("2. 회원 목록 보기");
-        System.out.println("3. 트레이너 목록");
-        System.out.println("4. 수업 스케줄 확인");
-        System.out.println("5. 매출 및 인건비 확인");
+        System.out.println("3. 비회원 목록 보기");
+        System.out.println("4. 트레이너 목록");
+        System.out.println("5. 수업 스케줄 확인");
+        System.out.println("6. 매출 및 인건비 확인");
         System.out.println("*. 로그인 화면으로 돌아가기");
         System.out.println("#. 시스템 종료하기");
 
@@ -57,7 +58,19 @@ public class AdminView {
 
     }
 
-    //메뉴 3번(트레이너 목록)을 선택했을 경우
+    // 메뉴 3번(비회원 목록 보기)을 선택했을 경우
+    public void viewNonMemberList(){
+        // !!!!!!!!!!!!!!!!여기서 회원 이름, 나이, 아이디, 휴대폰 번호 이름 순으로 출력!!!!!!!!!!!!!!!!
+        System.out.println("************************************************");
+        System.out.println("비회원 상담 스케줄 확인(확인하고 싶은 비회원의 인덱스 번호를 입력하세요.)");
+        displayBasicMenuForAdmin();
+    }
+
+
+
+
+
+    //메뉴 4번(트레이너 목록)을 선택했을 경우
     public void viewTrainerList(){
         //!!!!!!!!!!!!!!!!여기서 모든 트레이너의 이름과 전 월 수입이 전 월 수입이 높은순으로 출력!!!!!!!!!!!!!!!!
         System.out.println("인덱스 번호를 입력하면 트레이너의 상세정보를 확인할 수 있습니다.");
@@ -71,7 +84,7 @@ public class AdminView {
     }
 
 
-    //메뉴 4번(수업 스케줄 확인)을 선택했을 경우
+    //메뉴 5번(수업 스케줄 확인)을 선택했을 경우
     public void viewAllSchedule(){
         //!!!!!!!!!!!!!!!!여기서 예정된 모든 수업 정보 (트레이너, 해당시간, 예약 인원 수)가 출력!!!!!!!!!!!!!!!!
         displayBasicMenuForAdmin();
@@ -79,7 +92,7 @@ public class AdminView {
 
     }
 
-    //메뉴 5번(매출 및 인건비 확인)을 선택했을 경우
+    //메뉴 6번(매출 및 인건비 확인)을 선택했을 경우
     public void viewRevenueAndLaborCost(){
         // [한달 총 매출]  - 해당 달에 결제한 모든 금액이 출력된다.
         // [관리자의 이익] - (한달 총 매출) - (총 인건비)이 출력된다.

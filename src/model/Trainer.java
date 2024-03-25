@@ -29,7 +29,7 @@ public class Trainer extends User {
     private User user;
     private Grade grade; //트레이너 등급
     private Utils.Day[] lessonDays; //수업할 요일
-
+  
     public int calculateIncome(int totalClassNum) {
         return totalClassNum * grade.incomePerClass;
     }
