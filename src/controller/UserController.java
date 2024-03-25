@@ -20,6 +20,20 @@ public class UserController {
 
     private final UserService userService = new UserService();
 
+    public void login() {
+        view.requestId();
+        String id = sc.nextLine();
+        view.requestPw();
+        String pw = sc.nextLine();
+
+        if (!userService.login(id, pw)) {
+            view.printLoginFailed();
+            return;
+        }
+
+        view.printLoginSuccess(UserService.loginedUser);
+    }
+
     public void signUp(){
         view.showSignupMenu();
         view.requestName();
