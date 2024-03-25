@@ -1,10 +1,26 @@
 package util;
 
+import lombok.AllArgsConstructor;
+
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Utils {
 
-    private Utils() {}
+    @AllArgsConstructor
+    public enum Day {
+        SUN(1),MON(2), TUE(3), WED(4),
+        THU(5), FRI(6), SAT(7);
+
+        final int dayOfWeek;
+
+        public static Day of(int dayOfWeek) {
+            return Arrays.stream(Day.values())
+                    .filter(d -> d.dayOfWeek == dayOfWeek)
+                    .findFirst().orElseThrow();
+        }
+    }
 
     public static String makeMenuString(String... menus) {
         StringBuilder sb = new StringBuilder();
@@ -23,5 +39,23 @@ public class Utils {
     public static boolean isOverDate(Date date) {
         Date cur = new Date();
         return cur.before(date);
+    }
+
+    public static int getMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.MONTH);
+    }
+
+    public static Day getDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return Day.of(calendar.get(Calendar.DAY_OF_WEEK));
+    }
+
+    public static int getDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE);
     }
 }
