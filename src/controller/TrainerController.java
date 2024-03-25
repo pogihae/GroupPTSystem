@@ -25,7 +25,7 @@ public class TrainerController {
     public void checkTrainerIncome(Trainer trainer) {
         int[] yearMonth = view.requestIncomeYearAndMonth();
         int income = service.calculateIncome(trainer, yearMonth[0], yearMonth[1]);
-        view.printIncome(trainer, yearMonth[0], yearMonth[1], income);
+        view.printIncome(trainer, income, yearMonth[0], yearMonth[1]);
     }
 
     public void checkAttendances(Trainer trainer) {

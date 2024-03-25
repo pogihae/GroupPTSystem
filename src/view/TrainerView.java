@@ -30,9 +30,11 @@ public class TrainerView extends BaseView {
     public Utils.Day[] requestLessonDays(){
         System.out.println("원하는 요일을 선택하세요 (,로 구분): ");
         System.out.println(Arrays.toString(Utils.Day.values()));
-        return  (Utils.Day[]) Arrays.stream(readLine().split(","))
-                .map(Utils.Day::valueOf)
-                .toArray();
+        System.out.println(Utils.Day.of("MON"));
+        return Arrays.stream(readLine().split(","))
+                .map(String::trim)
+                .map(Utils.Day::of)
+                .toArray(Utils.Day[]::new);
     }
 
     //메뉴 3번(회원 출석체크)을 선택했을 경우
