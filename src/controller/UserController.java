@@ -61,9 +61,11 @@ public class UserController {
     public void reserveConsultation(){
         view.showReserveConsultation();
         List<Trainer> Trainer = userService.reserveConsultation();
-        for(Trainer trainer:Trainer){
-            trainer.getName();
+        for(int i = 0;i<Trainer.size();i++){
+            view.showListofTrainers(i,Trainer.get(i).getName(),Trainer.get(i).getSex(),Trainer.get(i).getGrade().name());
         }
+        view.showReserveConsultation();
+
     }
 
     public void checkMyReservation(){

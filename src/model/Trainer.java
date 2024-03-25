@@ -14,15 +14,15 @@ public class Trainer extends User {
         this.lessonDay = null;
     }
 
-    enum TrainerGrade{
+    public enum TrainerGrade{
         A, B, C
     }
-    enum Day {
+    public enum Day {
         Mon, Tue, Wed, Thu, Fri, Sat, Sun
     }
     private User user;
     private TrainerGrade grade; //트레이너 등급
-    private String[] lessonDay; //수업할 요일
+    private Day[] lessonDay; //수업할 요일
 
 
 

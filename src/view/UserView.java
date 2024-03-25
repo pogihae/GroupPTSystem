@@ -60,6 +60,11 @@ public class UserView {
         System.out.println("*************************************************");
     }
 
+    public void showListofTrainers(int i,String name, String sex, String grade){
+        System.out.printf("%d. %s 트레이너/ 등급 %s/ %s\n", i+1, name, grade, sex);
+
+    }
+
     public void showChooseAvailableTime(){
 
     }
