@@ -107,7 +107,8 @@ public class GroupPTRepository {
      * */
     @SuppressWarnings("unchecked")
     public List<Member> findAllMembers() {
-        return (List<Member>) readFile(MEMBER_FILE);
+        List<Member> res = (List<Member>) readFile(MEMBER_FILE);
+        return (res == null)? new ArrayList<>() : res;
     }
 
     /*-----------트레이너 기능-----------*/
@@ -137,7 +138,8 @@ public class GroupPTRepository {
      * */
     @SuppressWarnings("unchecked")
     public List<Trainer> findAllTrainers() {
-        return (List<Trainer>) readFile(TRAINER_FILE);
+        List<Trainer> res = (List<Trainer>) readFile(TRAINER_FILE);
+        return (res == null)? new ArrayList<>() : res;
     }
 
     /*-----------예약 기능-----------*/
@@ -249,7 +251,11 @@ public class GroupPTRepository {
 
     @SuppressWarnings("unchecked")
     public List<Payment> findAllPayments() {
-        return (List<Payment>) readFile(PAYMENT_FILE);
+        List<Payment> res = (List<Payment>) readFile(PAYMENT_FILE);
+        if (res == null) {
+            res = new ArrayList<>();
+        }
+        return res;
     }
 
     @SuppressWarnings("unchecked")
