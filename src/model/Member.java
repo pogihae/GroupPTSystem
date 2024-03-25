@@ -56,11 +56,11 @@ public class Member extends User {
     }
     //수업예약
     public void reserveClass(){
-        //남은회수 있는지 확인 후 => 있으면
+        //남은횟수 있는지 확인 후 => 있으면
         //1. 트레이너 선택메뉴 => 선택
         //2. 해당 트레이너의 수업 예약 가능한 시간 목록 출력 => 선택
         //3. 예약 확정 => 예약확정 메세지 출력
-        if(selectedOption.getSessions()==0){
+        if(this.remainSessionCount==0){
             System.out.println("남은 횟수가 없습니다. 재결제가 필요합니다");
             return;
         }
@@ -77,12 +77,10 @@ public class Member extends User {
 
         //+) 유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함
         Trainer selectedTrainer = allTrainersList.get(choice-1);
-        //<displayTrainerSchedule>
 
         //2. 선택한 트레이너의 예약 목록 출력
         List<Reservation> reservationOfSelectedTrainer = repository.findReservationsByTrainer(selectedTrainer);
-        //4개가 있는 예약목록만 추출 filteredReservations
-        // users 리스트의 크기가 정확히 4개인 예약들만 필터링하여 새로운 리스트를 생성
+        // users 리스트의 크기가 4개인 예약들만 필터링하여 새로운 리스트를 생성 filteredReservations
         List<Reservation> filteredReservations = reservationOfSelectedTrainer.stream()
                 .filter(reservation -> reservation.getUsers().size() == 4)
                 .toList();
@@ -126,7 +124,7 @@ public class Member extends User {
             }
         }
 
-            //사용자로부터 예약할 시간대 선택 받기
+            //3. 사용자로부터 예약할 시간대 선택 받기
             System.out.println("예약할 시간의 번호를 입력해주세요:");
             int selectedSlotIndex = sc.nextInt();
             // 선택한 시간대에 예약 객체 생성
@@ -151,7 +149,8 @@ public class Member extends User {
                     newReservation.addUser(this);
                     repository.saveReservation(newReservation);
                 }
-
+                //횟수차감
+                remainSessionCount-=1;
                 System.out.println("예약이 완료되었습니다: " + selectedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             } else {
                 System.out.println("잘못된 번호입니다. 다시 입력해주세요.");
@@ -177,15 +176,60 @@ public class Member extends User {
         member1.reserveClass();
     }
     //수업정보확인
-    //(수업 예약 확인, PT 선생님, 노쇼, 남은 수업 횟수,남은 수업 사용 가능 일수)
+    // 강사/ 시간/ 출석여부
+    // 강사/ 시간/ 예약인원
+    //잔여 수업횟수/ 잔여 수업 사용 가능 일수
+    // 예약한 수업을 변경 혹은 취소하고 싶다면 해당 번호를 입력하세요
+    // 강사/ 시간 >> 해당 예약 변경은 1번, 해당 예약 취소는 2번을 입력하세요
     public void displayReservationInfo(){
+        List<Reservation> reservationsByPhone = repository.findReservationsByPhone(this.getPhoneNumber());
+        // 예약된 수업 목록 출력
+        for (int i = 0; i < reservationsByPhone.size(); i++) {
+            //예약된 수업 목록 출력 양식: idx. 강사/ 시간/ 정원
+            //System.out.println((i+1) + ": " + reservationsByPhone.get(i).toString());
+            Reservation reservation = reservationsByPhone.get(i);
+            System.out.printf("%d. %s 트레이너/ %s/ 예약인원 %d명\n", i + 1, reservation.getManager(),
+                    reservation.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    reservation.getUsers().size());
+        }
 
+        
     }
 
     //수업예약취소
     //당일취소할 경우, 취소는 되지만 횟수가 차감된다
     public void cancelClassReservation(){
         List<Reservation> reservationsByPhone = repository.findReservationsByPhone(this.getPhoneNumber());
+        // 예약된 수업 목록 출력
+        for (int i = 0; i < reservationsByPhone.size(); i++) {
+            //예약된 수업 목록 출력 양식: idx. 강사/ 시간/ 정원
+            //System.out.println((i+1) + ": " + reservationsByPhone.get(i).toString());
+            Reservation reservation = reservationsByPhone.get(i);
+            System.out.printf("%d. %s 트레이너/ %s/ 예약인원 %d명\n", i + 1, reservation.getManager(),
+                                                                reservation.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                                                                reservation.getUsers().size());
+        }
+        // 사용자로부터 취소할 예약의 인덱스를 입력받음 (1부터 시작하는 인덱스)
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("취소할 예약의 번호를 입력하세요 (1부터 시작): ");
+        int index = scanner.nextInt() - 1; // 사용자는 1부터 인덱싱을 시작하지만, 내부적으로는 0부터 시작하는 인덱스에 맞춰 조정
+
+        // 유효한 인덱스 범위 검사
+        if (index >= 0 && index < reservationsByPhone.size()) {
+            //취소한 Reservation객체 : reservationToCancel
+            Reservation reservationToCancel = reservationsByPhone.get(index);
+            LocalDate today = LocalDate.now();
+            //당일 취소 제외) 남은 세션 수 복구
+            if (reservationToCancel.getStartDate().toLocalDate().isAfter(today)) {
+                this.remainSessionCount += 1;
+            }
+            repository.deleteReservation(reservationToCancel);
+            System.out.println("예약이 취소되었습니다: " + reservationToCancel.toString());
+            System.out.println("고객님의 남은 수업 횟수: " + this.remainSessionCount);
+        } else {
+            System.out.println("잘못된 번호입니다. 예약 취소를 취소합니다.");
+        }
+
 
     }
 
