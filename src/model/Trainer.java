@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import util.Utils;
 
+import java.time.DayOfWeek;
+
 @Getter
 @Setter
 @AllArgsConstructor

@@ -18,6 +18,7 @@ public class Reservation implements Serializable {
     private User manager;
     private List<User> users;
     private List<User> attendants;
+    private List<User> attendants; //출석체크된 사람
     private LocalDateTime startDate;
     private int durationMinute;
 
@@ -32,10 +33,10 @@ public class Reservation implements Serializable {
         this.id = new Random().nextLong(Long.MAX_VALUE);
         this.type = type;
         this.manager = manager;
-        this.users = new ArrayList<>();
+        this.users = new ArrayList<>();//4
         this.attendants = new ArrayList<>();
         this.startDate = startDate;
-        this.durationMinute = durationMinute;
+        this.durationMinute = 60;
     }
 
     /**
@@ -112,3 +113,4 @@ public class Reservation implements Serializable {
         return this.type.equals(Type.CLASS);
     }
 }
+
