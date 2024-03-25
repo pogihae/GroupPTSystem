@@ -15,7 +15,7 @@ public class Trainer extends User implements Serializable {
 
     public Trainer(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
         super(name, phoneNumber, age, sex, id, pw, role);
-        this.grade = null;
+        this.grade = Grade.C;
         this.lessonDays = null;
     }
 
