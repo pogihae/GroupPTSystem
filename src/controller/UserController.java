@@ -31,7 +31,7 @@ public class UserController {
             return;
         }
 
-        view.printLoginSuccess();
+        view.printLoginSuccess(UserService.loginedUser);
     }
 
     public void signUp(){
