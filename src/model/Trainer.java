@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.DayOfWeek;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,15 +16,31 @@ public class Trainer extends User {
         this.lessonDay = null;
     }
 
-    enum TrainerGrade{
+    public enum TrainerGrade{
         A, B, C
     }
-    enum Day {
-        Mon, Tue, Wed, Thu, Fri, Sat, Sun
+    public enum Day {
+        Mon(DayOfWeek.MONDAY),
+        Tue(DayOfWeek.TUESDAY),
+        Wed(DayOfWeek.WEDNESDAY),
+        Thu(DayOfWeek.THURSDAY),
+        Fri(DayOfWeek.FRIDAY),
+        Sat(DayOfWeek.SATURDAY),
+        Sun(DayOfWeek.SUNDAY);
+
+        private final DayOfWeek dayOfWeek;
+
+        Day(DayOfWeek dayOfWeek) {
+            this.dayOfWeek = dayOfWeek;
+        }
+
+        public DayOfWeek toDayOfWeek() {
+            return this.dayOfWeek;
+        }
     }
     private User user;
     private TrainerGrade grade; //트레이너 등급
-    private String[] lessonDay; //수업할 요일
+    private Day[] lessonDay; //수업할 요일
 
 
 

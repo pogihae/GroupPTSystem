@@ -2,12 +2,14 @@ package model;
 
 import repository.GroupPTRepository;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Scanner;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Member extends User{
     Scanner sc = new Scanner(System.in);
+    GroupPTRepository repository = GroupPTRepository.getInstance();
     int remainSessionCount;//남은수업횟수
     Payment payment;//결제 객체
     LocalDate paymentTime;
@@ -47,11 +49,11 @@ public class Member extends User{
         System.out.println(choice+"번 옵션, "+selectedOption.getPrice()+"원 결제가 완료되었습니다");
         this.remainSessionCount += selectedOption.getSessions();
         //payment 객체를 "결제" 파일에 저장하는 작업
+        repository.savePayment(this.payment);
         //노쇼 1회 시 재등록(결제) 불가능하다
     }
     //수업예약
     public void reserveClass(){
-        GroupPTRepository repository = GroupPTRepository.getInstance();
         //남은회수 있는지 확인 후 => 있으면
         //1. 트레이너 선택메뉴 => 선택
         //2. 해당 트레이너의 수업 예약 가능한 시간 목록 출력 => 선택
@@ -71,11 +73,92 @@ public class Member extends User{
         System.out.print("번호 입력: ");
         int choice = sc.nextInt();
 
-        //유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함
+        //+) 유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함
         Trainer selectedTrainer = allTrainersList.get(choice-1);
+        //<displayTrainerSchedule>
+
+        //2. 선택한 트레이너의 예약 목록 출력
+        List<Reservation> reservationOfSelectedTrainer = repository.findReservationsByTrainer(selectedTrainer);
+        //4개가 있는 예약목록만 추출 filteredReservations
+        // users 리스트의 크기가 정확히 4개인 예약들만 필터링하여 새로운 리스트를 생성
+        List<Reservation> filteredReservations = reservationOfSelectedTrainer.stream()
+                .filter(reservation -> reservation.getUsers().size() == 4)
+                .toList();
+
+        // 트레이너의 근무 요일 배열을 DayOfWeek 타입의 리스트로 변환
+        List<DayOfWeek> workDays = java.util.Arrays.stream(selectedTrainer.getLessonDay())
+                .map(Trainer.Day::toDayOfWeek)
+                .toList();
+
+        // 예약 가능한 시간대 목록 생성
+        LocalDate today = LocalDate.now();
+        LocalDate endDay = today.plusWeeks(1); //일주일 후
+        LocalTime startTime = LocalTime.of(13,0);
+        LocalTime endTime = LocalTime.of(19,0);
+
+        //idx(1~), LocalDateTime 예약한시간
+        Map<Integer, LocalDateTime> slotIndexToDateTimeMap = new HashMap<>();
+        int slotIndex = 1;
+
+        for (LocalDate date = today.plusDays(1); date.isBefore(endDay); date = date.plusDays(1)) {
+            if (workDays.contains(date.getDayOfWeek())) {
+                System.out.println(date + "의 예약 가능한 시간:");
+                System.out.println("--------------------------------------------");
+                //해당 시간: tempStartTime
+                LocalTime tempStartTime = startTime;
+                while (tempStartTime.isBefore(endTime)) {
+                    LocalDateTime slotStartDateTime = LocalDateTime.of(date, tempStartTime);
+                    LocalDateTime slotEndDateTime = slotStartDateTime.plusHours(1);
+
+                    boolean isReserved = filteredReservations.stream().anyMatch(reservation ->
+                            reservation.getStartDate().equals(slotStartDateTime));
+
+                    if (!isReserved) {
+                        System.out.println(slotIndex + ". " + slotStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, E"))
+                                + " - " + slotEndDateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+                        slotIndexToDateTimeMap.put(slotIndex, slotStartDateTime);
+                        slotIndex++;
+                    }
+
+                    tempStartTime = tempStartTime.plusHours(1);
+                }
+            }
+        }
+
+            //사용자로부터 예약할 시간대 선택 받기
+            System.out.println("예약할 시간의 번호를 입력해주세요:");
+            int selectedSlotIndex = sc.nextInt();
+            // 선택한 시간대에 예약 객체 생성
+            if (slotIndexToDateTimeMap.containsKey(selectedSlotIndex)) {
+                LocalDateTime selectedDateTime = slotIndexToDateTimeMap.get(selectedSlotIndex);
+
+                // 예약 객체 생성
+                //reservationOfSelectedTrainer 의 reservation 중 startDate가 selectedDateTime과 같으면 거기에 추가, 아니면 객체생성
+                Reservation existingReservation = null;
+                // 선택한 시간대에 해당하는 예약이 있는지 검사
+                for (Reservation reservation : reservationOfSelectedTrainer) {
+                    if (reservation.getStartDate().equals(selectedDateTime)) {
+                        existingReservation = reservation;
+                        break; // 일치하는 예약을 찾았으므로 루프 탈출
+                    }
+                }
+                if (existingReservation != null) { //해당시간에 예약한 사람이 0명인 경우
+                    existingReservation.addUser(this);
+                    repository.updateReservation(existingReservation);
+                } else {
+                    Reservation newReservation = new Reservation(selectedTrainer, selectedDateTime);
+                    newReservation.addUser(this);
+                    repository.saveReservation(newReservation);
+                }
+
+                System.out.println("예약이 완료되었습니다: " + selectedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            } else {
+                System.out.println("잘못된 번호입니다. 다시 입력해주세요.");
+            }
+        }//수업예약함수 END
 
 
-
+        //-----
 
 
 
@@ -84,6 +167,13 @@ public class Member extends User{
         2. ‘*’을 누르면 메인화면으로 돌아간다.
         3. 선택지에 없는 메뉴를 선택할 경우 메뉴를 다시 출력한다.
          */
+
+
+    public static void main(String[] args) {
+        User user1 = new User();
+        Member member1 = new Member(user1);
+        member1.payForClass();
+        member1.reserveClass();
     }
     //수업정보확인
     //(수업 예약 확인, PT 선생님, 노쇼, 남은 수업 횟수,남은 수업 사용 가능 일수)
@@ -93,7 +183,12 @@ public class Member extends User{
 
     //수업예약취소
     //당일취소할 경우, 취소는 되지만 횟수가 차감된다
+    public void cancelClassReservation(){
+        List<Reservation> reservationsByPhone = repository.findReservationsByPhone(this.getPhoneNumber());
+
+    }
 
     //수업예약변경
     //당일예약변경 불가능하다
-}
+
+}//Member class END

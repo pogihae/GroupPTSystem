@@ -3,6 +3,7 @@ package model;
 import lombok.Getter;
 import util.Utils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -10,17 +11,17 @@ public class Reservation {
     private final Long id;
     private User manager;
     private List<User> users;
-    private List<User> attendants;
-    private Date startDate;
+    private List<User> attendants; //출석체크된 사람
+    private LocalDateTime startDate;
     private int durationMinute;
 
-    public Reservation(User manager, Date startDate, int durationMinute) {
+    public Reservation(User manager, LocalDateTime startDate) {
         this.id = new Random().nextLong(Long.MAX_VALUE);
         this.manager = manager;
-        this.users = new ArrayList<>();
+        this.users = new ArrayList<>();//4
         this.attendants = new ArrayList<>();
         this.startDate = startDate;
-        this.durationMinute = durationMinute;
+        this.durationMinute = 60;
     }
 
     /**
@@ -63,7 +64,8 @@ public class Reservation {
      * */
     public boolean isNoShowUser(User user) {
         if (!isReservedUser(user)) return false;
-        if (Utils.isOverDate(startDate)) return false;
+        //if (Utils.isOverDate(startDate)) return false;
+        if (!LocalDateTime.now().isAfter(startDate)) return false;
         return !attendants.contains(user);
     }
 
@@ -74,3 +76,4 @@ public class Reservation {
         return users.contains(user);
     }
 }
+
