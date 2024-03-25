@@ -49,16 +49,18 @@ public class UserService {
     public void chooseAvailableTime(){
 
     }
-    public void saveReservation(User user){
-        //addUser(user);
+    public void saveReservation(User user,Reservation reservation){
+        reservation.addUser(user);
+        repository.saveReservation(reservation);
     }
     public List<Reservation> findAllReservations(){
         List<Reservation> list = repository.findAllReservations();
         return list;
     }
 
-    public void changeReservation(){
-
+    public Reservation checkMyReservation(String phoneNumber){
+        List<Reservation> list = repository.findReservationsByPhone(phoneNumber);
+        return (list.isEmpty())? null : list.getFirst();
     }
 
     public void cancelReservation(){
