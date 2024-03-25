@@ -40,6 +40,7 @@ public class User implements Serializable {
     }
 
     public void update(User user) {
+        if (user == null) return;
         this.name = user.name;
         this.phoneNumber = user.phoneNumber;
         this.age = user.age;
