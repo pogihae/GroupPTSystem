@@ -23,5 +23,11 @@ public class MainController {
             trainerController.checkAttendances(trainer);
         }
 
+        User user1 = new User();
+        Member member1 = new Member(user1);
+        userController.consult();
+        userController.checkMyReservation();
+        member1.payForClass();
+        member1.reserveClass();
     }
 }

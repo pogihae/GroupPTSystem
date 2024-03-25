@@ -214,10 +214,11 @@ public class GroupPTRepository {
      * */
     public List<Reservation> findReservationsByPhone(String phone) {
         return findAllReservations().stream()
-                .filter(reservation ->
-                    reservation.getManager().getPhoneNumber().equals(phone)
-                )
-                .collect(Collectors.toList());
+                .filter(r -> {
+                    return r.getUsers().stream()
+                            .filter(u -> u.getPhoneNumber().equals(phone))
+                            .count() > 0;
+                }).toList();
     }
 
     /**

@@ -73,17 +73,16 @@ public class UserController {
         Trainer trainer;
         for(int i = 0;i<trainers.size();i++){
             trainer = trainers.get(i);
-            view.showListofTrainers(i,trainer.getName(),trainer.getSex(),trainer.getGrade().name());
+            view.showListofTrainers(i,trainer.getName(),trainer.getSex(),"A");
         }
 
         view.trainersListMenu();
         String choice = sc.nextLine();
-        trainer = trainers.get(Integer.parseInt(sc.nextLine()));
+        trainer = trainers.get(Integer.parseInt(choice)-1);
         chooseAvailableTime(trainer);
     }
 
-    public String chooseAvailableTime(Trainer trainer){
-        //이름, 번호, 나이, 성별, 아이디, 비밀번호를 받아 User 객체를 생성한다.
+    private void chooseAvailableTime(Trainer trainer){
         Utils.Day[] lessonDays = trainer.getLessonDays();
         List<LocalDate> availableDays = new ArrayList<>();
         LocalDate start = LocalDate.now().plusDays(1);
@@ -94,7 +93,7 @@ public class UserController {
             LocalDate current = start; // 시작일부터 루프 시작
             while (!current.isAfter(end)) { // end 날짜까지 반복
                 if(current.getDayOfWeek().getValue() == day.getDayOfWeek()) {//이 기간의 트레이너 예약 가능 요일
-                    for (int hour = 13; hour <= 19; hour++) {
+                    for (int hour = 13; hour < 19; hour++) {
                         LocalDateTime dateTime = LocalDateTime.of(current, LocalTime.of(hour, 0));
                         availableTime.add(dateTime);
                     }
@@ -115,11 +114,9 @@ public class UserController {
         view.showAvailableTime(availableTime);
 
         String choice = sc.nextLine();
-//        Reservation newReservation = new Reservation(trainer,);
-        return choice;
-    }
+        //이름, 번호를 받아 User 객체를 생성한다.
 
-    public void saveReservation(){
+        Reservation newReservation = new Reservation(trainer,availableTime.get(Integer.parseInt(choice)));
         view.requestName();
         String name = sc.nextLine();
         view.requestPhoneNumber();
@@ -127,19 +124,15 @@ public class UserController {
 
         User user = new User(name,phoneNumber);
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
-        userService.saveReservation(user);
+        userService.saveReservation(user,newReservation);
     }
 
     public void checkMyReservation(){
-        // 이름/전화번호를 입력받는다.
-        List<Reservation> list = userService.findAllReservations();
+        // 전화번호를 입력받는다.
         view.showCheckMyReservation();
-        String userInfo = sc.nextLine();
-//        for(int i = 0;i<list.size();i++){
-//            if(list.get(i).getUsers().contains()){
-//
-//            }
-//        }
+        String phoneNumber = sc.nextLine();
+        Reservation reservation = userService.checkMyReservation(phoneNumber);
+        view.printReservation(reservation);
     }
 
     public void changeReservation(){
