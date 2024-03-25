@@ -11,9 +11,10 @@ import java.util.List;
 public class TrainerService {
     private final GroupPTRepository groupPTRepository = GroupPTRepository.getInstance();
 
-    public int calculateIncome(Trainer trainer, int month) {
+    public int calculateIncome(Trainer trainer, int month, int year) {
         int totalClassNumber = (int) groupPTRepository.findReservationsByTrainer(trainer).stream()
                 .filter(r -> Utils.getMonth(r.getStartDate()) == month)
+                .filter(r -> r.getStartDate().getYear() == year)
                 .filter(Reservation::isClass)
                 .count();
 
