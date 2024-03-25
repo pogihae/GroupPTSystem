@@ -49,7 +49,9 @@ public class UserService {
     public void chooseAvailableTime(){
 
     }
-
+    public void saveReservation(User user){
+        //addUser(user);
+    }
     public List<Reservation> findAllReservations(){
         List<Reservation> list = repository.findAllReservations();
         return list;
