@@ -2,11 +2,12 @@ package model;
 import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 //paymentOption enum class
 @Data
-public class Payment {
+public class Payment implements Serializable {
     //결제를 하면 결제시각, 멤버의 pk, 결제타입을 저장
     private LocalDate paymentTime;//결제 시각(yyyy-MM-dd)
     private String memberPhoneNumber;//멤버

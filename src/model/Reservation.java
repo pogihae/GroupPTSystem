@@ -5,10 +5,11 @@ import lombok.Getter;
 import util.Utils;
 
 import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.*;
 
 @Getter
-public class Reservation {
+public class Reservation implements Serializable {
     private static final int MAX_CLASS_NUM = 4;
     private static final int MAX_CONSULT_NUM = 1;
 
@@ -105,5 +106,9 @@ public class Reservation {
      * */
     public boolean isFull() {
         return users.size() >= type.maxNum;
+    }
+
+    public boolean isClass() {
+        return this.type.equals(Type.CLASS);
     }
 }
