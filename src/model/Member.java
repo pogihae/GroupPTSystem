@@ -51,7 +51,7 @@ public class Member extends User{
     }
     //수업예약
     public void reserveClass(){
-        GroupPTRepository repository = new GroupPTRepository();
+        GroupPTRepository repository = GroupPTRepository.getInstance();
         //남은회수 있는지 확인 후 => 있으면
         //1. 트레이너 선택메뉴 => 선택
         //2. 해당 트레이너의 수업 예약 가능한 시간 목록 출력 => 선택
