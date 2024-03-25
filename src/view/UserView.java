@@ -1,6 +1,7 @@
 package view;
 
 import model.Reservation;
+import model.User;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -19,6 +20,15 @@ public class UserView {
         System.out.println("*************************************************");
         System.out.println("형식에 맞는 양식을 작성해 주세요.");
         System.out.println("*************************************************");
+    }
+
+    public void printLoginFailed() {
+        System.out.println("로그인 실패");
+    }
+
+    public void printLoginSuccess(User user) {
+        System.out.println("로그인 성공");
+        System.out.println(user);
     }
 
     public void requestName() {

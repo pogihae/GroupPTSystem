@@ -43,6 +43,9 @@ public class Utils {
         return cur.before(date);
     }
 
+    public static LocalDateTime getCurrentTime() {
+        return LocalDateTime.now();
+    }
     public static int getMonth(LocalDateTime date) {
         return date.getMonth().getValue();
     }
@@ -53,5 +56,9 @@ public class Utils {
 
     public static int getDate(LocalDateTime date) {
         return date.getDayOfMonth();
+    }
+
+    public static int getYear(LocalDateTime date) {
+        return date.getYear();
     }
 }
