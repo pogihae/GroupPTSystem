@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import util.Utils;
 
+import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.*;
 
@@ -16,8 +17,8 @@ public class Reservation implements Serializable {
     private Type type;
     private User manager;
     private List<User> users;
-    private List<User> attendants;
-    private Date startDate;
+    private List<User> attendants; //출석체크된 사람
+    private LocalDateTime startDate;
     private int durationMinute;
 
     @AllArgsConstructor
@@ -31,10 +32,10 @@ public class Reservation implements Serializable {
         this.id = new Random().nextLong(Long.MAX_VALUE);
         this.type = type;
         this.manager = manager;
-        this.users = new ArrayList<>();
+        this.users = new ArrayList<>();//4
         this.attendants = new ArrayList<>();
         this.startDate = startDate;
-        this.durationMinute = durationMinute;
+        this.durationMinute = 60;
     }
 
     /**
@@ -78,7 +79,8 @@ public class Reservation implements Serializable {
      * */
     public boolean isNoShowUser(User user) {
         if (!isReservedUser(user)) return false;
-        if (Utils.isOverDate(startDate)) return false;
+        //if (Utils.isOverDate(startDate)) return false;
+        if (!LocalDateTime.now().isAfter(startDate)) return false;
         return !attendants.contains(user);
     }
 
@@ -110,3 +112,4 @@ public class Reservation implements Serializable {
         return this.type.equals(Type.CLASS);
     }
 }
+
