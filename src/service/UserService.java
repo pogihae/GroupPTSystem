@@ -19,7 +19,7 @@ public class UserService {
         return loginedUser.getRole();
     }
 
-    private GroupPTRepository repository;
+    private GroupPTRepository repository = GroupPTRepository.getInstance();
 
     public void login(User user) {
         if (loginedUser != null) {

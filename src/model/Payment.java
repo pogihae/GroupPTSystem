@@ -14,7 +14,7 @@ public class Payment implements Serializable {
     private PaymentOption paymentOption;//결제 타입
 
     @Getter
-    public enum PaymentOption{
+    public enum PaymentOption {
         OPTION_1(10, 90, 700_000),
         OPTION_2(20, 120, 1_200_000),
         OPTION_3(30, 180, 1_500_000);
