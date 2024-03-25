@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class Member extends User{
+public class Member extends User {
     Scanner sc = new Scanner(System.in);
     int remainSessionCount;//남은수업횟수
     Payment payment;//결제 객체
@@ -73,10 +73,6 @@ public class Member extends User{
 
         //유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함
         Trainer selectedTrainer = allTrainersList.get(choice-1);
-
-
-
-
 
 
         /*
