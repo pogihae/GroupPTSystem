@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GroupPTRepository {
+
+    /*-----------파일 저장 위치-----------*/
     private static final String DIRECTORY = "./data/";
     private static final String MEMBER_FILE = "members.dat";
     private static final String TRAINER_FILE = "trainers.dat";
     private static final String RESERVATION_FILE = "reservations.dat";
     private static final String PAYMENT_FILE = "payments.dat";
 
-    /*-----------유저-----------*/
+    /*-----------유저 기능-----------*/
 
     /**
      * 회원의 아이디로 회원 객체를 불러올 수 있다.
@@ -54,7 +56,7 @@ public class GroupPTRepository {
         return users;
     }
 
-    /*-----------멤버-----------*/
+    /*-----------멤버 기능-----------*/
 
     /**
      * 멤버를 저장할 수 있다.
@@ -73,11 +75,14 @@ public class GroupPTRepository {
         return (List<Member>) readFile(MEMBER_FILE);
     }
 
-    public boolean hasNoShow(Member member) {
-        throw new RuntimeException("구현 아직 안함");
+    public int countNoShow(Member member) {
+        List<Reservation> reservations = findReservationsByPhone(member.getPhoneNumber());
+        return (int) reservations.stream()
+                .filter(r -> !r.getAttendants().contains(member))
+                .count();
     }
 
-    /*-----------트레이너-----------*/
+    /*-----------트레이너 기능-----------*/
 
     /**
      * 트레이너를 저장할 수 있다.
@@ -107,7 +112,7 @@ public class GroupPTRepository {
         return (List<Trainer>) readFile(TRAINER_FILE);
     }
 
-    /*-----------예약-----------*/
+    /*-----------예약 기능-----------*/
 
     /**
      * 모든 예약 목록을 불러올 수 있다.
@@ -180,7 +185,7 @@ public class GroupPTRepository {
                 .collect(Collectors.toList());
     }
 
-    /*-----------결제-----------*/
+    /*-----------결제 기능-----------*/
 
     public void savePayment(Payment payment) {
         addObjectToFile(PAYMENT_FILE, payment);
