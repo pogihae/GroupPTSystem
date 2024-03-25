@@ -16,6 +16,15 @@ public class GroupPTRepository {
     private static final String RESERVATION_FILE = "reservations.dat";
     private static final String PAYMENT_FILE = "payments.dat";
 
+    private GroupPTRepository() {}
+    private static GroupPTRepository instance = null;
+    public static GroupPTRepository getInstance() {
+        if (instance == null) {
+            instance = new GroupPTRepository();
+        }
+        return instance;
+    }
+
     /*-----------유저 기능-----------*/
 
     /**
@@ -73,13 +82,6 @@ public class GroupPTRepository {
     @SuppressWarnings("unchecked")
     public List<Member> findAllMembers() {
         return (List<Member>) readFile(MEMBER_FILE);
-    }
-
-    public int countNoShow(Member member) {
-        List<Reservation> reservations = findReservationsByPhone(member.getPhoneNumber());
-        return (int) reservations.stream()
-                .filter(r -> !r.getAttendants().contains(member))
-                .count();
     }
 
     /*-----------트레이너 기능-----------*/
@@ -183,6 +185,18 @@ public class GroupPTRepository {
                     reservation.getManager().getPhoneNumber().equals(phone)
                 )
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 유저의 노쇼 횟수를 알 수 있다.
+     * @param user 확인할 유저
+     * @return 해당하는 유저의 노쇼 힛수
+     * */
+    public int countNoShow(User user) {
+        List<Reservation> reservations = findReservationsByPhone(user.getPhoneNumber());
+        return (int) reservations.stream()
+                .filter(r -> r.isNoShowUser(user))
+                .count();
     }
 
     /*-----------결제 기능-----------*/
