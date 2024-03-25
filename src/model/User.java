@@ -25,6 +25,16 @@ public class User implements Serializable {
     private String pw;
     private Role role;
 
+    //상담신청한 유저일경우
+    public User(String name, String phoneNumber){
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.age = null;
+        this.sex = null;
+        this.id = null;
+        this.pw = null;
+        this.role  = null;
+    }
     public User(User user) {
         update(user);
     }

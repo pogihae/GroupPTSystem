@@ -1,5 +1,10 @@
 package view;
 
+import model.Reservation;
+
+import java.util.Date;
+import java.util.List;
+
 public class UserView {
     void displayBasicMenuForUser(){
         System.out.println("0. 유저 메뉴로 돌아가기");
@@ -60,8 +65,34 @@ public class UserView {
         System.out.println("*************************************************");
     }
 
-    public void showChooseAvailableTime(){
+    public void showListofTrainers(int i,String name, String sex, String grade){
+        System.out.printf("%d. %s 트레이너/ 등급 %s/ %s\n", i+1, name, grade, sex);
+    }
+    public void trainersListMenu() {
+        System.out.println("*************************************************");
+    }
 
+    /*
+    ####################
+    (1)1~2 (4)4~5 (7)7~8
+    (2)2~3 (5)5~6
+    (3)3~4 (6)6~7
+    ####################
+    */
+    public void showAvailableTime(List<Integer> availableTime){
+        for (int i = 0; i < availableTime.size(); i++) {
+            int startHour = availableTime.get(i);
+            int endHour = (startHour + 1) % 24;
+            int nextIndex = (i + 1) % availableTime.size();
+
+            System.out.print("(" + (i + 1) + ")" + startHour + "~" + endHour + " ");
+            //한줄에 세로로 3개씩 출력
+            if (nextIndex == 0 && i != availableTime.size() - 1) {
+                System.out.println();
+            }
+        }
+
+        System.out.println("\n####################");
     }
 
     public void showCheckMyReservation(){
