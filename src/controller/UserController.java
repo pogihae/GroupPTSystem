@@ -53,8 +53,6 @@ public class UserController {
         User user = new User(name,phoneNumber, Integer.parseInt(age), sex, id, pw, role);
 
         userService.signUp(user);
-//        repo.saveMember(member);
-//        repo.saveTrainer(trainer);
         view.showSigned();
     }
 
@@ -79,27 +77,27 @@ public class UserController {
         view.trainersListMenu();
         String choice = sc.nextLine();
         trainer = trainers.get(Integer.parseInt(choice) - 1);
-        System.out.println(trainer.getLessonDays());
+        System.out.println("test: "+trainer.getLessonDays());
         chooseAvailableTime(trainer);
     }
 
     private void chooseAvailableTime(Trainer trainer){
         List<Utils.Day> lessonDays = trainer.getLessonDays();
-        List<LocalDate> availableDays = new ArrayList<>();
-        LocalDate start = LocalDate.now().plusDays(1);
-        LocalDate end = start.plusDays(6);
         List<LocalDateTime> availableTime = new ArrayList<>();
+        LocalDateTime end = LocalDateTime.now().plusDays(8);
 
-        for(Utils.Day day: lessonDays){
-            LocalDate current = start; // 시작일부터 루프 시작
-            while (!current.isAfter(end)) { // end 날짜까지 반복
-                if(current.getDayOfWeek().getValue() == day.getDayOfWeek()) {//이 기간의 트레이너 예약 가능 요일
+        // 1. lesson day -> closest day
+        for (Utils.Day day : lessonDays) {
+            LocalDateTime start = LocalDateTime.now().plusDays(1);
+            while (!start.isAfter(end)) {
+                if (day.equals(Utils.getDay(start.plusDays(1)))) {
+                    // 2. 13 ~ 18
                     for (int hour = 13; hour < 19; hour++) {
-                        LocalDateTime dateTime = LocalDateTime.of(current, LocalTime.of(hour, 0));
+                        LocalDateTime dateTime = LocalDateTime.of(LocalDate.from(start), LocalTime.of(hour, 0));
                         availableTime.add(dateTime);
                     }
                 }
-                current = current.plusDays(1); // 다음 날짜로 이동
+                start = start.plusDays(1);
             }
         }
 
@@ -108,9 +106,7 @@ public class UserController {
         for(int i = 0;i<trainerSchedule.size();i++){
             schedule = trainerSchedule.get(i);
             //1시 부터 7시까지 예약가능한 시간만 출력해 보여준다.
-            if(availableTime.contains(schedule.getStartDate())){
-                availableTime.remove(i);
-            }
+            availableTime.remove(schedule.getStartDate());
         }
         view.showAvailableTime(availableTime);
 
@@ -125,6 +121,7 @@ public class UserController {
 
         User user = new User(name,phoneNumber);
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
+        userService.saveUser(user);
         userService.saveReservation(user,newReservation);
         view.showResult("예약이");
 
@@ -155,4 +152,3 @@ public class UserController {
         view.showResult("예약 취소");
     }
 }
-

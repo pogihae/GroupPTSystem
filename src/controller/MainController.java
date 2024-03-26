@@ -22,12 +22,12 @@ public class MainController {
             trainerController.printTrainerTimeTable(trainer);
             trainerController.checkAttendances(trainer);
         }
-
-        User user1 = new User();
-        Member member1 = new Member(user1);
+//
+//        User user1 = UserService.loginedUser;
+//        Member member1 = new Member(user1);
         userController.consult();
         userController.checkMyReservation();
-        member1.payForClass();
-        member1.reserveClass();
+//        member1.payForClass();
+//        member1.reserveClass();
     }
 }

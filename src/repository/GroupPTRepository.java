@@ -223,6 +223,7 @@ public class GroupPTRepository {
      * */
     public List<Reservation> findReservationsByPhone(String phone) {
         final User user = findUserByPhone(phone);
+        System.out.println(user);
         return findAllReservations().stream()
                 .filter(r -> r.isReservedUser(user))
                 .collect(Collectors.toList());

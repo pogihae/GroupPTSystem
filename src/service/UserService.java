@@ -6,7 +6,7 @@ import model.Trainer;
 import model.User;
 import repository.GroupPTRepository;
 
-import java.util.List;
+import java.util.*;
 //view를 불러서는 안된다. repository에 직접적으로 접근하는 녀석
 public class UserService {
 
@@ -19,7 +19,7 @@ public class UserService {
         return loginedUser.getRole();
     }
 
-    private GroupPTRepository repository = GroupPTRepository.getInstance();
+    private final GroupPTRepository repository = GroupPTRepository.getInstance();
 
     public boolean login(String id, String pw) {
         if (loginedUser != null) {
@@ -66,10 +66,15 @@ public class UserService {
 
     public Reservation checkMyReservation(String phoneNumber){
         List<Reservation> list = repository.findReservationsByPhone(phoneNumber);
-        return (list.isEmpty())? null : list.getFirst();
+        System.out.println("Test: "+list);
+        return (list.isEmpty())? null : list.get(0);
     }
 
     public void cancelReservation(Reservation reservation){
         repository.deleteReservation(reservation);
+    }
+
+    public void saveUser(User user) {
+        repository.saveMember(user);
     }
 }
