@@ -126,18 +126,18 @@ public class AdminService {
                     int remainingCount = payment.getPaymentOption().getSessions() - totalAttendanceCount;
                     return remainingCount <= 3;
                 })
-                .collect(Collectors.toList());
+                .toList();
 //        adminView.sendMarketingMessagesToMembers(membersWithFewSessionsLeft);
 
-//        System.out.println("다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:");
-//        for (Member member : membersWithFewSessionsLeft) {
-//            System.out.println("이름: " + member.getName());
-//            System.out.println("성별: " + member.getSex());
-//            System.out.println("나이: " + member.getAge());
-//            System.out.println("아이디: " + member.getId());
-//            System.out.println("휴대폰 번호: " + member.getPhoneNumber());
-//            System.out.println("--------------------------------");
-//        }
+        System.out.println("다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:");
+        for (Member member : membersWithFewSessionsLeft) {
+            System.out.println("이름: " + member.getName());
+            System.out.println("성별: " + member.getSex());
+            System.out.println("나이: " + member.getAge());
+            System.out.println("아이디: " + member.getId());
+            System.out.println("휴대폰 번호: " + member.getPhoneNumber());
+            System.out.println("--------------------------------");
+        }
     }
 
 

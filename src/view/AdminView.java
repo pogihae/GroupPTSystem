@@ -8,22 +8,18 @@ import java.util.List;
 
 public class AdminView extends BaseView{
 
-    public void adminMenu(){
-        System.out.println("****************************");
-        System.out.println("        [ 관리자 메뉴 ]");
-        System.out.println("****************************");
-        System.out.println("1. 회원가입 신청 목록");
-        System.out.println("2. 회원 목록 보기");
-        System.out.println("3. 비회원 목록 보기");
-        System.out.println("4. 트레이너 목록");
-        System.out.println("5. 수업 스케줄 확인");
-        System.out.println("6. 매출 및 인건비 확인");
-        System.out.println("-----------------------------");
-        System.out.println("*. 로그인 화면으로 돌아가기");
-        System.out.println("#. 시스템 종료하기");
-        System.out.println("*****************************");
-        System.out.print("원하는 메뉴를 선택하세요.  ");
-
+    public String requestAdminMenu() {
+        requestMenuSelect(
+                "회원가입 신청 목록",
+                "회원 목록",
+                "비회원 목록",
+                "트레이너 목록",
+                "전체 수업 스케줄",
+                "매출 및 인건비",
+                "뇨쇼 회원 확인",
+                "수업 연장 마케팅 전송"
+        );
+        return readLine();
     }
 
     public void printRegistrationRequests(List<User> registrationRequests) {
@@ -99,11 +95,11 @@ public class AdminView extends BaseView{
     }
 
 
-    public void printNoShowMembers(List<String> noShowMembers) {
+    public void printNoShowMembers(List<Member> noShowMembers) {
         if (!noShowMembers.isEmpty()) {
             System.out.println("노쇼 회원 목록:");
-            for (String name : noShowMembers) {
-                System.out.println(name);
+            for (Member member : noShowMembers) {
+                printMemberDetailInfo(member);
             }
         } else {
             System.out.println("\"노쇼 회원이 없습니다.\"\n");
@@ -118,24 +114,16 @@ public class AdminView extends BaseView{
     // 메뉴 2번(회원 목록 보기)을 선택했을 경우
     public void printMembers(List<Member> members){
         // !!!!!!!!!!!!!!!!여기서 회원 이름, 나이, 아이디, 휴대폰 번호 이름 순으로 출력!!!!!!!!!!!!!!!!
-        List<Member> sorted = new ArrayList<>(members);
-        sorted.sort(Comparator.comparing(User::getName));
+        members.sort(Comparator.comparing(User::getName));
 
         System.out.println("---회원 목록---");
 
         int index = 1;
-        for (Member member : sorted) {
+        for (Member member : members) {
             System.out.print(index + ": ");
             printMemberAbstractInfo(member);
             index += 1;
         }
-
-        System.out.println("\n********************************************************");
-        System.out.println("회원 별 수업 스케줄 확인을 원할 경우 회원의 인덱스 번호를 입력하세요.");
-        System.out.println("@. 뇨쇼 회원 확인");
-        System.out.println("!. 수업 연장 마케팅 전송");
-
-        displayBasicMenuForAdmin();
     }
 
 
@@ -208,15 +196,6 @@ public class AdminView extends BaseView{
         System.out.printf("[총 매출]:\t\t%,d원%n", totalRevenue);
         System.out.println("--------------------------------");
         System.out.println("");
-    }
-
-    void displayBasicMenuForAdmin(){
-        System.out.println("--------------------------------------------------------");
-        System.out.println("0. 관리자 메뉴로 돌아가기");
-        System.out.println("*. 로그인 화면으로 돌아가기");
-        System.out.println("********************************************************");
-        System.out.print("원하는 메뉴를 선택하세요:  ");
-
     }
 
     public void printTrainerDetails(List<String> details) {
