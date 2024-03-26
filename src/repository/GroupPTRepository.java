@@ -224,7 +224,9 @@ public class GroupPTRepository {
      * @return 트레이너의 예약 목록
      * */
     public List<Reservation> findReservationsByTrainer(Trainer trainer) {
-        return findReservationsByPhone(trainer.getPhoneNumber());
+        return findAllReservations().stream()
+                .filter(r -> r.getManager().equals(trainer))
+                .toList();
     }
 
     /**
@@ -233,9 +235,8 @@ public class GroupPTRepository {
      * @return 유저의 예약 목록
      * */
     public List<Reservation> findReservationsByPhone(String phone) {
-        final User user = findUserByPhone(phone);
         return findAllReservations().stream()
-                .filter(r -> r.isReservedUser(user))
+                .filter(r -> r.getUsers().stream().anyMatch(u -> u.getPhoneNumber().equals(phone)))
                 .collect(Collectors.toList());
     }
 
@@ -282,7 +283,9 @@ public class GroupPTRepository {
     @SuppressWarnings("unchecked")
     private List<Object> readListFromFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
-            return (List<Object>) ois.readObject();
+            List<Object> res = (List<Object>) ois.readObject();
+            System.out.println("TEST-REPO: read " + res);
+            return new ArrayList<>(res);
         } catch (ClassNotFoundException | IOException e) {
             return new ArrayList<>();
         } catch (ClassCastException e) {
@@ -292,6 +295,7 @@ public class GroupPTRepository {
 
     private void writeListToFile(String fileName, List<?> object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
+            System.out.println("TEST-REPO: wrote " + object);
             oos.writeObject(object);
         } catch (IOException e) {
             throw new RuntimeException(e);
