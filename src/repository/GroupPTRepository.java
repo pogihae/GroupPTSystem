@@ -283,7 +283,9 @@ public class GroupPTRepository {
     @SuppressWarnings("unchecked")
     private List<Object> readListFromFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
-            return (List<Object>) ois.readObject();
+            List<Object> res = (List<Object>) ois.readObject();
+            System.out.println(res);
+            return res;
         } catch (ClassNotFoundException | IOException e) {
             return new ArrayList<>();
         } catch (ClassCastException e) {
@@ -293,6 +295,7 @@ public class GroupPTRepository {
 
     private void writeListToFile(String fileName, List<?> object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
+            System.out.println("TEST-REPO: wrote " + object);
             oos.writeObject(object);
         } catch (IOException e) {
             throw new RuntimeException(e);
