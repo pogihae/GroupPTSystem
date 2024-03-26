@@ -1,5 +1,6 @@
 package model;
 
+import lombok.Data;
 import repository.GroupPTRepository;
 import util.Utils;
 
@@ -11,23 +12,24 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@Data
 public class Member extends User {
     transient Scanner sc = new Scanner(System.in);
     transient GroupPTRepository repository = GroupPTRepository.getInstance();
     int remainSessionCount;//남은수업횟수 //유효날짜가 지나면 member의 remain횟수를 0으로 만들기
-    Payment payment;//결제 객체
-    LocalDate paymentTime;
-    Payment.PaymentOption selectedOption;
+    Payment payment;//결제 객체 => (paymentTime, memberPhoneNumber, paymentOption)
+    //payment 의 paymentOption에 PaymentOption(sessions, validDays, price)
+//    LocalDate paymentTime;
+//    Payment.PaymentOption selectedOption;
 
     public Member(User user) {//회원가입신청할 때 생성
         super(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw(), user.getRole());
-        this.remainSessionCount = 0; // 예시로 0으로 설정
+        this.remainSessionCount = 0;
         this.payment = null; // 초기값으로 null 설정
-        this.paymentTime = null; // 현재 날짜로 초기화, 필요에 따라 다른 값을 사용할 수 있음
-        this.selectedOption = null; // 초기값으로 null 설정
     }
     //수업결제
     public void payForClass(){
+        Payment.PaymentOption selectedOption = null;
         System.out.println("결제 단위를 선택해주세요");
         System.out.println("1. 10회 - 90일 - 총가격 ₩700,000");
         System.out.println("2. 20회 - 120일 - 총가격 ₩1,200,000");
@@ -49,14 +51,17 @@ public class Member extends User {
                 System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
                 return; // 메소드 종료
         }
-        this.payment = new Payment(LocalDate.now(), this.getPhoneNumber(),this.selectedOption);
-        System.out.println(choice+"번 옵션, "+selectedOption.getPrice()+"원 결제가 완료되었습니다");
+        this.payment = new Payment(LocalDate.now(), this.getPhoneNumber(), selectedOption);
+        System.out.println(this.payment);
         this.remainSessionCount += selectedOption.getSessions();
         //payment 객체를 "결제" 파일에 저장하는 작업
         repository.savePayment(this.payment);
         //회원 파일도 업데이트
         //updateMember
+        this.update(this);
+        repository.updateMember(this);
         //노쇼 1회 시 재등록(결제) 불가능하다
+        System.out.println(choice+"번 옵션, "+selectedOption.getPrice()+"원 결제가 완료되었습니다");
     }
     //수업예약
     public void reserveClass(){
@@ -256,14 +261,16 @@ public class Member extends User {
         public List<Reservation> findAllReservations(){
          return repository.findAllReservations();
         }
-
+    public void printMyPayment(){
+        System.out.println(repository.findPaymentByPhoneNumber(this.getPhoneNumber()));
+    }
 
     public void update(Member member) {
         super.update(member);
         this.remainSessionCount = member.remainSessionCount;
         this.payment = member.payment;
-        this.paymentTime = member.paymentTime;
-        this.selectedOption = member.selectedOption;
+//        this.paymentTime = member.paymentTime;
+//        this.selectedOption = member.selectedOption;
     }
 
 }//Member class END

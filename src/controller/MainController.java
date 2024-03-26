@@ -8,6 +8,7 @@ import repository.GroupPTRepository;
 import service.UserService;
 import util.Utils;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MainController {
@@ -34,16 +35,21 @@ public class MainController {
 //            trainerController.checkAttendances(trainer);
 //        }
 
-        User user1 = new User();
+        User user1 = UserService.loginedUser;
         Member member1 = new Member(user1);
 //        userController.consult();
 //        userController.checkMyReservation();
-        member1.payForClass();
+//        member1.payForClass();
+        member1.printMyPayment();
         member1.reserveClass();
         member1.reserveClass();
-        member1.reserveClass();
+        List<Reservation> allreservations = member1.findAllReservations();
+        for (Reservation reservation : allreservations) {
+            System.out.println("전체예약내역 출력중: "+reservation.toString());
+        }
+        System.out.println();
         Reservation reservationToUpdate = member1.displayReservationInfo();
-        System.out.println(reservationToUpdate.toString());
+        System.out.println("이게 선택한 예약임: "+reservationToUpdate.toString());
         Scanner sc = new Scanner(System.in);
         int index = sc.nextInt();
         switch (index){
