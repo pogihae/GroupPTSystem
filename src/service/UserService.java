@@ -64,10 +64,10 @@ public class UserService {
         return list;
     }
 
-//    public Reservation checkMyReservation(String phoneNumber){
-//        List<Reservation> list = repository.findReservationsByPhone(phoneNumber);
-//        return (list.isEmpty())? null : list.getFirst();
-//    }
+    public Reservation checkMyReservation(String phoneNumber){
+        List<Reservation> list = repository.findReservationsByPhone(phoneNumber);
+        return (list.isEmpty())? null : list.get(0);
+    }
 
     public void cancelReservation(){
 

@@ -13,10 +13,10 @@ import java.util.Scanner;
 public class MainController {
     public void run() {
         final UserController userController = new UserController();
-        Trainer trainer = new Trainer("sample", "123", 12, "m", "id", "pw", User.Role.TRAINER);
-        trainer.setLessonDays(new Utils.Day[]{Utils.Day.FRI, Utils.Day.MON});
-        GroupPTRepository.getInstance().saveTrainer(trainer);
-        //userController.signUp();
+//        Trainer trainer = new Trainer("sample", "123", 12, "m", "id", "pw", User.Role.TRAINER);
+//        trainer.setLessonDays(new Utils.Day[]{Utils.Day.FRI, Utils.Day.MON});
+//        GroupPTRepository.getInstance().saveTrainer(trainer);
+//        userController.signUp();
         userController.login();
 
 //        TrainerController trainerController = new TrainerController();
@@ -35,7 +35,10 @@ public class MainController {
 //        userController.checkMyReservation();
         member1.payForClass();
         member1.reserveClass();
+        member1.reserveClass();
+        member1.reserveClass();
         Reservation reservationToUpdate = member1.displayReservationInfo();
+        System.out.println(reservationToUpdate.toString());
         Scanner sc = new Scanner(System.in);
         int index = sc.nextInt();
         switch (index){

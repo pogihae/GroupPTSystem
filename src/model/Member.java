@@ -54,6 +54,8 @@ public class Member extends User {
         this.remainSessionCount += selectedOption.getSessions();
         //payment 객체를 "결제" 파일에 저장하는 작업
         repository.savePayment(this.payment);
+        //회원 파일도 업데이트
+        //updateMember
         //노쇼 1회 시 재등록(결제) 불가능하다
     }
     //수업예약
@@ -100,7 +102,7 @@ public class Member extends User {
         Map<Integer, LocalDateTime> slotIndexToDateTimeMap = new HashMap<>();
         int slotIndex = 1;
 
-        for (LocalDate date = today.plusDays(1); date.isBefore(endDay); date = date.plusDays(1)) {
+        for (LocalDate date = today.plusDays(1); !date.isAfter(endDay); date = date.plusDays(1)) {
 
             if (workDays.contains(Utils.getDay(date.atStartOfDay()))) {
                 System.out.println(date + "의 예약 가능한 시간:");
