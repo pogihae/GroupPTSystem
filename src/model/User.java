@@ -1,16 +1,14 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Data
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@ToString
 public class User implements Serializable {
 
     //상담신청한 유저일경우
@@ -26,7 +24,10 @@ public class User implements Serializable {
     }
 
     public User(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
-        this(name, phoneNumber,age,sex,id,pw,role, State.NONMEMBER);
+        this(name, phoneNumber,age,sex,id,pw,role, State.PENDING);
+        if (role.equals(Role.ADMIN)) {
+            this.state = State.APPROVED;
+        }
     }
 
     public enum Role {
@@ -60,5 +61,16 @@ public class User implements Serializable {
         this.pw = user.pw;
         this.role = user.role;
         this.state = user.state;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User other) {
+            if (this.id == null || other.id == null) {
+                return this.phoneNumber.equals(((User) obj).getPhoneNumber());
+            }
+            return this.id.equals(other.id);
+        }
+        return false;
     }
 }

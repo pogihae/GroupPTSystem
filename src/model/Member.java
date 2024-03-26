@@ -14,9 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Getter
-@Setter
-@ToString
+@Data
 public class Member extends User {
     int remainSessionCount;//남은수업횟수 //유효날짜가 지나면 member의 remain횟수를 0으로 만들기
     Payment payment;//결제 객체 => (paymentTime, memberPhoneNumber, paymentOption)

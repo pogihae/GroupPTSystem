@@ -1,9 +1,6 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import util.Utils;
 
 import java.io.Serializable;
@@ -14,17 +11,18 @@ import java.util.List;
 @Setter
 @ToString
 @AllArgsConstructor
-public class Trainer extends User implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Trainer extends User {
     private static final int MAX_LESSON_DAY = 3;
 
-    public Trainer(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
-        super(name, phoneNumber, age, sex, id, pw, role);
+    public Trainer(String name, String phoneNumber, int age, String sex, String id, String pw) {
+        super(name, phoneNumber, age, sex, id, pw, Role.TRAINER);
         this.grade = Grade.C;
         this.lessonDays = new ArrayList<>(MAX_LESSON_DAY);
     }
 
     public Trainer(User user) {
-        this(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw(), user.getRole());
+        this(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw());
     }
 
     @AllArgsConstructor
@@ -51,6 +49,7 @@ public class Trainer extends User implements Serializable {
     }
 
     public void update(Trainer trainer) {
+        super.update(trainer);
         this.grade = trainer.grade;
         this.lessonDays = trainer.lessonDays;
     }
