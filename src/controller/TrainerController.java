@@ -8,6 +8,7 @@ import service.UserService;
 import util.Utils;
 import view.TrainerView;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TrainerController {
@@ -36,7 +37,8 @@ public class TrainerController {
 
     public void setTrainerLessonDays(Trainer trainer) {
         Utils.Day[] lessonDays = view.requestLessonDays();
-        service.setLessonDays(trainer, lessonDays);
+//        System.out.println("test" + Arrays.toString(lessonDays));
+        System.out.println(service.setLessonDays(trainer, lessonDays));
     }
 
     public void checkTrainerIncome(Trainer trainer) {
@@ -47,6 +49,10 @@ public class TrainerController {
 
     public void checkAttendances(Trainer trainer) {
         Reservation reservation = service.findCurrentReservation(trainer);
+        if (reservation == null) {
+            System.out.println("수업 없음");
+            return;
+        }
         List<User> attendances = view.requestAttendance(reservation);
         service.addAttendants(reservation, attendances.toArray(new User[0]));
 

@@ -37,7 +37,11 @@ public class TrainerService {
     }
 
     public boolean setLessonDays(Trainer trainer, Utils.Day... days) {
-        return trainer.setLessonDays(days);
+        if (trainer.setLessonDays(days)) {
+            groupPTRepository.updateTrainer(trainer);
+            return true;
+        }
+        return false;
     }
 
     public void addAttendants(Reservation reservation, User[] users) {

@@ -3,6 +3,7 @@ package model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import util.Utils;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 public class Trainer extends User implements Serializable {
     private static final int MAX_LESSON_DAY = 3;
