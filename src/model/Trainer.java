@@ -6,6 +6,8 @@ import lombok.Setter;
 import util.Utils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +18,7 @@ public class Trainer extends User implements Serializable {
     public Trainer(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
         super(name, phoneNumber, age, sex, id, pw, role);
         this.grade = Grade.C;
-        this.lessonDays = null;
+        this.lessonDays = new ArrayList<>(MAX_LESSON_DAY);
     }
 
     public Trainer(User user) {
@@ -32,7 +34,7 @@ public class Trainer extends User implements Serializable {
 
     private User user;
     private Grade grade; //트레이너 등급
-    private Utils.Day[] lessonDays; //수업할 요일
+    private List<Utils.Day> lessonDays; //수업할 요일
   
     public int calculateIncome(int totalClassNum) {
         return totalClassNum * grade.incomePerClass;
@@ -42,11 +44,12 @@ public class Trainer extends User implements Serializable {
         if (days.length > MAX_LESSON_DAY) {
             return false;
         }
-        lessonDays = days;
+        lessonDays = List.of(days);
         return true;
     }
 
     public void update(Trainer trainer) {
-        //update all prop by setter
+        this.grade = trainer.grade;
+        this.lessonDays = trainer.lessonDays;
     }
 }
