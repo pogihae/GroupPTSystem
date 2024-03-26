@@ -105,10 +105,25 @@ public class GroupPTRepository {
      * 모든 멤버 목록을 불러올 수 있다.
      * @return 모든 멤버 목록
      * */
-    @SuppressWarnings("unchecked")
     public List<Member> findAllMembers() {
-        List<Member> res = (List<Member>) readFile(MEMBER_FILE);
-        return (res == null)? new ArrayList<>() : res;
+        return readListFromFile(MEMBER_FILE).stream()
+                .map(obj -> (Member) obj)
+                .toList();
+    }
+
+    /**
+     * 멤버를 수정할 수 있다.
+     * @param member 수정할 멤버
+     * */
+    public void updateMember(Member member) {
+        List<Member> members = findAllMembers();
+        members.stream()
+                .filter(t -> t.getPhoneNumber().equals(member.getPhoneNumber()))
+                .findFirst()
+                .ifPresent(org -> {
+                    org.update(member);
+                    writeListToFile(MEMBER_FILE, members);
+                });
     }
 
     /*-----------트레이너 기능-----------*/
@@ -132,7 +147,7 @@ public class GroupPTRepository {
                 .findFirst()
                 .ifPresent(org -> {
                     org.update(trainer);
-                    writeFile(TRAINER_FILE, trainers);
+                    writeListToFile(TRAINER_FILE, trainers);
                 });
     }
 
@@ -140,10 +155,10 @@ public class GroupPTRepository {
      * 모든 트레이너 목록을 불러올 수 있다.
      * @return 모든 트레이너 목록
      * */
-    @SuppressWarnings("unchecked")
     public List<Trainer> findAllTrainers() {
-        List<Trainer> res = (List<Trainer>) readFile(TRAINER_FILE);
-        return (res == null)? new ArrayList<>() : res;
+        return readListFromFile(TRAINER_FILE).stream()
+                .map(obj -> (Trainer) obj)
+                .toList();
     }
 
     /*-----------예약 기능-----------*/
@@ -153,13 +168,10 @@ public class GroupPTRepository {
      * 예약 정보 속 유저 정보들은 최신 정보로 업데이트 된다. (join)
      * @return 모든 예약 목록
      * */
-    @SuppressWarnings("unchecked")
     public List<Reservation> findAllReservations() {
-        List<Reservation> reservations = (List<Reservation>) readFile(RESERVATION_FILE);
-
-        if (reservations == null) {
-            reservations = new ArrayList<>();
-        }
+        List<Reservation> reservations = readListFromFile(RESERVATION_FILE).stream()
+                .map(obj -> (Reservation) obj)
+                .toList();
 
         reservations.forEach(r -> {
             List<User> mUsers = r.getUsers();
@@ -193,7 +205,7 @@ public class GroupPTRepository {
                 .findFirst()
                 .ifPresent(r -> {
                     r.update(reservation);
-                    writeFile(RESERVATION_FILE, reservations);
+                    writeListToFile(RESERVATION_FILE, reservations);
                 });
     }
 
@@ -204,7 +216,7 @@ public class GroupPTRepository {
     public void deleteReservation(Reservation reservation) {
         List<Reservation> reservations = findAllReservations();
         reservations.remove(reservation);
-        writeFile(RESERVATION_FILE, reservation);
+        writeListToFile(RESERVATION_FILE, reservations);
     }
 
     /**
@@ -222,10 +234,8 @@ public class GroupPTRepository {
      * @return 유저의 예약 목록
      * */
     public List<Reservation> findReservationsByPhone(String phone) {
-        final User user = findUserByPhone(phone);
-        System.out.println(user);
         return findAllReservations().stream()
-                .filter(r -> r.isReservedUser(user))
+                .filter(r -> r.getUsers().stream().anyMatch(u -> u.getPhoneNumber().equals(phone)))
                 .collect(Collectors.toList());
     }
 
@@ -257,38 +267,34 @@ public class GroupPTRepository {
         return null; // 해당하는 결제 정보가 없을 경우 null 반환
     }
 
-    @SuppressWarnings("unchecked")
     public List<Payment> findAllPayments() {
-        List<Payment> res = (List<Payment>) readFile(PAYMENT_FILE);
-        if (res == null) {
-            res = new ArrayList<>();
-        }
-        return res;
+        return readListFromFile(PAYMENT_FILE).stream()
+                .map(obj -> (Payment) obj)
+                .toList();
+    }
+
+    private void addObjectToFile(String fileName, Object object) {
+        List<Object> objects = readListFromFile(fileName);
+        objects.add(object);
+        writeListToFile(fileName, objects);
     }
 
     @SuppressWarnings("unchecked")
-    private void addObjectToFile(String fileName, Object object) {
-        List<Object> objects = (List<Object>) readFile(fileName);
-        if (objects == null) {
-            objects = new ArrayList<>();
-        }
-        objects.add(object);
-        writeFile(fileName, objects);
-    }
-
-    private Object readFile(String fileName) {
+    private List<Object> readListFromFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
-            return ois.readObject();
-        } catch (ClassNotFoundException | IOException e2) {
-            return null;
+            return (List<Object>) ois.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            return new ArrayList<>();
+        } catch (ClassCastException e) {
+            throw new IllegalStateException("파일 저장 잘못됨");
         }
     }
 
-    private void writeFile(String fileName, Object object) {
+    private void writeListToFile(String fileName, List<?> object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
             oos.writeObject(object);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
