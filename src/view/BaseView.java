@@ -8,8 +8,16 @@ import java.util.*;
 public abstract class BaseView {
     private static final Scanner scanner = new Scanner(System.in);
 
+    public void print(String line) {
+        System.out.print(line);
+    }
+
     public String readLine() {
         return scanner.nextLine().trim();
+    }
+
+    public int readInt() {
+        return Integer.parseInt(scanner.nextLine());
     }
 
     public List<String> readLineBySeparate(String opt) {
@@ -72,7 +80,9 @@ public abstract class BaseView {
             sb.append("*********%s(%d)*********\n".formatted(day.name(), date));
 
             for (Reservation reservation : dayReservations) {
-                sb.append(reservation.toString()).append('\n');
+                sb.append("날짜 / 시간 : ").append(reservation.getStartDate()).append("\t");
+                sb.append("트레이너: ").append(reservation.getManager()).append("\t");
+                sb.append("예약 인원 수: ").append(reservation.getUsers().size());
             }
         }
         sb.append("************************");
