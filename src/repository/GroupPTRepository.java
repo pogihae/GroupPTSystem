@@ -121,7 +121,7 @@ public class GroupPTRepository {
                 .findFirst()
                 .ifPresent(org -> {
                     org.update(member);
-                    writeListToFile(TRAINER_FILE, members);
+                    writeListToFile(MEMBER_FILE, members);
                 });
     }
 
