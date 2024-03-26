@@ -237,7 +237,7 @@ public class GroupPTRepository {
     public List<Reservation> findReservationsByPhone(String phone) {
         return findAllReservations().stream()
                 .filter(r -> r.getUsers().stream().anyMatch(u -> u.getPhoneNumber().equals(phone)))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
