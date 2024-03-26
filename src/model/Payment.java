@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 public class Payment implements Serializable {
     //결제를 하면 결제시각, 멤버의 pk, 결제타입을 저장
-    private LocalDate paymentTime;//결제 시각(yyyy-MM-dd)
+    private LocalDate paymentTime;//결제 일자(yyyy-MM-dd)
     private String memberPhoneNumber;//멤버
     private PaymentOption paymentOption;//결제 타입
 

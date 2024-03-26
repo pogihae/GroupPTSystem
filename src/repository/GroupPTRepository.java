@@ -212,10 +212,27 @@ public class GroupPTRepository {
      * @param phone 찾을 유저의 핸드폰 번호
      * @return 유저의 예약 목록
      * */
+//    public List<Reservation> findReservationsByPhone(String phone) {
+//        return findAllReservations().stream()
+//                .filter(reservation ->
+//                        reservation.getUsers().stream()
+//                                .anyMatch(u -> u.getPhoneNumber().equals(phone))
+//                )
+//                .collect(Collectors.toList());
+//    }
+    //User의 예약목록을 번호로 찾기
+    public List<Reservation> findReservationsOfUserByPhone(String phone) {
+        return findAllReservations().stream()
+                .filter(r -> {
+                    return r.getUsers().stream()
+                            .anyMatch(u -> u.getPhoneNumber().equals(phone));
+                }).toList();
+    }
+    //트레이너의 예약목록을 번호로 찾기
     public List<Reservation> findReservationsByPhone(String phone) {
         return findAllReservations().stream()
                 .filter(reservation ->
-                    reservation.getManager().getPhoneNumber().equals(phone)
+                        reservation.getManager().getPhoneNumber().equals(phone)
                 )
                 .collect(Collectors.toList());
     }
