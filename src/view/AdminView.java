@@ -79,7 +79,11 @@ public class AdminView extends BaseView{
         int remainingCount = member.getRemainSessionCount();
         int reservationCount = reservations.size();
 
-        System.out.println(" 총 결제 횟수 : " + totalPaymentCount + "회 / 남은 회수 : " + remainingCount + "회 / 예약된 횟수 : " + reservationCount + "회 / 노쇼 : " + noShowCount + "회");
+        System.out.println(" 총 결제 횟수 : " + totalPaymentCount + "회 /" +
+                "남은 회수 : " + remainingCount + "회 /" +
+                "예약된 횟수 : " + reservationCount + "회 /" +
+                "축석 : " + totalAttendanceCount + "회 /" +
+                "노쇼 : " + noShowCount + "회");
     }
 
     public void printMemberAbstractInfo(Member member) {
@@ -157,10 +161,7 @@ public class AdminView extends BaseView{
                 System.out.println("--------------------------------");
             }
         }
-        System.out.println("상담 예약 정보를 확인할 비회원의 인덱스를 입력하세요 (1부터 시작):");
     }
-
-
 
     //메뉴 4번(트레이너 목록)을 선택했을 경우
     public void viewTrainerList(List<Trainer> trainers){
@@ -188,12 +189,12 @@ public class AdminView extends BaseView{
 
     }
 
-    public void printReservationDetails(Reservation reservation) {
-        System.out.print("날짜 / 시간 : " + reservation.getStartDate() + "\t");
-        System.out.print("트레이너: " + reservation.getManager() + "\t");
-        System.out.println("예약 인원 수: " + reservation.getUsers().size());
-        System.out.println("-------------------------------------------------");
-    }
+//    public void printReservationDetails(Reservation reservation) {
+//        System.out.print("날짜 / 시간 : " + reservation.getStartDate() + "\t");
+//        System.out.print("트레이너: " + reservation.getManager() + "\t");
+//        System.out.println("예약 인원 수: " + reservation.getUsers().size());
+//        System.out.println("-------------------------------------------------");
+//    }
 
     public void printNoClassSchedule(){
         System.out.println("\"예정된 수업이 없습니다.\"\n");
