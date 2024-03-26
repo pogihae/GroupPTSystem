@@ -12,12 +12,22 @@ public abstract class BaseView {
         System.out.print(line);
     }
 
+    public void println(String line) {
+        System.out.println(line);
+    }
+
     public String readLine() {
         return scanner.nextLine().trim();
     }
 
     public int readInt() {
         return Integer.parseInt(scanner.nextLine());
+    }
+
+    public boolean confirmAction(String message) {
+        System.out.println(message + " (Y/N)");
+        String input = scanner.nextLine().trim().toLowerCase();
+        return input.equals("y");
     }
 
     public List<String> readLineBySeparate(String opt) {
@@ -32,8 +42,10 @@ public abstract class BaseView {
     }
 
     private String formatMenu(String... menus) {
+        //변경가능한 문자열
         StringBuilder sb = new StringBuilder();
         sb.append("*******************\n");
+        sb.append("메뉴를 선택하세요.");
         for (int i=0; i< menus.length; i++) {
             sb.append("%d. %s\n".formatted(i+1, menus[i]));
         }
@@ -89,4 +101,6 @@ public abstract class BaseView {
 
         System.out.println(sb);
     }
+
+
 }
