@@ -74,7 +74,4 @@ public class UserService {
         repository.deleteReservation(reservation);
     }
 
-    public void saveUser(User user) {
-        repository.saveMember(user);
-    }
 }

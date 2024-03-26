@@ -103,6 +103,7 @@ public class UserController {
         }
 
         List<Reservation> trainerSchedule = userService.findReservationsByTrainer(trainer);
+        System.out.println("TEST:"+trainerSchedule);
         Reservation schedule;
         for(int i = 0;i<trainerSchedule.size();i++){
             schedule = trainerSchedule.get(i);
@@ -122,7 +123,6 @@ public class UserController {
 
         User user = new User(name,phoneNumber);
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
-        userService.saveUser(user);
         userService.saveReservation(user,newReservation);
         view.showResult("예약이");
 
