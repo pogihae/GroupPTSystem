@@ -285,8 +285,8 @@ public class GroupPTRepository {
     private List<Object> readListFromFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
             List<Object> res = (List<Object>) ois.readObject();
-            System.out.println(res);
-            return res;
+            System.out.println("TEST-REPO: read " + res);
+            return new ArrayList<>(res);
         } catch (ClassNotFoundException | IOException e) {
             return new ArrayList<>();
         } catch (ClassCastException e) {
