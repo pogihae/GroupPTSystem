@@ -1,8 +1,10 @@
 package view;
 
 import model.Reservation;
+import model.User;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +21,15 @@ public class UserView {
         System.out.println("*************************************************");
         System.out.println("형식에 맞는 양식을 작성해 주세요.");
         System.out.println("*************************************************");
+    }
+
+    public void printLoginFailed() {
+        System.out.println("로그인 실패");
+    }
+
+    public void printLoginSuccess(User user) {
+        System.out.println("로그인 성공");
+        System.out.println(user);
     }
 
     public void requestName() {
@@ -71,6 +82,7 @@ public class UserView {
     }
     public void trainersListMenu() {
         System.out.println("*************************************************");
+        System.out.println("원하시는 트레이너의 번호를 입력하세요.:");
     }
 
     /*
@@ -81,22 +93,32 @@ public class UserView {
     ####################
     */
     public void showAvailableTime(List<LocalDateTime> availableTime){
-        for (int i = 0; i < availableTime.size(); i++) {
-            int startHour = availableTime.get(i).getHour();
-            int endHour = (startHour + 1) % 24;
-            int nextIndex = (i + 1) % availableTime.size();
+        if (availableTime.isEmpty()) {
+            System.out.println("No available time slots.");
+            return;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, E - HH:mm");
 
-            System.out.print("(" + (i + 1) + ")" + startHour + "~" + endHour + " ");
-            //한줄에 세로로 3개씩 출력
-            if (nextIndex == 0 && i != availableTime.size() - 1) {
-                System.out.println();
-            }
+        for (int i = 0; i < availableTime.size(); i++) {
+            LocalDateTime dateTime = availableTime.get(i);
+            System.out.println((i+1) + ". " + dateTime.format(formatter));
         }
 
-        System.out.println("\n####################");
+        System.out.println("--------------------------------------------");
     }
 
+
+
+
     public void showCheckMyReservation(){
+        System.out.println("*************************************************");
+        System.out.println("예약하신 전화번호를 입력해주세요: ");
+    }
+    public void printReservation(Reservation reservation){
+        System.out.println(reservation);
+    }
+
+    public void showMyReservation(User user) {
 
     }
 
@@ -107,4 +129,6 @@ public class UserView {
     public void showCancelReservation(){
 
     }
+
+
 }

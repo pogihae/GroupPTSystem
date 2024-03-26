@@ -6,6 +6,7 @@ import model.User;
 import repository.GroupPTRepository;
 import util.Utils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TrainerService {
@@ -25,11 +26,25 @@ public class TrainerService {
         return groupPTRepository.findReservationsByTrainer(trainer);
     }
 
-    public boolean setLessonDays(Trainer trainer, Utils.Day... days) {
-        return trainer.setLessonDays(days);
+    public Reservation findCurrentReservation(Trainer trainer) {
+        LocalDateTime now = Utils.getCurrentTime();
+
+        return groupPTRepository.findReservationsByTrainer(trainer).stream()
+                .filter(r -> Utils.getYear(r.getStartDate()) == now.getYear())
+                .filter(r -> Utils.getMonth(r.getStartDate()) == now.getMonth().getValue())
+                .filter(r -> Utils.getDate(r.getStartDate()) == now.getDayOfMonth())
+                .findFirst().orElse(null);
     }
 
-    public void addAttendants(Reservation reservation, User... users) {
+    public boolean setLessonDays(Trainer trainer, Utils.Day... days) {
+        if (trainer.setLessonDays(days)) {
+            groupPTRepository.updateTrainer(trainer);
+            return true;
+        }
+        return false;
+    }
+
+    public void addAttendants(Reservation reservation, User[] users) {
         reservation.addAttendants(users);
     }
 

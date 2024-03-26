@@ -88,8 +88,7 @@ public class Member extends User {
                 .toList();
 
         // 트레이너의 근무 요일 배열을 DayOfWeek 타입의 리스트로 변환
-        List<Utils.Day> workDays = Arrays.stream(selectedTrainer.getLessonDays())
-                .toList();
+        List<Utils.Day> workDays = selectedTrainer.getLessonDays();
 
         // 예약 가능한 시간대 목록 생성
         LocalDate today = LocalDate.now();

@@ -21,11 +21,17 @@ public class UserService {
 
     private GroupPTRepository repository = GroupPTRepository.getInstance();
 
-    public void login(User user) {
+    public boolean login(String id, String pw) {
         if (loginedUser != null) {
             throw new IllegalStateException("이미 로그인한 유저가 존재합니다.");
         }
+
+        User user = repository.findUserById(id);
+        if (user == null || !user.getPw().equals(pw)) {
+            return false;
+        }
         loginedUser = user;
+        return true;
     }
 
     public void signUp(User user) {
@@ -49,16 +55,18 @@ public class UserService {
     public void chooseAvailableTime(){
 
     }
-    public void saveReservation(User user){
-        //addUser(user);
+    public void saveReservation(User user,Reservation reservation){
+        reservation.addUser(user);
+        repository.saveReservation(reservation);
     }
     public List<Reservation> findAllReservations(){
         List<Reservation> list = repository.findAllReservations();
         return list;
     }
 
-    public void changeReservation(){
-
+    public Reservation checkMyReservation(String phoneNumber){
+        List<Reservation> list = repository.findReservationsByPhone(phoneNumber);
+        return (list.isEmpty())? null : list.getFirst();
     }
 
     public void cancelReservation(){

@@ -1,6 +1,7 @@
 package view;
 
 import model.Reservation;
+import model.Trainer;
 import model.User;
 import util.Utils;
 
@@ -29,9 +30,10 @@ public class TrainerView extends BaseView {
     public Utils.Day[] requestLessonDays(){
         System.out.println("원하는 요일을 선택하세요 (,로 구분): ");
         System.out.println(Arrays.toString(Utils.Day.values()));
-        return  (Utils.Day[]) Arrays.stream(readLine().split(","))
-                .map(Utils.Day::valueOf)
-                .toArray();
+        return Arrays.stream(readLine().split(","))
+                .map(String::trim)
+                .map(Utils.Day::of)
+                .toArray(Utils.Day[]::new);
     }
 
     //메뉴 3번(회원 출석체크)을 선택했을 경우
@@ -43,8 +45,8 @@ public class TrainerView extends BaseView {
         sb.append("********출석 명단********\n");
 
         List<User> users = reservation.getUsers();
-        for (int i=0; i<users.size(); i++) {
-            sb.append("%d. %s\n".formatted(i+1, users.get(i)));
+        for (int i = 0; i < users.size(); i++) {
+            sb.append("%d. %s\n".formatted(i + 1, users.get(i)));
         }
 
         sb.append("출석한 회원들을 입력(,로 구분): ");
@@ -55,38 +57,33 @@ public class TrainerView extends BaseView {
                 .mapToObj(users::get)
                 .toList();
     }
-    void checkAttendance(){
-        //해당 시각을 기준으로 출석해야할 회원의 목록이 출력됨
-        System.out.println("이름 옆에 O 또는 X를 입력해주세요");
-        //회원의 이름이 하나씩 출력되고 O,X만 입력해서 출석체크
-        displayBasicMenuForTrainer();
 
+    public void printIncome(Trainer trainer, int income, int year, int month) {
+        System.out.println("""
+                %s님의 %d년 %d월 수입은
+                %d원 입니다.
+                """.formatted(trainer.getName(), year, month, income).trim());
     }
 
-    //미성년자 출석체크일 경우 __ 이거는 여기서 말고 다른데서 구현해도 될덧?
-    void sendMinorAttendanceMessage(){
-        System.out.println("출석하였습니다.");
+    public int[] requestIncomeYearAndMonth() {
+        System.out.print("확인하고 싶은 연도를 입력해주세요: ");
+        int year = Integer.parseInt(readLine());
+        System.out.print("확인하고 싶은 달을 입력해주세요: ");
+        int month = Integer.parseInt(readLine());
+
+        return new int[] {year, month};
     }
 
-
-    //메뉴 4번(수입 확인)을 선택했을 경우
-    void checkMyIncome(){
-        //현재 수입 & 누적 수입이 출력됨
-        displayBasicMenuForTrainer();
+    public void printMinorUserAttendance(boolean attempt, User user) {
+        if (attempt) {
+            System.out.println("미성년자 출석했습니다.");
+        } else {
+            System.out.println("미성년자 결석");
+        }
+        System.out.println(user);
     }
 
     public void printTimeTable(List<Reservation> reservations) {
         System.out.println(reservations);
     }
-
-    void displayBasicMenuForTrainer(){
-        System.out.println("0. 트레이너 메뉴로 돌아가기");
-        System.out.println("*. 로그인 화면으로 돌아가기");
-        System.out.println("************************************************");
-        System.out.print("원하는 메뉴를 선택하세요.");
-
-    }
-
-
-
 }
