@@ -117,7 +117,7 @@ public class UserController {
         String choice = sc.nextLine();
         //이름, 번호를 받아 User 객체를 생성한다.
 
-        Reservation newReservation = new Reservation(trainer,availableTime.get(Integer.parseInt(choice)));
+        Reservation newReservation = new Reservation(trainer,availableTime.get(Integer.parseInt(choice)-1));
         view.requestName();
         String name = sc.nextLine();
         view.requestPhoneNumber();
