@@ -31,7 +31,7 @@ public class AdminService {
     }
 
     //관리자가 승인한 목록들의 role nonmember에서 member로 바꿔주기
-    public void approveMembers(List<User> users) {
+    public void approveUsers(List<User> users) {
         for (User user : users) {
             user.setState(User.State.APPROVED);
 
@@ -175,20 +175,16 @@ public class AdminService {
 
 
     //트레이너 수입 확인
-    public void getTrainerDetails(Trainer trainer) {
-        LocalDate currentDate = LocalDate.now();
-        int currentMonth = currentDate.getMonthValue();
-        int currentYear = currentDate.getYear();
-//        List<Trainer> trainers = groupPTRepository.findAllTrainers();
+    public List<String> getTrainerDetails(Trainer trainer, int year) {
 
-        for (int year = 2023; year <= currentYear; year++) {
-            int startMonth = (year == 2023) ? 12 : 1;
-            int endMonth = (year == currentYear) ? currentMonth : 12;
-            for (int month = startMonth; month <= endMonth; month++) {
-                int monthlyIncome = trainerService.calculateIncome(trainer, month, year);
-                System.out.println(year + "년 " + month + "월  " + monthlyIncome + "원");
-            }
+        List<String> res = new ArrayList<>();
+
+        for (int month=1; month<=12; month++) {
+            int monthIncome = trainerService.calculateIncome(trainer, month, year);
+            res.add(year + "년 " + month + "월  " + monthIncome + "원");
         }
+
+        return res;
     }
 
 
