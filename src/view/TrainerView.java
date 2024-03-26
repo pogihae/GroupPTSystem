@@ -74,11 +74,6 @@ public class TrainerView extends BaseView {
         return new int[] {year, month};
     }
 
-    //미성년자 출석체크일 경우 __ 이거는 여기서 말고 다른데서 구현해도 될덧?
-    void sendMinorAttendanceMessage(){
-        System.out.println("출석하였습니다.");
-    }
-
     public void printMinorUserAttendance(boolean attempt, User user) {
         if (attempt) {
             System.out.println("미성년자 출석했습니다.");
@@ -88,25 +83,7 @@ public class TrainerView extends BaseView {
         System.out.println(user);
     }
 
-
-    //메뉴 4번(수입 확인)을 선택했을 경우
-    void checkMyIncome(){
-        //현재 수입 & 누적 수입이 출력됨
-        displayBasicMenuForTrainer();
-    }
-
     public void printTimeTable(List<Reservation> reservations) {
         System.out.println(reservations);
     }
-
-    void displayBasicMenuForTrainer(){
-        System.out.println("0. 트레이너 메뉴로 돌아가기");
-        System.out.println("*. 로그인 화면으로 돌아가기");
-        System.out.println("************************************************");
-        System.out.print("원하는 메뉴를 선택하세요.");
-
-    }
-
-
-
 }

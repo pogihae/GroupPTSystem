@@ -127,13 +127,13 @@ public class GroupPTRepository {
      * */
     public void updateTrainer(Trainer trainer) {
         List<Trainer> trainers = findAllTrainers();
-
-        findAllTrainers().stream()
+        trainers.stream()
                 .filter(t -> t.getPhoneNumber().equals(trainer.getPhoneNumber()))
                 .findFirst()
-                .ifPresentOrElse(org -> org.update(trainer), () -> System.out.println("트레이너 없다"));
-
-        writeFile(TRAINER_FILE, trainers);
+                .ifPresent(org -> {
+                    org.update(trainer);
+                    writeFile(TRAINER_FILE, trainers);
+                });
     }
 
     /**
@@ -186,10 +186,15 @@ public class GroupPTRepository {
      * @param reservation 수정할 예약 정보
      * */
     public void updateReservation(Reservation reservation) {
-        findAllReservations().stream()
+        List<Reservation> reservations = findAllReservations();
+
+        reservations.stream()
                 .filter(r -> r.getId().equals(reservation.getId()))
                 .findFirst()
-                .ifPresent(r -> r.update(reservation));
+                .ifPresent(r -> {
+                    r.update(reservation);
+                    writeFile(RESERVATION_FILE, reservations);
+                });
     }
 
     /**
@@ -217,12 +222,10 @@ public class GroupPTRepository {
      * @return 유저의 예약 목록
      * */
     public List<Reservation> findReservationsByPhone(String phone) {
+        final User user = findUserByPhone(phone);
         return findAllReservations().stream()
-                .filter(r -> {
-                    return r.getUsers().stream()
-                            .filter(u -> u.getPhoneNumber().equals(phone))
-                            .count() > 0;
-                }).toList();
+                .filter(r -> r.isReservedUser(user))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -252,7 +255,6 @@ public class GroupPTRepository {
         }
         return null; // 해당하는 결제 정보가 없을 경우 null 반환
     }
-
 
     @SuppressWarnings("unchecked")
     public List<Payment> findAllPayments() {
