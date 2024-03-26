@@ -4,6 +4,7 @@ import model.Reservation;
 import model.Trainer;
 import model.User;
 import service.TrainerService;
+import service.UserService;
 import util.Utils;
 import view.TrainerView;
 
@@ -13,8 +14,24 @@ public class TrainerController {
     private final TrainerService service = new TrainerService();
     private final TrainerView view = new TrainerView();
 
+    public void handleTrainerMenu() {
+        if (!UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
+            throw new IllegalStateException("트레이너로 로그인되어있지 않습니다,");
+        }
+
+        Trainer trainer = (Trainer) UserService.loginedUser;
+
+        String input = view.requestTrainerMenu();
+        switch (input) {
+            case "1" -> printTrainerTimeTable(trainer);
+            case "2" -> setTrainerLessonDays(trainer);
+            case "3" -> checkAttendances(trainer);
+            case "4" -> checkTrainerIncome(trainer);
+        }
+    }
+
     public void printTrainerTimeTable(Trainer trainer) {
-        view.printTimeTable(service.findReservationsByTrainer(trainer));
+        view.printTrainerReservations(service.findReservationsByTrainer(trainer));
     }
 
     public void setTrainerLessonDays(Trainer trainer) {
