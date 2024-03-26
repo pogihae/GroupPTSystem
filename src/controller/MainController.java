@@ -19,6 +19,11 @@ public class MainController {
 //        userController.signUp();
         userController.login();
 
+        TrainerController trainerController = new TrainerController();
+
+        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
+            trainerController.handleTrainerMenu();
+        }
 //        TrainerController trainerController = new TrainerController();
 //
 //        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {

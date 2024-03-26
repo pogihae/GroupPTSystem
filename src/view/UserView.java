@@ -118,17 +118,23 @@ public class UserView {
         System.out.println(reservation);
     }
 
-    public void showMyReservation(User user) {
-
+    public void myReservationMenu() {
+        System.out.println("*************************************************");
+        System.out.println("메뉴를 선택하세요.");
+        System.out.println("1.상담 변경, 2.상담 취소");
     }
 
     public void showChangeReservation(){
+        System.out.println("*************************************************");
 
     }
 
     public void showCancelReservation(){
+        System.out.println("*************************************************");
 
     }
 
-
+    public void showResult(String type){
+        System.out.println(type+" 완료 되었습니다.");
+    }
 }

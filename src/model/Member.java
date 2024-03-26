@@ -172,13 +172,6 @@ public class Member extends User {
         3. 선택지에 없는 메뉴를 선택할 경우 메뉴를 다시 출력한다.
          */
 
-
-    public static void main(String[] args) {
-        User user1 = new User();
-        Member member1 = new Member(user1);
-        member1.payForClass();
-        member1.reserveClass();
-    }
     //수업정보확인
     // 강사/ 시간/ 출석여부
     // 강사/ 시간/ 예약인원
@@ -264,5 +257,13 @@ public class Member extends User {
          return repository.findAllReservations();
         }
 
+
+    public void update(Member member) {
+        super.update(member);
+        this.remainSessionCount = member.remainSessionCount;
+        this.payment = member.payment;
+        this.paymentTime = member.paymentTime;
+        this.selectedOption = member.selectedOption;
+    }
 
 }//Member class END

@@ -117,7 +117,7 @@ public class UserController {
         String choice = sc.nextLine();
         //이름, 번호를 받아 User 객체를 생성한다.
 
-        Reservation newReservation = new Reservation(trainer,availableTime.get(Integer.parseInt(choice) - 1));
+        Reservation newReservation = new Reservation(trainer,availableTime.get(Integer.parseInt(choice)-1));
         view.requestName();
         String name = sc.nextLine();
         view.requestPhoneNumber();
@@ -126,6 +126,8 @@ public class UserController {
         User user = new User(name,phoneNumber);
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
         userService.saveReservation(user,newReservation);
+        view.showResult("예약이");
+
     }
 
     public void checkMyReservation(){
@@ -134,14 +136,23 @@ public class UserController {
         String phoneNumber = sc.nextLine();
         Reservation reservation = userService.checkMyReservation(phoneNumber);
         view.printReservation(reservation);
+        view.myReservationMenu();
+        String choice = sc.nextLine();
+        switch (choice){
+            case "1" -> changeReservation(reservation);
+            case "2" -> cancelReservation(reservation);
+        }
     }
 
-    public void changeReservation(){
-        List<Reservation> list = userService.findAllReservations();
+    public void changeReservation(Reservation reservation){
+        reserveConsultation();
+        userService.cancelReservation(reservation);
+        view.showResult("예약 변경");
     }
 
-    public void cancelReservation(){
-
+    public void cancelReservation(Reservation reservation){
+        userService.cancelReservation(reservation);
+        view.showResult("예약 취소");
     }
 }
 
