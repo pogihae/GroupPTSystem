@@ -233,9 +233,8 @@ public class GroupPTRepository {
      * @return 유저의 예약 목록
      * */
     public List<Reservation> findReservationsByPhone(String phone) {
-        final User user = findUserByPhone(phone);
         return findAllReservations().stream()
-                .filter(r -> r.isReservedUser(user))
+                .filter(r -> r.getUsers().stream().anyMatch(u -> u.getPhoneNumber().equals(phone)))
                 .collect(Collectors.toList());
     }
 
