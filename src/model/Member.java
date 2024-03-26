@@ -14,7 +14,12 @@ import java.util.*;
 
 @Data
 public class Member extends User {
-    transient Scanner sc = new Scanner(System.in);
+    transient Scanner sc = null;
+    private void initScanner() {
+        if (this.sc == null) {
+            this.sc = new Scanner(System.in);
+        }
+    }
     transient GroupPTRepository repository = GroupPTRepository.getInstance();
     int remainSessionCount;//남은수업횟수 //유효날짜가 지나면 member의 remain횟수를 0으로 만들기
     Payment payment;//결제 객체 => (paymentTime, memberPhoneNumber, paymentOption)
@@ -35,6 +40,7 @@ public class Member extends User {
         System.out.println("2. 20회 - 120일 - 총가격 ₩1,200,000");
         System.out.println("3. 30회 - 180일 - 회당 ₩1,500,000");
         System.out.print("번호 입력: ");
+        initScanner();
         int choice = sc.nextInt();
 
         switch (choice) {
@@ -82,6 +88,7 @@ public class Member extends User {
                     , trainer.getSex());
         }
         System.out.print("번호 입력: ");
+        initScanner();
         int choice = sc.nextInt();
 
         //+) 유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함

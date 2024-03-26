@@ -36,18 +36,18 @@ public class MainController {
 //        }
 
         User user1 = UserService.loginedUser;
-        Member member1 = new Member(user1);
+        Member member1 = (Member)user1;
 //        userController.consult();
 //        userController.checkMyReservation();
-//        member1.payForClass();
+        member1.payForClass();
         member1.printMyPayment();
+        System.out.println(member1.getRemainSessionCount());
         member1.reserveClass();
         member1.reserveClass();
-        List<Reservation> allreservations = member1.findAllReservations();
-        for (Reservation reservation : allreservations) {
-            System.out.println("전체예약내역 출력중: "+reservation.toString());
-        }
-        System.out.println();
+//        List<Reservation> allreservations = member1.findAllReservations();
+//        for (Reservation reservation : allreservations) {
+//            System.out.println("전체예약내역 출력중: "+reservation.toString());
+//        }
         Reservation reservationToUpdate = member1.displayReservationInfo();
         System.out.println("이게 선택한 예약임: "+reservationToUpdate.toString());
         Scanner sc = new Scanner(System.in);
