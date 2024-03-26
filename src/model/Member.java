@@ -34,6 +34,9 @@ public class Member extends User {
     }
     //수업결제
     public void payForClass(){
+        if (repository == null) {
+            repository =GroupPTRepository.getInstance();
+        }
         Payment.PaymentOption selectedOption = null;
         System.out.println("결제 단위를 선택해주세요");
         System.out.println("1. 10회 - 90일 - 총가격 ₩700,000");
@@ -71,6 +74,9 @@ public class Member extends User {
     }
     //수업예약
     public void reserveClass(){
+        if (repository == null) {
+            repository =GroupPTRepository.getInstance();
+        }
         //남은횟수 있는지 확인 후 => 있으면
         //1. 트레이너 선택메뉴 => 선택
         //2. 해당 트레이너의 수업 예약 가능한 시간 목록 출력 => 선택
@@ -191,6 +197,9 @@ public class Member extends User {
     // 예약한 수업을 변경 혹은 취소하고 싶다면 해당 번호를 입력하세요
     // 강사/ 시간 >> 해당 예약 변경은 1번, 해당 예약 취소는 2번을 입력하세요
     public Reservation displayReservationInfo() {
+        if (repository == null) {
+            repository =GroupPTRepository.getInstance();
+        }
         List<Reservation> reservationsByPhone = repository.findReservationsByPhone(this.getPhoneNumber());
         // 예약된 수업 목록 출력
         for (int i = 0; i < reservationsByPhone.size(); i++) {
@@ -217,6 +226,9 @@ public class Member extends User {
     }
     //잔여수업사용 가능 일수 구하기
     public int calculateDaysRemaining(){
+        if (repository == null) {
+            repository =GroupPTRepository.getInstance();
+        }
         if(this.payment!=null){
             LocalDate paymentdate = this.payment.getPaymentTime();
             int validDays = this.payment.getPaymentOption().getValidDays();
@@ -234,6 +246,9 @@ public class Member extends User {
     //수업예약 변경
     //당일예약변경 불가능하다
     public void updateClassReservation(Reservation reservationToUpdate){
+        if (repository == null) {
+            repository =GroupPTRepository.getInstance();
+        }
         LocalDate today = LocalDate.now();
         // 당일은 변경 가능한 목록이 아니라고 출력
         // 남은 세션 수 복구
@@ -252,6 +267,9 @@ public class Member extends User {
     //displayReservationInfo() == 2 라면
     //수업예약취소
     public void cancelClassReservation(Reservation reservationToUpdate){
+        if (repository == null) {
+            repository =GroupPTRepository.getInstance();
+        }
         // 유효한 인덱스 범위 검사
         //if (index >= 0 && index < reservationsByPhone.size())
             LocalDate today = LocalDate.now();
@@ -269,6 +287,9 @@ public class Member extends User {
          return repository.findAllReservations();
         }
     public void printMyPayment(){
+        if (repository == null) {
+            repository =GroupPTRepository.getInstance();
+        }
         System.out.println(repository.findPaymentByPhoneNumber(this.getPhoneNumber()));
     }
 
