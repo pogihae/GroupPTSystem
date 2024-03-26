@@ -23,6 +23,8 @@ public class MemberService {
         groupPTRepository.updateMember(member);
     }
     public void updateInfoOfMember(Member member, Payment payment, int remainSessionCount) {
+        System.out.println(payment);
+        System.out.println(remainSessionCount);
         member.setRemainSessionCount(remainSessionCount);
         member.setPayment(payment);
     }

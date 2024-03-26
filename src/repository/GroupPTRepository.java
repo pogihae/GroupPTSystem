@@ -118,7 +118,7 @@ public class GroupPTRepository {
     public void updateMember(Member member) {
         List<Member> members = findAllMembers();
         members.stream()
-                .filter(t -> t.getPhoneNumber().equals(member.getPhoneNumber()))
+                .filter(m -> m.equals(member))
                 .findFirst()
                 .ifPresent(org -> {
                     org.update(member);

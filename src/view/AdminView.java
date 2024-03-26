@@ -98,8 +98,6 @@ public class AdminView {
         // [관리자의 이익] - (한달 총 매출) - (총 인건비)이 출력된다.
         // [현재까지 총 매출] - 현재까지 결제한 모든 금액이 출력된다.
         displayBasicMenuForAdmin();
-
-
     }
 
     void displayBasicMenuForAdmin(){
@@ -107,6 +105,5 @@ public class AdminView {
         System.out.println("*. 로그인 화면으로 돌아가기");
         System.out.println("************************************************");
         System.out.print("원하는 메뉴를 선택하세요.");
-
     }
 }
