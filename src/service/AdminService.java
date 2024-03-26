@@ -12,14 +12,11 @@ import java.util.stream.Collectors;
 
 
 public class AdminService {
-    private final GroupPTRepository groupPTRepository;
+    private final GroupPTRepository groupPTRepository = GroupPTRepository.getInstance();
     private final TrainerService trainerService;
     private List<User> registrationRequests;
 
-
-
-    public AdminService(GroupPTRepository groupPTRepository, TrainerService trainerService) {
-        this.groupPTRepository = groupPTRepository;
+    public AdminService(TrainerService trainerService) {
         this.trainerService = trainerService;
         this.registrationRequests = getRegistrationRequests();
     }
@@ -28,11 +25,9 @@ public class AdminService {
     public List<User> getRegistrationRequests() {
         List<User> allUsers = groupPTRepository.findAllUsers();
         // NONMEMBER인 회원 필터링
-        List<User> registrationRequests = allUsers.stream()
-                .filter(user -> user.getRole() == User.Role.NONMEMBER)
-                .collect(Collectors.toList());
-
-        return registrationRequests;
+        return allUsers.stream()
+                .filter(user -> user.getState() == User.State.PENDING)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     //관리자가 승인한 목록들의 role nonmember에서 member로 바꿔주기
@@ -40,9 +35,9 @@ public class AdminService {
         // 선택한 인덱스의 회원의 ROLE을 MEMBER로 변경
         if (index >= 1 && index <= registrationRequests.size()) {
             User user = registrationRequests.get(index - 1);
-            user.setRole(User.Role.MEMBER);
+            user.setState(User.State.APPROVED);
 
-            if (user.getRole().equals(User.Role.TRAINER)) {
+            if (user instanceof Trainer) {
                 groupPTRepository.updateTrainer((Trainer) user);
             } else {
                 groupPTRepository.updateMember((Member) user);
@@ -57,22 +52,21 @@ public class AdminService {
     //2. 회원 목록 보기 O
     public void getMemberList(){
         List<Member> members = groupPTRepository.findAllMembers();
-        System.out.println("");
+        System.out.println("ADMINSERVICE-members: " + members);
+        System.out.println();
         for (int i = 0; i < members.size(); i++) {
             Member member = members.get(i);
-            if (member.getRole() == User.Role.MEMBER) { // MEMBER인 경우에만 출력
-                int index = i + 1;
-                System.out.println("-----------------------------------------------------");
-                System.out.print(index + "\t");
-                System.out.print("이름: " + member.getName() + "\t");
-                System.out.print("성별: " + member.getSex() + "\t");
-                System.out.print("나이: " + member.getAge()+ "\t");
-                System.out.print("아이디: " + member.getId()+ "\t");
-                System.out.println("휴대폰 번호: " + member.getPhoneNumber());
-                System.out.println("-----------------------------------------------------");
-            }
+            int index = i + 1;
+            System.out.println("-----------------------------------------------------");
+            System.out.print(index + "\t");
+            System.out.print("이름: " + member.getName() + "\t");
+            System.out.print("성별: " + member.getSex() + "\t");
+            System.out.print("나이: " + member.getAge()+ "\t");
+            System.out.print("아이디: " + member.getId()+ "\t");
+            System.out.println("휴대폰 번호: " + member.getPhoneNumber());
+            System.out.println("-----------------------------------------------------");
         }
-        System.out.println("");
+        System.out.println();
     }
 
 

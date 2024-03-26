@@ -2,14 +2,11 @@ package controller;
 
 import model.Member;
 import model.Reservation;
-import model.Trainer;
 import model.User;
 import repository.GroupPTRepository;
 import service.AdminService;
 import service.TrainerService;
 import service.UserService;
-import util.Utils;
-import view.AdminView;
 
 import java.util.List;
 import java.util.Scanner;
@@ -17,6 +14,7 @@ import java.util.Scanner;
 public class MainController {
     public void run() {
         final UserController userController = new UserController();
+        final TrainerController trainerController = new TrainerController();
 
 //        userController.signUp();
         userController.login();
@@ -24,7 +22,7 @@ public class MainController {
         //final AdminView adminView = new AdminView();
         final GroupPTRepository groupPTRepository = GroupPTRepository.getInstance();
         final TrainerService trainerService = new TrainerService();
-        final AdminService adminService = new AdminService(groupPTRepository, trainerService);
+        final AdminService adminService = new AdminService(trainerService);
         final AdminController adminController = new AdminController(adminService);
 
         adminController.runAdmin();

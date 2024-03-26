@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import repository.GroupPTRepository;
 import util.Utils;
 
@@ -12,9 +13,19 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class Member extends User {
     transient Scanner sc = null;
+
+    public Member(String name, String phone, int age, String gender, String id, String pw) {
+        super(name, phone, age, gender, id, pw, Role.MEMBER);
+    }
+
+    public Member(String name, String phone, int age, String gender, String id, String pw, Role role) {
+        super(name, phone, age, gender, id, pw, role);
+    }
+
     private void initScanner() {
         if (this.sc == null) {
             this.sc = new Scanner(System.in);
