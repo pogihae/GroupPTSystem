@@ -86,8 +86,17 @@ public class GroupPTRepository {
      * */
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
-        users.addAll(findAllMembers());
-        users.addAll(findAllTrainers());
+
+        List<Member> members = readListFromFile(MEMBER_FILE).stream()
+                .map(obj -> (Member) obj)
+                .collect(Collectors.toCollection(ArrayList::new));
+        List<Trainer> trainers = readListFromFile(TRAINER_FILE).stream()
+                .map(obj -> (Trainer) obj)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        users.addAll(members);
+        users.addAll(trainers);
+
         return users;
     }
 
@@ -102,10 +111,17 @@ public class GroupPTRepository {
     }
 
     /**
-     * 모든 멤버 목록을 불러올 수 있다.
+     * 모든 승인된 멤버 목록을 불러올 수 있다.
      * @return 모든 멤버 목록
      * */
     public List<Member> findAllMembers() {
+        return findAllMembersUtil().stream()
+                .filter(member -> member.getState().equals(User.State.APPROVED))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    // 비승인 목록 포함
+    private List<Member> findAllMembersUtil() {
         return readListFromFile(MEMBER_FILE).stream()
                 .map(obj -> (Member) obj)
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -116,14 +132,14 @@ public class GroupPTRepository {
      * @param member 수정할 멤버
      * */
     public void updateMember(Member member) {
-        List<Member> members = findAllMembers();
+        List<Member> members = findAllMembersUtil();
         members.stream()
-                .filter(t -> t.getPhoneNumber().equals(member.getPhoneNumber()))
+                .filter(m -> m.equals(member))
                 .findFirst()
-                .ifPresent(org -> {
+                .ifPresentOrElse(org -> {
                     org.update(member);
                     writeListToFile(MEMBER_FILE, members);
-                });
+                }, () -> System.out.println(member.getName() + "가 존재하지 않습니다."));
     }
 
     /*-----------트레이너 기능-----------*/
@@ -141,21 +157,29 @@ public class GroupPTRepository {
      * @param trainer 수정할 트레이너
      * */
     public void updateTrainer(Trainer trainer) {
-        List<Trainer> trainers = findAllTrainers();
+        List<Trainer> trainers = findAllTrainersUtil();
         trainers.stream()
-                .filter(t -> t.getPhoneNumber().equals(trainer.getPhoneNumber()))
+                .filter(t -> t.equals(trainer))
                 .findFirst()
-                .ifPresent(org -> {
+                .ifPresentOrElse(org -> {
                     org.update(trainer);
                     writeListToFile(TRAINER_FILE, trainers);
-                });
+                }, () -> System.out.println(trainer.getName() + " 가 존재하지 않습니다."));
     }
 
     /**
-     * 모든 트레이너 목록을 불러올 수 있다.
+     * 모든 승인된 트레이너 목록을 불러올 수 있다.
      * @return 모든 트레이너 목록
      * */
     public List<Trainer> findAllTrainers() {
+        //System.out.println(findAllTrainersUtil().stream().map(User::getState).toList());
+        return findAllTrainersUtil().stream()
+                .filter(trainer -> trainer.getState().equals(User.State.APPROVED))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    // 비승인 포함
+    private List<Trainer> findAllTrainersUtil() {
         return readListFromFile(TRAINER_FILE).stream()
                 .map(obj -> (Trainer) obj)
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -189,7 +213,7 @@ public class GroupPTRepository {
      * @param reservation 저장할 예약 정보
      * */
     public void saveReservation(Reservation reservation) {
-        System.out.println(reservation);
+        //System.out.println(reservation);
         addObjectToFile(RESERVATION_FILE, reservation);
     }
 
@@ -201,7 +225,7 @@ public class GroupPTRepository {
         List<Reservation> reservations = findAllReservations();
 
         reservations.stream()
-                .filter(r -> r.getId().equals(reservation.getId()))
+                .filter(r -> r.equals(reservation))
                 .findFirst()
                 .ifPresent(r -> {
                     r.update(reservation);
@@ -285,6 +309,7 @@ public class GroupPTRepository {
     private List<Object> readListFromFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
             List<Object> res = (List<Object>) ois.readObject();
+            //System.out.println("TEST-REPO: read " + res);
             return new ArrayList<>(res);
         } catch (ClassNotFoundException | IOException e) {
             return new ArrayList<>();
@@ -295,6 +320,7 @@ public class GroupPTRepository {
 
     private void writeListToFile(String fileName, List<?> object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
+            //System.out.println("TEST-REPO: wrote " + object);
             oos.writeObject(object);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -59,6 +59,7 @@ public class UserService {
         Reservation reservation = new Reservation(trainer, startTime);
 
         reservation.addUser(user);
+        reservation.setType(Reservation.Type.CONSULT);
         repository.saveReservation(reservation);
     }
     public List<Reservation> findAllReservations(){
