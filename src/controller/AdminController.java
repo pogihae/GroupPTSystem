@@ -12,7 +12,7 @@ import java.util.List;
 import service.AdminService;
 
 public class AdminController {
-    private AdminView adminView;
+    private final AdminView adminView;
     private final AdminService adminService;
 
     public AdminController(AdminService adminService) {
@@ -36,8 +36,6 @@ public class AdminController {
                     adminView.printRegistrationRequests(registrationRequests);
 
                     //인덱스입력 받기 -> , 로 구분해서 입력한 이름 User의 Role MEMBER로 바꿔주기
-//                    System.out.println("승인할 회원의 인덱스를 입력하세요. 여러 명을 선택할 경우 쉼표(,)로 구분하세요:");
-//                    String inputIndices = adminView.readLine();
                     List<User> approvedUsers = adminView.readLineBySeparate(",").stream()
                             .mapToInt(idx -> Integer.parseInt(idx) - 1)
                             .mapToObj(registrationRequests::get)
@@ -100,7 +98,8 @@ public class AdminController {
                     int year = adminView.readInt();
 
                     adminView.print(trainer.getName() + "님의 정보\n");
-                    adminService.getTrainerDetails(trainers.get(trainerIndex), year);
+                    List<String> details = adminService.getTrainerDetails(trainers.get(trainerIndex), year);
+                    adminView.printTrainerDetails(details);
 
                     break;
 

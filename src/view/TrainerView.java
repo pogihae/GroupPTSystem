@@ -83,7 +83,7 @@ public class TrainerView extends BaseView {
         System.out.println(user);
     }
 
-    public void printTimeTable(List<Reservation> reservations) {
-        System.out.println(reservations);
-    }
+//    public void printTimeTable(List<Reservation> reservations) {
+//        System.out.println(reservations);
+//    }
 }

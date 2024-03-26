@@ -176,7 +176,6 @@ public class AdminService {
 
     //트레이너 수입 확인
     public List<String> getTrainerDetails(Trainer trainer, int year) {
-
         List<String> res = new ArrayList<>();
 
         for (int month=1; month<=12; month++) {
