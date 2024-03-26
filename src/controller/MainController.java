@@ -1,6 +1,7 @@
 package controller;
 
 import model.Member;
+import model.Reservation;
 import model.Trainer;
 import model.User;
 import repository.GroupPTRepository;
