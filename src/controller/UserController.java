@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 public class UserController {
     UserView view = new UserView();
@@ -53,8 +54,6 @@ public class UserController {
         User user = new User(name,phoneNumber, Integer.parseInt(age), sex, id, pw, role);
 
         userService.signUp(user);
-//        repo.saveMember(member);
-//        repo.saveTrainer(trainer);
         view.showSigned();
     }
 
@@ -67,7 +66,7 @@ public class UserController {
         }
     }
 
-    public void reserveConsultation(){
+    public Trainer requestTrainers(){
         view.showReserveConsultation();
         List<Trainer> trainers = userService.findAllTrainers();
         Trainer trainer;
@@ -79,45 +78,53 @@ public class UserController {
         view.trainersListMenu();
         String choice = sc.nextLine();
         trainer = trainers.get(Integer.parseInt(choice) - 1);
-        System.out.println(trainer.getLessonDays());
-        chooseAvailableTime(trainer);
+        return trainer;
     }
 
-    private void chooseAvailableTime(Trainer trainer){
-        List<Utils.Day> lessonDays = trainer.getLessonDays();
-        List<LocalDate> availableDays = new ArrayList<>();
-        LocalDate start = LocalDate.now().plusDays(1);
-        LocalDate end = start.plusDays(6);
-        List<LocalDateTime> availableTime = new ArrayList<>();
+    public void reserveConsultation(){
+        Trainer trainer = requestTrainers();
+        LocalDateTime start = chooseAvailableTime(trainer);
+        makeConsultReservation(trainer, start);
+    }
 
-        for(Utils.Day day: lessonDays){
-            LocalDate current = start; // 시작일부터 루프 시작
-            while (!current.isAfter(end)) { // end 날짜까지 반복
-                if(current.getDayOfWeek().getValue() == day.getDayOfWeek()) {//이 기간의 트레이너 예약 가능 요일
+    private LocalDateTime chooseAvailableTime(Trainer trainer){
+        List<Utils.Day> lessonDays = trainer.getLessonDays();
+        List<LocalDateTime> availableTime = new ArrayList<>();
+        LocalDateTime end = LocalDateTime.now().plusDays(8);
+
+        // 1. lesson day -> closest day
+        for (Utils.Day day : lessonDays) {
+            LocalDateTime start = LocalDateTime.now().plusDays(1);
+            while (!start.isAfter(end)) {
+                if (day.equals(Utils.getDay(start.plusDays(1)))) {
+                    // 2. 13 ~ 18
                     for (int hour = 13; hour < 19; hour++) {
-                        LocalDateTime dateTime = LocalDateTime.of(current, LocalTime.of(hour, 0));
+                        LocalDateTime dateTime = LocalDateTime.of(LocalDate.from(start), LocalTime.of(hour, 0));
                         availableTime.add(dateTime);
                     }
                 }
-                current = current.plusDays(1); // 다음 날짜로 이동
+                start = start.plusDays(1);
             }
         }
 
         List<Reservation> trainerSchedule = userService.findReservationsByTrainer(trainer);
+        System.out.println("TEST:"+trainerSchedule);
         Reservation schedule;
         for(int i = 0;i<trainerSchedule.size();i++){
             schedule = trainerSchedule.get(i);
             //1시 부터 7시까지 예약가능한 시간만 출력해 보여준다.
-            if(availableTime.contains(schedule.getStartDate())){
-                availableTime.remove(i);
-            }
+            availableTime.remove(schedule.getStartDate());
         }
         view.showAvailableTime(availableTime);
 
         String choice = sc.nextLine();
         //이름, 번호를 받아 User 객체를 생성한다.
 
-        Reservation newReservation = new Reservation(trainer,availableTime.get(Integer.parseInt(choice)-1));
+        return availableTime.get(Integer.parseInt(choice)-1);
+    }
+
+    private void makeConsultReservation(Trainer trainer, LocalDateTime startTime) {
+        Reservation newReservation = new Reservation(trainer, startTime);
         view.requestName();
         String name = sc.nextLine();
         view.requestPhoneNumber();
@@ -127,7 +134,6 @@ public class UserController {
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
         userService.saveReservation(user,newReservation);
         view.showResult("예약이");
-
     }
 
     public void checkMyReservation(){
@@ -145,8 +151,16 @@ public class UserController {
     }
 
     public void changeReservation(Reservation reservation){
-        reserveConsultation();
         userService.cancelReservation(reservation);
+
+        Trainer trainer = requestTrainers();
+        LocalDateTime start = chooseAvailableTime(trainer);
+
+        User user = reservation.getUsers().get(0);
+        Reservation newReservation = new Reservation(trainer, start);
+
+        userService.saveReservation(user,newReservation);
+
         view.showResult("예약 변경");
     }
 
@@ -155,4 +169,3 @@ public class UserController {
         view.showResult("예약 취소");
     }
 }
-
