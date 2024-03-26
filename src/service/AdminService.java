@@ -188,10 +188,10 @@ public class AdminService {
         List<User> allUsers = groupPTRepository.findAllUsers();
 
         // Consult 타입의 예약을 가진 사용자 필터링
-        List<User> nonMembersWithConsultReservation = allUsers.stream()
-                .filter(user -> groupPTRepository.findReservationsByPhone(user.getPhoneNumber()).stream()
-                        .anyMatch(reservation -> reservation.getType() == Reservation.Type.CONSULT))
-                .collect(Collectors.toList());
+        List<User> nonMembersWithConsultReservation = groupPTRepository.findAllReservations().stream()
+                .filter(r -> r.getType().equals(Reservation.Type.CONSULT))
+                .map(r -> r.getUsers().get(0))
+                .toList();
 
         return nonMembersWithConsultReservation;
     }

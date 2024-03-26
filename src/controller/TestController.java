@@ -81,6 +81,8 @@ public class TestController {
         );
         /*----테스트 데이터 저장 끝----*/
 
+        System.out.println(repository.findAllReservations());
+
         // 1. 관리자
         AdminController adminController = new AdminController(new AdminService(new TrainerService()));
         adminController.runAdmin();

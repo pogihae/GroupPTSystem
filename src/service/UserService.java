@@ -57,6 +57,7 @@ public class UserService {
     }
     public void saveReservation(User user,Reservation reservation){
         reservation.addUser(user);
+        reservation.setType(Reservation.Type.CONSULT);
         repository.saveReservation(reservation);
     }
     public List<Reservation> findAllReservations(){
