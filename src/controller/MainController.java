@@ -12,7 +12,7 @@ public class MainController {
         final UserController userController = new UserController();
 //        userController.signUp();
 //        userController.login();
-//
+
 //        TrainerController trainerController = new TrainerController();
 //
 //        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
@@ -22,7 +22,8 @@ public class MainController {
 //            trainerController.printTrainerTimeTable(trainer);
 //            trainerController.checkAttendances(trainer);
 //        }
-////
+
+//
 //        User user1 = UserService.loginedUser;
 //        Member member1 = new Member(user1);
         userController.consult();

@@ -66,7 +66,7 @@ public class UserController {
         }
     }
 
-    public void reserveConsultation(){
+    public Trainer requestTrainers(){
         view.showReserveConsultation();
         List<Trainer> trainers = userService.findAllTrainers();
         Trainer trainer;
@@ -78,11 +78,16 @@ public class UserController {
         view.trainersListMenu();
         String choice = sc.nextLine();
         trainer = trainers.get(Integer.parseInt(choice) - 1);
-        System.out.println("test: "+trainer.getLessonDays());
-        chooseAvailableTime(trainer);
+        return trainer;
     }
 
-    private void chooseAvailableTime(Trainer trainer){
+    public void reserveConsultation(){
+        Trainer trainer = requestTrainers();
+        LocalDateTime start = chooseAvailableTime(trainer);
+        makeConsultReservation(trainer, start);
+    }
+
+    private LocalDateTime chooseAvailableTime(Trainer trainer){
         List<Utils.Day> lessonDays = trainer.getLessonDays();
         List<LocalDateTime> availableTime = new ArrayList<>();
         LocalDateTime end = LocalDateTime.now().plusDays(8);
@@ -115,7 +120,11 @@ public class UserController {
         String choice = sc.nextLine();
         //이름, 번호를 받아 User 객체를 생성한다.
 
-        Reservation newReservation = new Reservation(trainer,availableTime.get(Integer.parseInt(choice)-1));
+        return availableTime.get(Integer.parseInt(choice)-1);
+    }
+
+    private void makeConsultReservation(Trainer trainer, LocalDateTime startTime) {
+        Reservation newReservation = new Reservation(trainer, startTime);
         view.requestName();
         String name = sc.nextLine();
         view.requestPhoneNumber();
@@ -125,7 +134,6 @@ public class UserController {
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
         userService.saveReservation(user,newReservation);
         view.showResult("예약이");
-
     }
 
     public void checkMyReservation(){
@@ -143,8 +151,16 @@ public class UserController {
     }
 
     public void changeReservation(Reservation reservation){
-        reserveConsultation();
         userService.cancelReservation(reservation);
+
+        Trainer trainer = requestTrainers();
+        LocalDateTime start = chooseAvailableTime(trainer);
+
+        User user = reservation.getUsers().get(0);
+        Reservation newReservation = new Reservation(trainer, start);
+
+        userService.saveReservation(user,newReservation);
+
         view.showResult("예약 변경");
     }
 
