@@ -124,5 +124,13 @@ public class Reservation implements Serializable {
     public boolean isClass() {
         return this.type.equals(Type.CLASS);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Reservation) {
+            return this.id.equals(((Reservation) obj).id);
+        }
+        return false;
+    }
 }
 
