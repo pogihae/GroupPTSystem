@@ -66,7 +66,7 @@ public class UserService {
 
     public Reservation checkMyReservation(String phoneNumber){
         List<Reservation> list = repository.findReservationsByPhone(phoneNumber);
-        return (list.isEmpty())? null : list.getFirst();
+        return (list.isEmpty())? null : list.get(0);
     }
 
     public void cancelReservation(Reservation reservation){
