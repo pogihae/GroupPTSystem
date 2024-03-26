@@ -26,11 +26,7 @@ public class MainController {
 
 //
 //        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
-//            Trainer trainer = (Trainer) UserService.loginedUser;
-//            trainerController.setTrainerLessonDays(trainer);
-//            trainerController.checkTrainerIncome(trainer);
-//            trainerController.printTrainerTimeTable(trainer);
-//            trainerController.checkAttendances(trainer);
+//            trainerController.handleTrainerMenu();
 //        }
         if (UserService.getLoginedUserRole().equals(User.Role.MEMBER)) {
             memberController.handleMemberMenu();
