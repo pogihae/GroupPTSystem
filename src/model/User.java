@@ -2,7 +2,6 @@ package model;
 
 import lombok.*;
 
-import javax.management.relation.Role;
 import java.io.Serializable;
 
 @Setter
