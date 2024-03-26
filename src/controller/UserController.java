@@ -84,8 +84,7 @@ public class UserController {
     }
 
     private void chooseAvailableTime(Trainer trainer){
-        Utils.Day[] lessonDays = trainer.getLessonDays();
-        System.out.println(Arrays.toString(lessonDays));
+        List<Utils.Day> lessonDays = trainer.getLessonDays();
         List<LocalDate> availableDays = new ArrayList<>();
         LocalDate start = LocalDate.now().plusDays(1);
         LocalDate end = start.plusDays(6);
