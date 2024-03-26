@@ -1,7 +1,6 @@
 package controller;
 
 import model.Member;
-import model.Reservation;
 import model.Trainer;
 import model.User;
 import repository.GroupPTRepository;
@@ -26,11 +25,7 @@ public class MainController {
 //        TrainerController trainerController = new TrainerController();
 //
 //        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
-//            Trainer trainer = (Trainer) UserService.loginedUser;
-//            trainerController.setTrainerLessonDays(trainer);
-//            trainerController.checkTrainerIncome(trainer);
-//            trainerController.printTrainerTimeTable(trainer);
-//            trainerController.checkAttendances(trainer);
+//            trainerController.handleTrainerMenu();
 //        }
 
         User user1 = UserService.loginedUser;
