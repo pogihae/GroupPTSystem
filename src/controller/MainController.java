@@ -5,8 +5,11 @@ import model.Reservation;
 import model.Trainer;
 import model.User;
 import repository.GroupPTRepository;
+import service.AdminService;
+import service.TrainerService;
 import service.UserService;
 import util.Utils;
+import view.AdminView;
 
 import java.util.List;
 import java.util.Scanner;
@@ -18,8 +21,13 @@ public class MainController {
 //        userController.signUp();
         userController.login();
 
-        TrainerController trainerController = new TrainerController();
+        //final AdminView adminView = new AdminView();
+        final GroupPTRepository groupPTRepository = GroupPTRepository.getInstance();
+        final TrainerService trainerService = new TrainerService();
+        final AdminService adminService = new AdminService(groupPTRepository, trainerService);
+        final AdminController adminController = new AdminController(adminService);
 
+        adminController.runAdmin();
         if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
             trainerController.handleTrainerMenu();
         }
@@ -52,6 +60,5 @@ public class MainController {
             case 2: member1.cancelClassReservation(reservationToUpdate);
             break;
         }
-
     }
 }
