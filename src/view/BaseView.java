@@ -38,7 +38,11 @@ public abstract class BaseView {
     }
 
     public void requestMenuSelect(String... menus) {
-        System.out.println(formatMenu(menus));
+        System.out.print(formatMenu(menus));
+    }
+
+    public void handleNonMatchedMenu() {
+        throw new IllegalStateException("맞는 메뉴가 없습니다.");
     }
 
     private String formatMenu(String... menus) {
@@ -50,7 +54,7 @@ public abstract class BaseView {
             sb.append("%d. %s\n".formatted(i+1, menus[i]));
         }
         sb.append("0. 이전 메뉴\n");
-        sb.append("*. 메인 메뉴\n");
+        sb.append("#. 메인 메뉴\n");
         sb.append("*******************\n");
         sb.append("입력: ");
         return sb.toString();

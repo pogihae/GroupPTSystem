@@ -227,10 +227,10 @@ public class GroupPTRepository {
         reservations.stream()
                 .filter(r -> r.equals(reservation))
                 .findFirst()
-                .ifPresent(r -> {
-                    r.update(reservation);
-                    writeListToFile(RESERVATION_FILE, reservations);
-                });
+                .ifPresentOrElse(org -> {
+                    org.update(reservation);
+                    writeListToFile(MEMBER_FILE, reservations);
+                }, () -> System.out.println(reservation + "가 존재하지 않습니다."));
     }
 
     /**
