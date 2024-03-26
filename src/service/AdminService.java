@@ -13,16 +13,13 @@ import java.util.stream.Collectors;
 
 
 public class AdminService {
-    private final GroupPTRepository groupPTRepository;
+    private final GroupPTRepository groupPTRepository = GroupPTRepository.getInstance();
     private final TrainerService trainerService;
     private List<User> registrationRequests;
 
     private AdminView adminView;
 
-
-
-    public AdminService(GroupPTRepository groupPTRepository, TrainerService trainerService, AdminView adminView) {
-        this.groupPTRepository = groupPTRepository;
+    public AdminService(TrainerService trainerService) {
         this.trainerService = trainerService;
         this.registrationRequests = getRegistrationRequests();
         this.adminView = adminView;
@@ -32,11 +29,9 @@ public class AdminService {
     public List<User> getRegistrationRequests() {
         List<User> allUsers = groupPTRepository.findAllUsers();
         // NONMEMBER인 회원 필터링
-        List<User> registrationRequests = allUsers.stream()
-                .filter(user -> user.getRole() == User.Role.NONMEMBER)
-                .collect(Collectors.toList());
-
-        return registrationRequests;
+        return allUsers.stream()
+                .filter(user -> user.getState() == User.State.PENDING)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     //관리자가 승인한 목록들의 role nonmember에서 member로 바꿔주기
@@ -44,9 +39,9 @@ public class AdminService {
         // 선택한 인덱스의 회원의 ROLE을 MEMBER로 변경
         if (index >= 1 && index <= registrationRequests.size()) {
             User user = registrationRequests.get(index - 1);
-            user.setRole(User.Role.MEMBER);
+            user.setState(User.State.APPROVED);
 
-            if (user.getRole().equals(User.Role.TRAINER)) {
+            if (user instanceof Trainer) {
                 groupPTRepository.updateTrainer((Trainer) user);
             } else {
                 groupPTRepository.updateMember((Member) user);
@@ -61,15 +56,13 @@ public class AdminService {
     //2. 회원 목록 보기 O
     public void getMemberList(){
         List<Member> members = groupPTRepository.findAllMembers();
-        System.out.println("");
+        System.out.println("ADMINSERVICE-members: " + members);
+        System.out.println();
         for (int i = 0; i < members.size(); i++) {
             Member member = members.get(i);
-            if (member.getRole() == User.Role.MEMBER) { // MEMBER인 경우에만 출력
-                int index = i + 1;
-                adminView.printMemberList(member, index);
-            }
+            adminView.printMemberList(member, i+1);
         }
-        System.out.println("");
+        System.out.println();
     }
 
 
@@ -193,10 +186,10 @@ public class AdminService {
         List<User> allUsers = groupPTRepository.findAllUsers();
 
         // Consult 타입의 예약을 가진 사용자 필터링
-        List<User> nonMembersWithConsultReservation = allUsers.stream()
-                .filter(user -> groupPTRepository.findReservationsByPhone(user.getPhoneNumber()).stream()
-                        .anyMatch(reservation -> reservation.getType() == Reservation.Type.CONSULT))
-                .collect(Collectors.toList());
+        List<User> nonMembersWithConsultReservation = groupPTRepository.findAllReservations().stream()
+                .filter(r -> r.getType().equals(Reservation.Type.CONSULT))
+                .map(r -> r.getUsers().get(0))
+                .toList();
 
         return nonMembersWithConsultReservation;
     }
@@ -240,7 +233,7 @@ public class AdminService {
     // 트레이너 목록 출력
     public void getTrainerList(){
         List<Trainer> trainers = groupPTRepository.findAllTrainers();
-        System.out.println();
+        System.out.println(trainers);
         for (int i = 0; i < trainers.size(); i++) {
             Trainer trainer = trainers.get(i);
             int index = i + 1;

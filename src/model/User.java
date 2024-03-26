@@ -1,29 +1,16 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.management.relation.Role;
 import java.io.Serializable;
 
-@Data
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@ToString
 public class User implements Serializable {
-
-    public enum Role {
-        TRAINER, MEMBER, USER, ADMIN, NONMEMBER
-    }//User 모델 안에 들어가야한다.
-
-    private String name;
-    private String phoneNumber;
-    private Integer age;
-    private String sex;
-    private String id;
-    private String pw;
-    private Role role;
 
     //상담신청한 유저일경우
     public User(String name, String phoneNumber){
@@ -34,7 +21,33 @@ public class User implements Serializable {
         this.id = null;
         this.pw = null;
         this.role  = null;
+        this.state = State.NONMEMBER;
     }
+
+    public User(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
+        this(name, phoneNumber,age,sex,id,pw,role, State.PENDING);
+        if (role.equals(Role.ADMIN)) {
+            this.state = State.APPROVED;
+        }
+    }
+
+    public enum Role {
+        TRAINER, MEMBER, USER, ADMIN, NONMEMBER
+    }
+
+    public enum State{
+        APPROVED, PENDING, NONMEMBER
+    }
+
+    private String name;
+    private String phoneNumber;
+    private Integer age;
+    private String sex;
+    private String id;
+    private String pw;
+    private Role role;
+    private State state;
+
     public User(User user) {
         update(user);
     }
@@ -48,5 +61,17 @@ public class User implements Serializable {
         this.id = user.id;
         this.pw = user.pw;
         this.role = user.role;
+        this.state = user.state;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User other) {
+            if (this.id == null || other.id == null) {
+                return this.phoneNumber.equals(((User) obj).getPhoneNumber());
+            }
+            return this.id.equals(other.id);
+        }
+        return false;
     }
 }

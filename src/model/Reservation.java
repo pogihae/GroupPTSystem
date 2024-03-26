@@ -2,6 +2,7 @@ package model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 @Getter
+@Setter
 @ToString
 public class Reservation implements Serializable {
     private static final int MAX_CLASS_NUM = 4;
@@ -123,6 +125,14 @@ public class Reservation implements Serializable {
 
     public boolean isClass() {
         return this.type.equals(Type.CLASS);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Reservation) {
+            return this.id.equals(((Reservation) obj).id);
+        }
+        return false;
     }
 }
 
