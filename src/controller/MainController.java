@@ -14,16 +14,16 @@ import java.util.Scanner;
 public class MainController {
     public void run() {
         final UserController userController = new UserController();
-
+        final MemberController memberController = new MemberController();
 //        userController.signUp();
         userController.login();
 
-        TrainerController trainerController = new TrainerController();
-
-        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
-            trainerController.handleTrainerMenu();
-        }
 //        TrainerController trainerController = new TrainerController();
+//
+//        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
+//            trainerController.handleTrainerMenu();
+//        }
+
 //
 //        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
 //            Trainer trainer = (Trainer) UserService.loginedUser;
@@ -32,30 +32,11 @@ public class MainController {
 //            trainerController.printTrainerTimeTable(trainer);
 //            trainerController.checkAttendances(trainer);
 //        }
+        if (UserService.getLoginedUserRole().equals(User.Role.MEMBER)) {
+            memberController.handleMemberMenu();
+        }
 
-        User user1 = UserService.loginedUser;
-        Member member1 = (Member)user1;
-//        userController.consult();
-//        userController.checkMyReservation();
-//        member1.payForClass();
-//        member1.printMyPayment();
-//        System.out.println(member1.getRemainSessionCount());
-//        member1.reserveClass();
-//        member1.reserveClass();
-        List<Reservation> allreservations = member1.findAllReservations();
-        for (Reservation reservation : allreservations) {
-            System.out.println("전체예약내역 출력중: "+reservation.toString());
-        }
-        Reservation reservationToUpdate = member1.displayReservationInfo();
-        System.out.println("이게 선택한 예약임: "+reservationToUpdate.toString());
-        Scanner sc = new Scanner(System.in);
-        int index = sc.nextInt();
-        switch (index){
-            case 1: member1.updateClassReservation(reservationToUpdate);
-            break;
-            case 2: member1.cancelClassReservation(reservationToUpdate);
-            break;
-        }
+
 
     }
 }
