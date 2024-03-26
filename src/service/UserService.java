@@ -55,7 +55,7 @@ public class UserService {
         return list;
     }
 
-    public void saveReservation(User user,Trainer trainer, LocalDateTime startTime){
+    public void saveReservation(User user, Trainer trainer, LocalDateTime startTime){
         Reservation reservation = new Reservation(trainer, startTime);
 
         reservation.addUser(user);

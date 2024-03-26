@@ -218,4 +218,12 @@ public class AdminView extends BaseView{
         System.out.print("원하는 메뉴를 선택하세요:  ");
 
     }
+
+    public void printTrainerDetails(List<String> details) {
+        StringBuilder sb = new StringBuilder();
+        for (String detail : details) {
+            sb.append(detail).append('\n');
+        }
+        System.out.println(sb);
+    }
 }

@@ -18,24 +18,30 @@ import java.util.List;
 
 public class TestController {
     public void run() {
-        // 0. test data set
-        // 관리자 * 1명
-            // 이름: 관리자 아이디: a1 비밀번호: a1
-        // 멤버 * 10명
-            // 멤버 1번 / 이름: 멤버1 아이디: m1 비밀번호: m1 번호: 1
-            // 이하동일규칙
-        // 트레이너 * 5명
-            // 트레이너 요일
-            // 1번 트레이너: 월화수
-                // 오늘 15시 상담 예약 / 이름: 1번트레이너-15시상담 번호: 010-1234-5678
-            // 2번 트레이너: 화수목
-                // 오늘 13시 상담 예약 / 이름: 2번트레이너-13시상담 번호: 010-5678-1234
-            // 3번 트레이너: 일수목
-            // 4번 트레이너: 목금토
-            // 5번 트레이너: 금토일
-        //
+        loadSampleData();
 
-        /*----테스트 데이터 저장----*/
+        // 1. 관리자
+        TrainerService trainerService = new TrainerService();
+        AdminController adminController = new AdminController(new AdminService(trainerService));
+        adminController.runAdmin();
+    }
+
+    // 0. test data set
+    // 관리자 * 1명
+    // 이름: 관리자 아이디: a1 비밀번호: a1
+    // 멤버 * 10명
+    // 멤버 1번 / 이름: 멤버1 아이디: m1 비밀번호: m1 번호: 1
+    // 이하동일규칙
+    // 트레이너 * 5명
+    // 트레이너 요일
+    // 1번 트레이너: 월화수
+    // 오늘 15시 상담 예약 / 이름: 1번트레이너-15시상담 번호: 010-1234-5678
+    // 2번 트레이너: 화수목
+    // 오늘 13시 상담 예약 / 이름: 2번트레이너-13시상담 번호: 010-5678-1234
+    // 3번 트레이너: 일수목
+    // 4번 트레이너: 목금토
+    // 5번 트레이너: 금토일
+    public void loadSampleData() {
         final GroupPTRepository repository = GroupPTRepository.getInstance();
 
         // 유저 저장
@@ -69,21 +75,11 @@ public class TestController {
         final UserService userService = new UserService();
         userService.saveReservation(
                 new User("1번트레이너-15시상담", "010-1234-5678"),
-                new Reservation(
-                        trainers.get(0),
-                        LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 0)))
-        );
+                trainers.get(0),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 0)));
         userService.saveReservation(
                 new User("2번트레이너-13시상담", "010-5678-1234"),
-                new Reservation(
-                        trainers.get(0),
-                        LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 0)))
-        );
-        /*----테스트 데이터 저장 끝----*/
-
-        // 1. 관리자
-        TrainerService trainerService = new TrainerService();
-        AdminController adminController = new AdminController(new AdminService(trainerService));
-        adminController.runAdmin();
+                trainers.get(0),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 0)));
     }
 }
