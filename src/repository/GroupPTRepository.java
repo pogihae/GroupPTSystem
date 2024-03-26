@@ -224,7 +224,9 @@ public class GroupPTRepository {
      * @return 트레이너의 예약 목록
      * */
     public List<Reservation> findReservationsByTrainer(Trainer trainer) {
-        return findReservationsByPhone(trainer.getPhoneNumber());
+        return findAllReservations().stream()
+                .filter(r -> r.getManager().equals(trainer))
+                .toList();
     }
 
     /**
