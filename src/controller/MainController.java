@@ -40,8 +40,8 @@ public class MainController {
 //        member1.payForClass();
 //        member1.printMyPayment();
 //        System.out.println(member1.getRemainSessionCount());
-        member1.reserveClass();
-        member1.reserveClass();
+//        member1.reserveClass();
+//        member1.reserveClass();
         List<Reservation> allreservations = member1.findAllReservations();
         for (Reservation reservation : allreservations) {
             System.out.println("전체예약내역 출력중: "+reservation.toString());

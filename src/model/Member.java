@@ -34,6 +34,7 @@ public class Member extends User {
     }
     //수업결제
     public void payForClass(){
+        initScanner();
         if (repository == null) {
             repository =GroupPTRepository.getInstance();
         }
@@ -43,7 +44,7 @@ public class Member extends User {
         System.out.println("2. 20회 - 120일 - 총가격 ₩1,200,000");
         System.out.println("3. 30회 - 180일 - 회당 ₩1,500,000");
         System.out.print("번호 입력: ");
-        initScanner();
+
         int choice = sc.nextInt();
 
         switch (choice) {
@@ -74,6 +75,7 @@ public class Member extends User {
     }
     //수업예약
     public void reserveClass(){
+        initScanner();
         if (repository == null) {
             repository =GroupPTRepository.getInstance();
         }
@@ -94,7 +96,7 @@ public class Member extends User {
                     , trainer.getSex());
         }
         System.out.print("번호 입력: ");
-        initScanner();
+
         int choice = sc.nextInt();
 
         //+) 유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함
@@ -197,6 +199,7 @@ public class Member extends User {
     // 예약한 수업을 변경 혹은 취소하고 싶다면 해당 번호를 입력하세요
     // 강사/ 시간 >> 해당 예약 변경은 1번, 해당 예약 취소는 2번을 입력하세요
     public Reservation displayReservationInfo() {
+        initScanner();
         if (repository == null) {
             repository =GroupPTRepository.getInstance();
         }
@@ -284,6 +287,9 @@ public class Member extends User {
         }
         //모든예약찾기
         public List<Reservation> findAllReservations(){
+            if (repository == null) {
+                repository =GroupPTRepository.getInstance();
+            }
          return repository.findAllReservations();
         }
     public void printMyPayment(){
