@@ -16,18 +16,7 @@ public class MainController {
         TrainerController trainerController = new TrainerController();
 
         if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
-            Trainer trainer = (Trainer) UserService.loginedUser;
-            trainerController.setTrainerLessonDays(trainer);
-            trainerController.checkTrainerIncome(trainer);
-            trainerController.printTrainerTimeTable(trainer);
-            trainerController.checkAttendances(trainer);
+            trainerController.handleTrainerMenu();
         }
-
-        User user1 = new User();
-        Member member1 = new Member(user1);
-        userController.consult();
-        userController.checkMyReservation();
-        member1.payForClass();
-        member1.reserveClass();
     }
 }

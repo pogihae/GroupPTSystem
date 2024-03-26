@@ -170,13 +170,6 @@ public class Member extends User {
         3. 선택지에 없는 메뉴를 선택할 경우 메뉴를 다시 출력한다.
          */
 
-
-    public static void main(String[] args) {
-        User user1 = new User();
-        Member member1 = new Member(user1);
-        member1.payForClass();
-        member1.reserveClass();
-    }
     //수업정보확인
     //(수업 예약 확인, PT 선생님, 노쇼, 남은 수업 횟수,남은 수업 사용 가능 일수)
     public void displayReservationInfo(){
@@ -192,5 +185,13 @@ public class Member extends User {
 
     //수업예약변경
     //당일예약변경 불가능하다
+
+    public void update(Member member) {
+        super.update(member);
+        this.remainSessionCount = member.remainSessionCount;
+        this.payment = member.payment;
+        this.paymentTime = member.paymentTime;
+        this.selectedOption = member.selectedOption;
+    }
 
 }//Member class END
