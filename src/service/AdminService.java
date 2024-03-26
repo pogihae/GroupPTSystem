@@ -2,6 +2,7 @@ package service;
 
 import model.*;
 import repository.GroupPTRepository;
+import view.AdminView;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,9 +17,12 @@ public class AdminService {
     private final TrainerService trainerService;
     private List<User> registrationRequests;
 
+    private AdminView adminView;
+
     public AdminService(TrainerService trainerService) {
         this.trainerService = trainerService;
         this.registrationRequests = getRegistrationRequests();
+        this.adminView = adminView;
     }
 
     // 1. 회원가입 신청 목록
@@ -42,10 +46,10 @@ public class AdminService {
             } else {
                 groupPTRepository.updateMember((Member) user);
             }
-
-            System.out.println(user.getName() + "님이 승인되었습니다.");
+            adminView.printApproveMessage(user);
+            //System.out.println(user.getName() + "님이 승인되었습니다.");
         } else {
-            System.out.println("유효하지 않은 인덱스입니다.");
+            adminView.printInvalidMessage();
         }
     }
 
@@ -56,15 +60,7 @@ public class AdminService {
         System.out.println();
         for (int i = 0; i < members.size(); i++) {
             Member member = members.get(i);
-            int index = i + 1;
-            System.out.println("-----------------------------------------------------");
-            System.out.print(index + "\t");
-            System.out.print("이름: " + member.getName() + "\t");
-            System.out.print("성별: " + member.getSex() + "\t");
-            System.out.print("나이: " + member.getAge()+ "\t");
-            System.out.print("아이디: " + member.getId()+ "\t");
-            System.out.println("휴대폰 번호: " + member.getPhoneNumber());
-            System.out.println("-----------------------------------------------------");
+            adminView.printMemberList(member, i+1);
         }
         System.out.println();
     }
@@ -85,54 +81,54 @@ public class AdminService {
             int memberIndex = Integer.parseInt(memberId);
             List<Member> members = groupPTRepository.findAllMembers();
             if (memberIndex < 1 || memberIndex > members.size()) {
-                System.out.println("잘못된 인덱스입니다.");
+                adminView.printInvalidMessage();
                 return;
             }
             Member selectedMember = members.get(memberIndex - 1);
             // 회원 정보 출력
-            printMemberInfo(selectedMember);
+            adminView.printMemberInfo(selectedMember);
             // 회원의 예약 정보
             List<Reservation> reservations = groupPTRepository.findReservationsByPhone(selectedMember.getPhoneNumber());
             // 결제 정보 가져오기
             Payment payment = groupPTRepository.findPaymentByPhoneNumber(selectedMember.getPhoneNumber());
             // 회원의 수업 스케줄 출력
-            printMemberClassSchedule(selectedMember, reservations, payment);
+            adminView.printMemberClassSchedule(selectedMember, reservations, payment);
         } catch (NumberFormatException e) {
             if (memberId.equals("@")) {
                 viewNoShowMembers();
             } else if (memberId.equals("!")) {
                 sendMarketingMessage();
             } else {
-                System.out.println("잘못된 입력입니다.");
+                adminView.printInvalidMessage();
             }
         }
     }
 
-    private void printMemberInfo(Member member) {
-        System.out.println("[" + member.getName() + "] " + member.getSex() + " " + member.getAge() + "세 " + member.getId() + " " + member.getPhoneNumber());
-    }
+//    private void printMemberInfo(Member member) {
+//        System.out.println("[" + member.getName() + "] " + member.getSex() + " " + member.getAge() + "세 " + member.getId() + " " + member.getPhoneNumber());
+//    }
 
-    private void printMemberClassSchedule(Member member, List<Reservation> reservations, Payment payment) {
-        int totalAttendanceCount = 0;
-        int noShowCount = groupPTRepository.countNoShow(member);
-
-        System.out.println("수업 스케줄:");
-        for (int i = 0; i < reservations.size(); i++) {
-            Reservation reservation = reservations.get(i);
-            System.out.print("  " + (i + 1) + "회차 " + reservation.getStartDate() + " ");
-            if (reservation.isNoShowUser(member)) {
-                System.out.println("노쇼");
-            } else {
-                System.out.println("출석 트레이너 " + reservation.getManager().getName());
-                totalAttendanceCount++;
-            }
-        }
-        int totalPaymentCount = payment.getPaymentOption().getSessions();
-        int remainingCount = totalPaymentCount - totalAttendanceCount;
-        int reservationCount = reservations.size();
-
-        System.out.println(" 총 결제 횟수 : " + totalPaymentCount + "회 / 남은 회수 : " + remainingCount + "회 / 예약된 횟수 : " + reservationCount + "회 / 노쇼 : " + noShowCount + "회");
-    }
+//    private void printMemberClassSchedule(Member member, List<Reservation> reservations, Payment payment) {
+//        int totalAttendanceCount = 0;
+//        int noShowCount = groupPTRepository.countNoShow(member);
+//
+//        System.out.println("수업 스케줄:");
+//        for (int i = 0; i < reservations.size(); i++) {
+//            Reservation reservation = reservations.get(i);
+//            System.out.print("  " + (i + 1) + "회차 " + reservation.getStartDate() + " ");
+//            if (reservation.isNoShowUser(member)) {
+//                System.out.println("노쇼");
+//            } else {
+//                System.out.println("출석 트레이너 " + reservation.getManager().getName());
+//                totalAttendanceCount++;
+//            }
+//        }
+//        int totalPaymentCount = payment.getPaymentOption().getSessions();
+//        int remainingCount = totalPaymentCount - totalAttendanceCount;
+//        int reservationCount = reservations.size();
+//
+//        System.out.println(" 총 결제 횟수 : " + totalPaymentCount + "회 / 남은 회수 : " + remainingCount + "회 / 예약된 횟수 : " + reservationCount + "회 / 노쇼 : " + noShowCount + "회");
+//    }
 
     // 노쇼 회원 확인 이름과 노쇼 횟수 출력
     public void viewNoShowMembers() {
@@ -149,14 +145,15 @@ public class AdminService {
         }
 
         // 노쇼 회원 목록 출력
-        if (!noShowMembers.isEmpty()) {
-            System.out.println("노쇼 회원 목록:");
-            for (String name : noShowMembers) {
-                System.out.println(name);
-            }
-        } else {
-            System.out.println("노쇼 회원이 없습니다.\n");
-        }
+        adminView.printNoShowMembers(noShowMembers);
+//        if (!noShowMembers.isEmpty()) {
+//            System.out.println("노쇼 회원 목록:");
+//            for (String name : noShowMembers) {
+//                System.out.println(name);
+//            }
+//        } else {
+//            System.out.println("노쇼 회원이 없습니다.\n");
+//        }
     }
 
     // 수업 연장 마케팅 전송
@@ -169,16 +166,17 @@ public class AdminService {
                     return remainingCount <= 3;
                 })
                 .collect(Collectors.toList());
+        adminView.sendMarketingMessagesToMembers(membersWithFewSessionsLeft);
 
-        System.out.println("다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:");
-        for (Member member : membersWithFewSessionsLeft) {
-            System.out.println("이름: " + member.getName());
-            System.out.println("성별: " + member.getSex());
-            System.out.println("나이: " + member.getAge());
-            System.out.println("아이디: " + member.getId());
-            System.out.println("휴대폰 번호: " + member.getPhoneNumber());
-            System.out.println("--------------------------------");
-        }
+//        System.out.println("다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:");
+//        for (Member member : membersWithFewSessionsLeft) {
+//            System.out.println("이름: " + member.getName());
+//            System.out.println("성별: " + member.getSex());
+//            System.out.println("나이: " + member.getAge());
+//            System.out.println("아이디: " + member.getId());
+//            System.out.println("휴대폰 번호: " + member.getPhoneNumber());
+//            System.out.println("--------------------------------");
+//        }
     }
 
 
@@ -196,19 +194,6 @@ public class AdminService {
         return nonMembersWithConsultReservation;
     }
 
-    public void printNonMemberList(List<User> nonMemberList) {
-        if (!nonMemberList.isEmpty()) {
-            for (int i = 0; i < nonMemberList.size(); i++) {
-                User user = nonMemberList.get(i);
-                int index = i + 1;
-                System.out.print("인덱스: " + index + "\t");
-                System.out.print("이름: " + user.getName() + "\t");
-                System.out.println("휴대폰 번호: " + user.getPhoneNumber());
-                System.out.println("--------------------------------");
-            }
-        }
-    }
-
 
 
     //비회원 상담 스케쥴 확인
@@ -216,12 +201,13 @@ public class AdminService {
         List<User> allUsers = groupPTRepository.findAllUsers();
 
         if (allUsers.isEmpty()) {
-            System.out.println("상담 예약 정보를 확인할 비회원이 없습니다.");
+            adminView.printNoNonMemberReservationInfoMessage();
+            //System.out.println("상담 예약 정보를 확인할 비회원이 없습니다.");
             return;
         }
 
         if (memberIndex < 1 || memberIndex > allUsers.size()) {
-            System.out.println("잘못된 인덱스입니다.");
+            adminView.printInvalidMessage();
             return;
         }
         String phone = allUsers.get(memberIndex - 1).getPhoneNumber();
@@ -232,12 +218,13 @@ public class AdminService {
                 .collect(Collectors.toList());
 
         // 상담 예약 정보 출력
-        System.out.println("[" + nonMember.getName() + "] " + nonMember.getPhoneNumber());
-
-
-        for (Reservation reservation : consultReservations) {
-            System.out.println("상담 예약일 : " + reservation.getStartDate());
-        }
+        adminView.printConsultReservationInfo(nonMember, consultReservations);
+//        System.out.println("[" + nonMember.getName() + "] " + nonMember.getPhoneNumber());
+//
+//
+//        for (Reservation reservation : consultReservations) {
+//            System.out.println("상담 예약일 : " + reservation.getStartDate());
+//        }
     }
 
 
@@ -250,14 +237,7 @@ public class AdminService {
         for (int i = 0; i < trainers.size(); i++) {
             Trainer trainer = trainers.get(i);
             int index = i + 1;
-            System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.print(index + "\t");
-            System.out.print("트레이너 이름: " + trainer.getName() + "\t");
-            System.out.print("트레이너 나이: " + trainer.getAge()+ "\t");
-            System.out.print("트레이너 성별: " + trainer.getSex()+ "\t");
-            System.out.print("트레이너 등급: " + trainer.getGrade()+ "\t");
-            System.out.println("트레이너 휴대폰 번호: " + trainer.getPhoneNumber());
-            System.out.println("-------------------------------------------------------------------------------------------");
+            adminView.printTrainerInfo(index, trainer);
         }
     }
 
@@ -272,8 +252,7 @@ public class AdminService {
 
         if (trainerIndex >= 1 && trainerIndex <= trainers.size()) {
             Trainer trainer = trainers.get(trainerIndex - 1);
-            System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println("[트레이너 " + trainer.getName() + "의 수입 기록]");
+            adminView.printTrainerIncomeRecords(trainer);
 
             for (int year = 2023; year <= currentYear; year++) {
                 int startMonth = (year == 2023) ? 12 : 1;
@@ -298,13 +277,14 @@ public class AdminService {
                 .collect(Collectors.toList());
 
         if (reservations.isEmpty()) {
-            System.out.println("예정된 수업이 없습니다.\n");
+            adminView.printNoClassSchedule();
         } else {
             for (Reservation reservation : reservations) {
-                System.out.print("날짜 / 시간 : " + reservation.getStartDate() + "\t");
-                System.out.print("트레이너: " + reservation.getManager() + "\t");
-                System.out.println("예약 인원 수: " + reservation.getUsers().size());
-                System.out.println("-------------------------------------------------");
+                adminView.printReservationDetails(reservation);
+//                System.out.print("날짜 / 시간 : " + reservation.getStartDate() + "\t");
+//                System.out.print("트레이너: " + reservation.getManager() + "\t");
+//                System.out.println("예약 인원 수: " + reservation.getUsers().size());
+//                System.out.println("-------------------------------------------------");
             }
         }
     }
@@ -329,13 +309,14 @@ public class AdminService {
         int totalRevenue = calculateTotalRevenue();
 
         // 결과 출력
-        System.out.println("");
-        System.out.println("--------------------------------");
-        System.out.printf("[한달 총 매출]:\t%,d원%n", monthlyRevenue);
-        System.out.printf("[총 인건비]:\t\t%,d원%n", totalLaborCost);
-        System.out.printf("[총 매출]:\t\t%,d원%n", totalRevenue);
-        System.out.println("--------------------------------");
-        System.out.println("");
+        adminView.printFinancialSummary(monthlyRevenue, totalLaborCost, totalRevenue);
+//        System.out.println("");
+//        System.out.println("--------------------------------");
+//        System.out.printf("[한달 총 매출]:\t%,d원%n", monthlyRevenue);
+//        System.out.printf("[총 인건비]:\t\t%,d원%n", totalLaborCost);
+//        System.out.printf("[총 매출]:\t\t%,d원%n", totalRevenue);
+//        System.out.println("--------------------------------");
+//        System.out.println("");
 
     }
 
