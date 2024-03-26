@@ -285,7 +285,6 @@ public class GroupPTRepository {
     private List<Object> readListFromFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
             List<Object> res = (List<Object>) ois.readObject();
-            System.out.println("TEST-REPO: read " + res);
             return new ArrayList<>(res);
         } catch (ClassNotFoundException | IOException e) {
             return new ArrayList<>();
@@ -296,7 +295,6 @@ public class GroupPTRepository {
 
     private void writeListToFile(String fileName, List<?> object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
-            System.out.println("TEST-REPO: wrote " + object);
             oos.writeObject(object);
         } catch (IOException e) {
             throw new RuntimeException(e);

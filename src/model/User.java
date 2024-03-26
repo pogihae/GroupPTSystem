@@ -26,7 +26,7 @@ public class User implements Serializable {
     }
 
     public User(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
-        this(name, phoneNumber,age,sex,id,pw,role, State.NONMEMBER);
+        this(name, phoneNumber,age,sex,id,pw, role, State.PENDING);
     }
 
     public enum Role {
