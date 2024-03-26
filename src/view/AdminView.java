@@ -1,16 +1,12 @@
 package view;
 
 import model.*;
-import repository.GroupPTRepository;
-import service.TrainerService;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class AdminView {
-
-    private GroupPTRepository groupPTRepository;
-    private TrainerService trainerService;
-
+public class AdminView extends BaseView{
 
     public void adminMenu(){
         System.out.println("****************************");
@@ -41,15 +37,12 @@ public class AdminView {
 
     }
 
-
-
     public void showNoPendingApprovalsMessage(){
         System.out.println("\"승인 대기 중인 회원이 없습니다.\"\n");
     }
 
-    public void printMemberList(Member member, int index){
+    public void printMemberDetailInfo(Member member) {
         System.out.println("--------------------------------------------------------------------------");
-        System.out.print(index + "\t");
         System.out.print("이름: " + member.getName() + "\t");
         System.out.print("성별: " + member.getSex() + "\t");
         System.out.print("나이: " + member.getAge()+ "\t");
@@ -58,36 +51,38 @@ public class AdminView {
         System.out.println("--------------------------------------------------------------------------");
     }
 
-    public void printApproveMessage(User user){
-        System.out.println(user.getName() + "님이 승인되었습니다.\n");
-    }
+//    public void printApproveMessage(User user){
+//        System.out.println(user.getName() + "님이 승인되었습니다.\n");
+//    }
 
     public void printInvalidMessage(){
         System.out.println("잘못된 입력입니다.\n");
     }
-    public void printMemberClassSchedule(Member member, List<Reservation> reservations, Payment payment) {
+    public void printMemberClassSchedule(Member member, List<Reservation> reservations) {
         int totalAttendanceCount = 0;
-        int noShowCount = groupPTRepository.countNoShow(member);
+        int noShowCount = 0;
 
-        System.out.println("수업 스케줄:");
+        System.out.println(member.getName() + "님의 수업 스케줄:");
         for (int i = 0; i < reservations.size(); i++) {
             Reservation reservation = reservations.get(i);
             System.out.print("  " + (i + 1) + "회차 " + reservation.getStartDate() + " ");
             if (reservation.isNoShowUser(member)) {
                 System.out.println("노쇼");
+                noShowCount += 1;
             } else {
                 System.out.println("출석 트레이너 " + reservation.getManager().getName());
                 totalAttendanceCount++;
             }
         }
-        int totalPaymentCount = payment.getPaymentOption().getSessions();
-        int remainingCount = totalPaymentCount - totalAttendanceCount;
+        Payment payment = member.getPayment();
+        int totalPaymentCount = (payment == null)? 0 : payment.getPaymentOption().getSessions();
+        int remainingCount = member.getRemainSessionCount();
         int reservationCount = reservations.size();
 
         System.out.println(" 총 결제 횟수 : " + totalPaymentCount + "회 / 남은 회수 : " + remainingCount + "회 / 예약된 횟수 : " + reservationCount + "회 / 노쇼 : " + noShowCount + "회");
     }
 
-    public void printMemberInfo(Member member) {
+    public void printMemberAbstractInfo(Member member) {
         System.out.println("[" + member.getName() + "] " + member.getSex() + " " + member.getAge() + "세 " + member.getId() + " " + member.getPhoneNumber());
     }
 
@@ -117,10 +112,21 @@ public class AdminView {
 
 
     // 메뉴 2번(회원 목록 보기)을 선택했을 경우
-    public void viewMemberList(){
+    public void printMembers(List<Member> members){
         // !!!!!!!!!!!!!!!!여기서 회원 이름, 나이, 아이디, 휴대폰 번호 이름 순으로 출력!!!!!!!!!!!!!!!!
+        List<Member> sorted = new ArrayList<>(members);
+        sorted.sort(Comparator.comparing(User::getName));
 
-        System.out.println("********************************************************");
+        System.out.println("---회원 목록---");
+
+        int index = 1;
+        for (Member member : sorted) {
+            System.out.print(index + ": ");
+            printMemberAbstractInfo(member);
+            index += 1;
+        }
+
+        System.out.println("\n********************************************************");
         System.out.println("회원 별 수업 스케줄 확인을 원할 경우 회원의 인덱스 번호를 입력하세요.");
         System.out.println("@. 뇨쇼 회원 확인");
         System.out.println("!. 수업 연장 마케팅 전송");
@@ -157,15 +163,17 @@ public class AdminView {
 
 
     //메뉴 4번(트레이너 목록)을 선택했을 경우
-    public void viewTrainerList(){
+    public void viewTrainerList(List<Trainer> trainers){
         //!!!!!!!!!!!!!!!!여기서 모든 트레이너의 이름과 전 월 수입이 전 월 수입이 높은순으로 출력!!!!!!!!!!!!!!!!
+        for (int i=0; i< trainers.size(); i++) {
+            System.out.print((i+1) + ": ");
+            printTrainerInfo(trainers.get(i));
+        }
         System.out.print("트레이너 상세 정보를 확인할 트레이너의 인덱스를 입력하세요 (1부터 시작) : ");
-
     }
 
-    public void printTrainerInfo(int index, Trainer trainer) {
+    public void printTrainerInfo(Trainer trainer) {
         System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.print(index + "\t");
         System.out.print("트레이너 이름: " + trainer.getName() + "\t");
         System.out.print("트레이너 나이: " + trainer.getAge() + "\t");
         System.out.print("트레이너 성별: " + trainer.getSex() + "\t");

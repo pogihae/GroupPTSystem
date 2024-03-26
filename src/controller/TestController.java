@@ -82,7 +82,8 @@ public class TestController {
         /*----테스트 데이터 저장 끝----*/
 
         // 1. 관리자
-        AdminController adminController = new AdminController(new AdminService(new TrainerService()));
+        TrainerService trainerService = new TrainerService();
+        AdminController adminController = new AdminController(new AdminService(trainerService));
         adminController.runAdmin();
     }
 }
