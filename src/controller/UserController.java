@@ -58,14 +58,14 @@ public class UserController {
         view.showSigned();
     }
 
-    public void consult(){
-        view.showConsultMenu();
-        String choice = sc.nextLine();
-        switch (choice){
-            case "1" -> reserveConsultation();
-            case "2" -> checkMyReservation();
-        }
-    }
+//    public void consult(){
+//        view.showConsultMenu();
+//        String choice = sc.nextLine();
+//        switch (choice){
+//            case "1" -> reserveConsultation();
+//            case "2" -> checkMyReservation();
+//        }
+//    }
 
     public void reserveConsultation(){
         view.showReserveConsultation();
@@ -128,13 +128,13 @@ public class UserController {
         userService.saveReservation(user,newReservation);
     }
 
-    public void checkMyReservation(){
-        // 전화번호를 입력받는다.
-        view.showCheckMyReservation();
-        String phoneNumber = sc.nextLine();
-        Reservation reservation = userService.checkMyReservation(phoneNumber);
-        view.printReservation(reservation);
-    }
+//    public void checkMyReservation(){
+//        // 전화번호를 입력받는다.
+//        view.showCheckMyReservation();
+//        String phoneNumber = sc.nextLine();
+//        Reservation reservation = userService.checkMyReservation(phoneNumber);
+//        view.printReservation(reservation);
+//    }
 
     public void changeReservation(){
         List<Reservation> list = userService.findAllReservations();

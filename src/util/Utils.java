@@ -18,6 +18,7 @@ public class Utils {
         final int dayOfWeek;
 
         public static Day of(int dayOfWeek) {
+            System.out.println(dayOfWeek);
             return Arrays.stream(Day.values())
                     .filter(d -> d.dayOfWeek == dayOfWeek)
                     .findFirst().orElseThrow();

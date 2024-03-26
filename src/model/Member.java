@@ -101,6 +101,7 @@ public class Member extends User {
         int slotIndex = 1;
 
         for (LocalDate date = today.plusDays(1); date.isBefore(endDay); date = date.plusDays(1)) {
+
             if (workDays.contains(Utils.getDay(date.atStartOfDay()))) {
                 System.out.println(date + "의 예약 가능한 시간:");
                 System.out.println("--------------------------------------------");
@@ -183,7 +184,7 @@ public class Member extends User {
     // 예약한 수업을 변경 혹은 취소하고 싶다면 해당 번호를 입력하세요
     // 강사/ 시간 >> 해당 예약 변경은 1번, 해당 예약 취소는 2번을 입력하세요
     public Reservation displayReservationInfo() {
-        List<Reservation> reservationsByPhone = repository.findReservationsOfUserByPhone(this.getPhoneNumber());
+        List<Reservation> reservationsByPhone = repository.findReservationsByPhone(this.getPhoneNumber());
         // 예약된 수업 목록 출력
         for (int i = 0; i < reservationsByPhone.size(); i++) {
             //예약된 수업 목록 출력 양식: idx. 강사/ 시간/ 정원
