@@ -69,7 +69,7 @@ public class UserService {
         return (list.isEmpty())? null : list.getFirst();
     }
 
-    public void cancelReservation(){
-
+    public void cancelReservation(Reservation reservation){
+        repository.deleteReservation(reservation);
     }
 }
