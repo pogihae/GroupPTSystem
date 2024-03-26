@@ -172,6 +172,7 @@ public class GroupPTRepository {
      * @return 모든 트레이너 목록
      * */
     public List<Trainer> findAllTrainers() {
+        //System.out.println(findAllTrainersUtil().stream().map(User::getState).toList());
         return findAllTrainersUtil().stream()
                 .filter(trainer -> trainer.getState().equals(User.State.APPROVED))
                 .collect(Collectors.toCollection(ArrayList::new));

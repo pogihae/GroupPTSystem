@@ -1,9 +1,6 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import util.Utils;
 
 import java.io.Serializable;
@@ -14,6 +11,7 @@ import java.util.List;
 @Setter
 @ToString
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Trainer extends User {
     private static final int MAX_LESSON_DAY = 3;
 
@@ -51,6 +49,7 @@ public class Trainer extends User {
     }
 
     public void update(Trainer trainer) {
+        super.update(trainer);
         this.grade = trainer.grade;
         this.lessonDays = trainer.lessonDays;
     }

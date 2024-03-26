@@ -246,7 +246,7 @@ public class AdminService {
     // 트레이너 목록 출력
     public void getTrainerList(){
         List<Trainer> trainers = groupPTRepository.findAllTrainers();
-        System.out.println();
+        System.out.println(trainers);
         for (int i = 0; i < trainers.size(); i++) {
             Trainer trainer = trainers.get(i);
             int index = i + 1;

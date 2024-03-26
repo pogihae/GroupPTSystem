@@ -66,8 +66,7 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof User) {
-            User other = (User) obj;
+        if (obj instanceof User other) {
             if (this.id == null || other.id == null) {
                 return this.phoneNumber.equals(((User) obj).getPhoneNumber());
             }
