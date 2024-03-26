@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 public class UserController {
     UserView view = new UserView();
@@ -103,16 +104,14 @@ public class UserController {
             }
         }
 
-        List<Reservation> trainerSchedule = userService.findReservationsByTrainer(trainer);
-        Reservation schedule;
-        for(int i = 0;i<trainerSchedule.size();i++){
-            schedule = trainerSchedule.get(i);
-            //1시 부터 7시까지 예약가능한 시간만 출력해 보여준다.
-            if(availableTime.contains(schedule.getStartDate())){
-                availableTime.remove(i);
-            }
-        }
-        view.showAvailableTime(availableTime);
+        final List<Reservation> trainerSchedule = userService.findReservationsByTrainer(trainer);
+        final Set<LocalDateTime> scheduleTimes = trainerSchedule.stream()
+                        .map(Reservation::getStartDate)
+                        .collect(Collectors.toSet());
+        ;
+        view.showAvailableTime(availableTime.stream()
+                .filter(t -> !scheduleTimes.contains(t))
+                .toList());
 
         String choice = sc.nextLine();
         //이름, 번호를 받아 User 객체를 생성한다.

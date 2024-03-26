@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class User implements Serializable {
 

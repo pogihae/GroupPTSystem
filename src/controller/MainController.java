@@ -10,13 +10,15 @@ import util.Utils;
 public class MainController {
     public void run() {
         final UserController userController = new UserController();
-        userController.signUp();
-        userController.login();
+        //userController.signUp();
+        //userController.login();
 
-        TrainerController trainerController = new TrainerController();
+//        TrainerController trainerController = new TrainerController();
+//
+//        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
+//            trainerController.handleTrainerMenu();
+//        }
 
-        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
-            trainerController.handleTrainerMenu();
-        }
+        userController.consult();
     }
 }
