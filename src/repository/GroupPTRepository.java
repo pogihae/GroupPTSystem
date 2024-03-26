@@ -108,7 +108,7 @@ public class GroupPTRepository {
     public List<Member> findAllMembers() {
         return readListFromFile(MEMBER_FILE).stream()
                 .map(obj -> (Member) obj)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -158,7 +158,7 @@ public class GroupPTRepository {
     public List<Trainer> findAllTrainers() {
         return readListFromFile(TRAINER_FILE).stream()
                 .map(obj -> (Trainer) obj)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /*-----------예약 기능-----------*/
@@ -171,7 +171,7 @@ public class GroupPTRepository {
     public List<Reservation> findAllReservations() {
         List<Reservation> reservations = readListFromFile(RESERVATION_FILE).stream()
                 .map(obj -> (Reservation) obj)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
 
         reservations.forEach(r -> {
             List<User> mUsers = r.getUsers();
@@ -227,7 +227,7 @@ public class GroupPTRepository {
     public List<Reservation> findReservationsByTrainer(Trainer trainer) {
         return findAllReservations().stream()
                 .filter(r -> r.getManager().equals(trainer))
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -238,7 +238,7 @@ public class GroupPTRepository {
     public List<Reservation> findReservationsByPhone(String phone) {
         return findAllReservations().stream()
                 .filter(r -> r.getUsers().stream().anyMatch(u -> u.getPhoneNumber().equals(phone)))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -272,7 +272,7 @@ public class GroupPTRepository {
     public List<Payment> findAllPayments() {
         return readListFromFile(PAYMENT_FILE).stream()
                 .map(obj -> (Payment) obj)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private void addObjectToFile(String fileName, Object object) {
