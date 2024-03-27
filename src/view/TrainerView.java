@@ -12,11 +12,10 @@ public class TrainerView extends BaseView {
 
     //트레이너 메뉴
     public String requestTrainerMenu() throws IllegalAccessException {
-        print("\n\n\n");
-        print("                TRAINER MENU                   \n");
         return requestMenuSelect(
-                "수업시간표\n\t\t\t\t   확인",
-                "수업 요일\n\t\t\t\t   선택하기",
+                "트레이너 메뉴",
+                "수업시간표 확인",
+                "수업 요일 선택하기",
                 "회원 출석체크",
                 "수입 확인"
         );
@@ -28,10 +27,8 @@ public class TrainerView extends BaseView {
     }
 
     //메뉴 2번(수업 요일 선택하기)을 선택했을 경우
-    //메뉴 2번(수업 요일 선택하기)을 선택했을 경우
     public Utils.Day[] requestLessonDays(){
-        System.out.println(".   /\\\\_/\\\\\\n\" +\n" +
-                "                \"  /  • - • \\\\\\n\" +\"/ づ \\uD83C\\uDF38づ [ 원하는 요일을 선택하세요 (,로 구분) ] : ");
+        System.out.println("원하는 요일을 선택하세요 (,로 구분): ");
         System.out.println(Arrays.toString(Utils.Day.values()));
         return Arrays.stream(readLine().split(","))
                 .map(String::trim)
@@ -52,8 +49,7 @@ public class TrainerView extends BaseView {
             sb.append("%d. %s\n".formatted(i + 1, users.get(i)));
         }
 
-        sb.append(".   /\\\\_/\\\\\\n\" +\n" +
-                "                \"  /  • - • \\\\\\n\" +\"/ づ \\uD83C\\uDF38づ [ 출석한 회원들을 입력(,로 구분) ] : ");
+        sb.append("출석한 회원들을 입력(,로 구분): ");
         System.out.println(sb);
 
         return Arrays.stream(readLine().split(","))

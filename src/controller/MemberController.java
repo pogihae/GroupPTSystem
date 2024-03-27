@@ -126,7 +126,6 @@ public class MemberController {
         view.printRemainSessionsOfUser(member, calculateDaysRemaining);
         // 사용자로부터 취소할 예약의 인덱스를 입력받음 (1부터 시작하는 인덱스; 리턴할 때 -1)
         int index = view.getReservationChoiceToUpdate();
-        view.printLine();
         //해당 예약 변경할지 삭제할지 결정
         return reservationsByPhone.get(index);
     }

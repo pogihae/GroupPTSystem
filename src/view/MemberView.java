@@ -17,54 +17,48 @@ import java.util.Scanner;
 
 public class MemberView extends BaseView{
     public void displayPaymentOptions() {
-        System.out.println("--------------결제 단위를 선택해주세요--------------");
-        System.out.println("1. 10회 - 90일 - 총가격 ₩700,000");
-        System.out.println("2. 20회 - 120일 - 총가격 ₩1,200,000");
-        System.out.println("3. 30회 - 180일 - 회당 ₩1,500,000");
-        System.out.println("------------------------------------------------");
+        println(formatTitle("결제 단위를 선택해주세요"));
+        println(SEPARATOR);
+        println("1. 10회 - 90일 - 총가격 ₩700,000");
+        println("2. 20회 - 120일 - 총가격 ₩1,200,000");
+        println("3. 30회 - 180일 - 회당 ₩1,500,000");
+        println(SEPARATOR);
     }
+
     public int getPaymentOptionsChoice() {
-        print(".   /\\_/\\\n" +
-                "  /  • - • \\\n" +
-                "/ づ \uD83C\uDF38づ  [ 번호 입력 ] =>  ");
+        print("[ 번호 입력 ] => ");
         String input = readLine();
         int choice = 0;
         //예외처리
         try {
             choice = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            System.out.println("숫자를 입력해주세요.");
+            println("숫자를 입력해주세요.");
             // 여기서 잘못된 입력에 대한 처리를 할 수 있습니다.
         }
-        System.out.println("------------------------------------------------");
+        println(SEPARATOR);
         return choice;
     }
+
     public void displayPaymentResult(int choice, int priceOfSelectedOption) {
-        println(ColorView.GREEN + "  　  /)⋈/)\n" +
-                "    (｡•ㅅ•｡)♡\n" +
-                " ┏--∪-∪━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
-                " ♡ " +choice+"번 옵션 , "+priceOfSelectedOption+"원 결제가 완료되었습니다 .。♡\n" +
-                " ┗-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"+ ColorView.ANSI_RESET);
+        println(formatTitle("choice"+ choice + "번 옵션," + priceOfSelectedOption+ "원 결제가 완료되었습니다"));
     }
     public void displayInvalidOption() {
-        System.out.println("!!!!!!!!!!잘못된 선택입니다. 다시 선택해주세요!!!!!!!!!!");
+        printlnError("잘못된 선택입니다.");
     }
 
     public void displayTrainers(List<Trainer> allTrainersList){
-        System.out.println("-------------------------------수업 예약-------------------------");
-        System.out.println("--------------예약을 원하는 트레이너의 번호를 입력해주세요--------------");
+        println(formatTitle("수업 예약"));
+        println(formatTitle("예약을 원하는 트레이너의 번호를 입력해주세요."));
         for (int i = 0; i < allTrainersList.size(); i++) {
             Trainer trainer = allTrainersList.get(i);
-            System.out.printf("[%d] %s 트레이너/ 등급 %s/ %s\n", i + 1, trainer.getName(), trainer.getGrade(), trainer.getSex());
+            println("[%d] %s 트레이너/ 등급 %s/ %s".formatted(i + 1, trainer.getName(), trainer.getGrade(), trainer.getSex()));
         }
-        System.out.println("------------------------------------------------");
+        printlnError(SEPARATOR);
     }
     public int getTrainerChoice() {
-        print(".   /\\_/\\\n" +
-                "  /  • - • \\\n" +
-                "/ づ \uD83C\uDF38づ  [ 번호 입력 ] =>  ");
-        int choice = Integer.parseInt(readLine());
-        return choice;
+        print("[ 번호 입력 ] => ");
+        return Integer.parseInt(readLine());
         //+) 유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함
     }
     // 예약 가능한 시간대 목록 생성
@@ -73,15 +67,13 @@ public class MemberView extends BaseView{
         LocalTime endTime = LocalTime.of(19,0);
         today = LocalDate.from(today.atStartOfDay());
         //idx(1~), LocalDateTime 예약한시간
-        System.out.println("filtered: " + filteredReservations);
+        println("filtered: " + filteredReservations);
         Map<Integer, LocalDateTime> slotIndexToDateTimeMap = new HashMap<>();
         int slotIndex = 1;
         for (LocalDate date = today.plusDays(1); !date.isAfter(endDay); date = date.plusDays(1)) {
-            System.out.println(Utils.getDay(date.plusDays(1).atStartOfDay()));
             if (workDays.contains(Utils.getDay(date.plusDays(1).atStartOfDay()))) {
-                System.out.println("--------------------------------------------");
-                System.out.println("[ "+date + "]"+ "의 예약 가능한 시간:");
-                System.out.println("--------------------------------------------");
+                println(formatTitle("[%s]의 예약 가능 시간".formatted(date.toString())));
+                println(SEPARATOR);
                 //해당 시간: tempStartTime
                 LocalTime tempStartTime = startTime;
                 while (tempStartTime.isBefore(endTime)) {
@@ -102,7 +94,7 @@ public class MemberView extends BaseView{
                     }
 
                     if (!isReserved) {
-                        System.out.println("[ "+slotIndex + " ]"+ ". " + slotStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, E"))
+                        println("[ "+slotIndex + " ]"+ ". " + slotStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, E"))
                                 + " - " + slotStartDateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
                         slotIndexToDateTimeMap.put(slotIndex, slotStartDateTime);
                         slotIndex++;
@@ -115,25 +107,19 @@ public class MemberView extends BaseView{
         return slotIndexToDateTimeMap;
     }
     public int getReservationSlotChoice() {
-        print(".   /\\_/\\\n" +
-                "  /  • - • \\\n" +"/ づ \uD83C\uDF38づ [ 예약할 시간의 번호를 입력해주세요 ] => ");
-        int choice = Integer.parseInt(readLine());
-        System.out.println("--------------------------------------------");
-        return choice;
+        printRequestInput("예약할 시간의 번호");
+        return Integer.parseInt(readLine());
     }
     public void displayNoSessionsLeft() {
-        System.out.println(ColorView.RED+"!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!" + ColorView.ANSI_RESET);
+        printlnError("!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!");
     }
     public void displayReservationConfirmation(LocalDateTime selectedDateTime) {
-        System.out.println(ColorView.GREEN + "  　  /)⋈/)\n" +
-                "    (｡•ㅅ•｡)♡\n" +
-                " ┏--∪-∪━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
-                " ♡  \" 예약이 완료되었습니다. \"\n\t[ 예약일자: "+ selectedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " ]\n"
-                +" ┗-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"+ ColorView.ANSI_RESET);
-        //System.out.println("[ 예약일자: " + selectedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " ]\n");
+        println(formatTitle("예약이 완료되었습니다."));
+        println("[ 예약일자: " + selectedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " ]");
+        println(SEPARATOR);
     }
     public void displayInvalidChoice() {
-        System.out.println("!!!!!!!!!!잘못된 번호입니다. 다시 입력해주세요!!!!!!!!!!");
+        printlnError("!!!!!!!!!!잘못된 번호입니다. 다시 입력해주세요!!!!!!!!!!");
     }
     // 예약된 수업 목록 출력
     public void displayReservationsOfUser(List<Reservation> reservationsByPhone){
@@ -141,51 +127,49 @@ public class MemberView extends BaseView{
             //예약된 수업 목록 출력 양식: idx. 강사/ 시간/ 정원
             //System.out.println((i+1) + ": " + reservationsByPhone.get(i).toString());
             Reservation reservation = reservationsByPhone.get(i);
-            System.out.printf("[ %d ] %s 트레이너/ %s/ 예약인원 %d명\n", i + 1, reservation.getManager().getName(),
+            println("[ %d ] %s 트레이너/ %s/ 예약인원 %d명".formatted(
+                    i + 1, reservation.getManager().getName(),
                     reservation.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                    reservation.getUsers().size());
+                    reservation.getUsers().size()
+            ));
         }
     }
+
     //잔여 수업횟수/ 잔여 수업 사용 가능 일수 출력
     public void printRemainSessionsOfUser(Member member, int calculateDaysRemaining){
-        System.out.printf("==> 고객님의 잔여 횟수는 %d회, 잔여 수업 사용가능일수는 %d일 입니다\n", member.getRemainSessionCount(), calculateDaysRemaining);
+        printlnError("고객님의 잔여 횟수는 %d회, 잔여 수업 사용가능일수는 %d일 입니다".formatted(
+                member.getRemainSessionCount(), calculateDaysRemaining
+        ));
 
     }
     // 사용자로부터 변경할 예약의 인덱스를 입력받음 (1부터 시작하는 인덱스)
     // 인덱스가 아닌 다른 숫자를 누르면 메인화면으로 돌아간다.
     public int getReservationChoiceToUpdate(){
-        System.out.println("예약한 수업을 변경 혹은 취소하고 싶다면 해당 예약의 인덱스를 입력하세요 ==>");
-        System.out.print("[ 번호 입력 ] => ");
-        int choice = Integer.parseInt(readLine())-1;// 사용자는 1부터 인덱싱을 시작하지만, 내부적으로는 0부터 시작하는 인덱스에 맞춰 조정
-        System.out.println("--------------------------------------------");
-        return choice;
+        printRequestInput("변경 혹은 취소하고 싶은 예약의 인덱스: ");
+        return Integer.parseInt(readLine())-1;
     }
+
     //변경을 원한 예약 객체 리턴
     public int getUpdateOrCancel(Reservation reservationToUpdate){
         System.out.printf("선택한 예약: [ %s 트레이너/ %s ]\n해당 예약을 변경하고 싶다면 1번, 취소하고싶다면 2번을 입력하세요: ", reservationToUpdate.getManager().getName(),
                 reservationToUpdate.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        System.out.print(".   /\\\\_/\\\\\\n\" +\n" +
-                "                \"  /  • - • \\\\\\n\" +\"/ づ \\uD83C\\uDF38づ [ 번호 입력 ] => ");
-        int choice = Integer.parseInt(readLine());// 사용자는 1부터 인덱싱을 시작하지만, 내부적으로는 0부터 시작하는 인덱스에 맞춰 조정
-        System.out.println("--------------------------------------------");
-        return choice;
+        System.out.print("[ 번호 입력 ] => ");
+        return Integer.parseInt(readLine());
     }
     public void displayUpdateRestrictionMessage() {
-        System.out.println("!!!!!!!!!!당일은 예약 변경이 불가합니다!!!!!!!!!!");
+        printlnError("!!!!!!!!!!당일은 예약 변경이 불가합니다!!!!!!!!!!");
     }
     public void displayCancellationConfirmation(Reservation reservationToUpdate, Member member) {
-        System.out.printf("*********%s $s 트레이너 수업 예약이 취소되었습니다*********\n",reservationToUpdate
-                        .getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-                , reservationToUpdate.getManager().getName());
-        System.out.printf("*********고객님의 남은 수업 횟수는 [ %d회 ] 입니다*********\n", member.getRemainSessionCount());
+        printSpecial("*********%s $s 트레이너 수업 예약이 취소되었습니다*********\n".formatted(
+                reservationToUpdate.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                reservationToUpdate.getManager().getName()
+        ));
+        println(formatTitle("고객님의 남은 수업 횟수는 [ %d회 ] 입니다".formatted(member.getRemainSessionCount())));
     }
-    public void printLine(){
-        System.out.println("--------------------------------------------");
-    }
+
     public String requestMemberMenu() throws IllegalAccessException {
-        print("\n\n\n");
-        print("                 USER MENU                   \n");
         return requestMenuSelect(
+                "회원 메뉴",
                 "수강권 결제",
                 "수업 예약",
                 "수업 변경 및 취소"

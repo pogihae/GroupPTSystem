@@ -6,7 +6,6 @@ import model.Trainer;
 import model.User;
 import view.AdminView;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import service.AdminService;
@@ -54,7 +53,7 @@ public class AdminController {
                 .toList();
 
         adminService.approveUsers(approvedUsers);
-        adminView.print(approvedUsers.size() + "명 승인\n");
+        adminView.printSpecial(approvedUsers.size() + "명 승인 완료\n");
     }
 
     private void handleAllMembers() {
@@ -63,7 +62,7 @@ public class AdminController {
         adminView.printMembers(members);
 
         //유저 인덱스 번호 입력하면 유저의 수업 스케줄 확인
-        adminView.print("확인할 회원: ");
+        adminView.printRequestInput("확인할 회원 번호");
         Member member = members.get(adminView.readInt() - 1);
 
         List<Reservation> reservations = adminService.getMemberClassSchedule(member);
@@ -85,7 +84,7 @@ public class AdminController {
         adminView.printNonMemberList(nonMemberList);
 
         // 입력받은 인덱스에 해당하는 비회원의 상담 예약 정보 확인
-        adminView.print("상담 예약 정보를 확인: ");
+        adminView.printRequestInput("예약 정보 확인할 번호");
         int nonmemberIndex = adminView.readInt();
         User user = nonMemberList.get(nonmemberIndex - 1);
 
@@ -95,17 +94,18 @@ public class AdminController {
 
     private void handleAllTrainers() {
         List<Trainer> trainers = adminService.getTrainerList();
-        adminView.viewTrainerList(trainers);
+        adminView.printTrainers(trainers);
 
         // 입력받은 인덱스에 해당하는 트레이너의 상세 정보 확인
-        int trainerIndex = adminView.readInt();
+        int trainerIndex = adminView.readInt() - 1;
         Trainer trainer = trainers.get(trainerIndex);
 
-        adminView.print(trainer.getName() + "님의 정보 확인할 연도: ");
+        adminView.printRequestInput("정보 확인할 번호");
+        adminView.printRequestInput(trainer.getName() + "님의 수입 정보 확인할 연도");
         int year = adminView.readInt();
 
-        adminView.print(trainer.getName() + "님의 정보\n");
+        adminView.print(adminView.formatTitle(trainer.getName() + "님의 정보\n"));
         List<String> details = adminService.getTrainerDetails(trainers.get(trainerIndex), year);
-        adminView.printTrainerDetails(details);
+        adminView.printTrainerDetails(trainer, details);
     }
 }

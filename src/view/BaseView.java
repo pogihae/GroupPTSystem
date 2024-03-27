@@ -2,6 +2,7 @@ package view;
 
 import model.Reservation;
 import service.UserService;
+import util.Color;
 import util.Utils;
 
 import java.util.*;
@@ -65,13 +66,13 @@ public abstract class BaseView {
     }
 
     public void showLogo(){
-        String[] logoLines = {ColorView.CYAN+
+        String[] logoLines = {Color.CYAN+
                 "      ██████╗ ██████╗  ██████╗ ██╗   ██╗██████╗     ██████╗ ████████╗    ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗",
                 "██╔════╝ ██╔══██╗██╔═══██╗██║   ██║██╔══██╗    ██╔══██╗╚══██╔══╝    ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║",
                 "██║  ███╗██████╔╝██║   ██║██║   ██║██████╔╝    ██████╔╝   ██║       ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║",
                 "██║   ██║██╔══██╗██║   ██║██║   ██║██╔═══╝     ██╔═══╝    ██║       ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║",
                 "╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║         ██║        ██║       ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║",
-                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝"+ColorView.ANSI_RESET
+                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝"+ Color.ANSI_RESET
        };
 
         addSpace(logoLines);
@@ -79,12 +80,12 @@ public abstract class BaseView {
     }
 
     public void showStart(){
-        String[] startLines = {ColorView.CYAN+
+        String[] startLines = {Color.CYAN+
                 "              +-------------------------------------+",
                 "|    해당 프로그램을 시작하시겠습니까?    |",
                 "         |         [Y]es        [N]o         |",
                 "              +-------------------------------------+"
-        +ColorView.ANSI_RESET};
+        + Color.ANSI_RESET};
     addSpace(startLines);
     }
     //가운데 정렬을 위한 공백 추가 함수
@@ -102,7 +103,11 @@ public abstract class BaseView {
         return " ".repeat(Math.max(0, space)) + line;
     }
 
-    private String formatMenu(String... menus) {
+    public void printlnError(String msg) {
+        println(Color.RED + msg + Color.ANSI_RESET);
+    }
+
+    private String formatMenu(String title, String... menus) {
         //변경가능한 문자열
         StringBuilder sb = new StringBuilder();
         sb.append("        .・*・.・*・.・*・.・*・.・*・.        \n");
@@ -117,6 +122,20 @@ public abstract class BaseView {
         sb.append("입력: ");
         return sb.toString();
     }
+
+    public void printRequestInput(String target) {
+        print("[%s]를 입력해주세요: ".formatted(target));
+    }
+
+    public String formatTitle(String title) {
+        return "*********\t%s\t*********\n".formatted(title);
+    }
+
+    public void printSpecial(String msg) {
+        println(Color.BLUE + msg + Color.ANSI_RESET);
+    }
+
+    public static String SEPARATOR = "*****************************";
 
     /**
      *
@@ -145,23 +164,26 @@ public abstract class BaseView {
                 .toList();
 
         // 출력
+        println(SEPARATOR);
         StringBuilder sb = new StringBuilder();
+        sb.append(formatTitle("예약목록"));
         for (Utils.Day day : sortedDays) {
             List<Reservation> dayReservations = dayToReservations.get(day);
             if (dayReservations.isEmpty()) continue;
 
             int date = Utils.getDate(dayReservations.get(0).getStartDate());
-            sb.append("*********%s(%d)*********\n".formatted(day.name(), date));
+            sb.append("%s(%d)\n".formatted(day.name(), date));
+            sb.append(SEPARATOR).append("\n");
 
             for (Reservation reservation : dayReservations) {
-                sb.append("날짜 / 시간 : ").append(reservation.getStartDate()).append("\n");
-                sb.append("트레이너: ").append(reservation.getManager()).append("\n");
-                sb.append("예약 인원 수: ").append(reservation.getUsers().size()).append('\n');
+                sb.append(reservation.getStartDate()).append("\t");
+                sb.append(reservation.getManager().getName()).append("\t");
+                sb.append(reservation.getUsers().size()).append("명 예약\n");
             }
         }
-        sb.append("************************");
 
         System.out.println(sb);
+        println(SEPARATOR);
     }
 
 
