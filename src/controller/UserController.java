@@ -36,7 +36,7 @@ public class UserController {
         view.print(view.formatTitle("로그인"));
         String id = view.requestId();
         String pw = view.requestPw("login");
-        System.out.println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
+        view.println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
         if (!userService.login(id, pw)) {
             view.printLoginFailed();
             return;

@@ -41,7 +41,6 @@ public class TrainerService {
                 .filter(r -> Utils.getYear(r.getStartDate()) == now.getYear())
                 .filter(r -> Utils.getMonth(r.getStartDate()) == now.getMonth().getValue())
                 .filter(r -> Utils.getDate(r.getStartDate()) == now.getDayOfMonth())
-                .filter(r -> !r.isEnd())
                 .min(Comparator.comparing(Reservation::getStartDate))
                 .orElse(null);
     }

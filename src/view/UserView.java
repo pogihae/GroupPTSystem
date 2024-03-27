@@ -181,6 +181,7 @@ public class UserView extends BaseView {
             printlnError("예약 없음");
         }
         printSpecial("담당자 : " + reservation.getManager().getName() + "\n");
+        printSpecial("예약시간 : " + reservation.getStartDate() + "\n");
         printSpecial("예약자명 : " + reservation.getUsers().get(0).getName() + "님\n");
         printSpecial("전화번호 : " + reservation.getUsers().get(0).getPhoneNumber());
         println(SEPARATOR);

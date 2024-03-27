@@ -44,7 +44,6 @@ public class MemberService {
         int[] reservedDate = groupPTRepository.findReservationsByPhone(member.getPhoneNumber()).stream()
                 .mapToInt(r -> r.getStartDate().getDayOfMonth())
                 .toArray();
-        System.out.println(Arrays.toString(reservedDate));
         return reservationOfSelectedTrainer.stream()
                 .filter(reservation -> reservation.isReservedUser(member) || reservation.isFull())
                 .filter(reservation -> Arrays.stream(reservedDate).anyMatch(date -> date == reservation.getStartDate().getDayOfMonth()))
@@ -54,7 +53,6 @@ public class MemberService {
 
     public void makeReservation(Member member, Reservation existingReservation, Trainer selectedTrainer, LocalDateTime selectedDateTime) {
         if (existingReservation != null) {
-            System.out.println("ALREADY RESERVED");
             existingReservation.addUser(member);
             groupPTRepository.updateReservation(existingReservation);
         } else { //해당시간에 예약한 사람이 0명인 경우

@@ -92,17 +92,16 @@ public class TrainerView extends BaseView {
 
     public void printMinorUserAttendance(boolean attempt, User user) {
         if (attempt) {
-            System.out.println("┌─────────────────┐\n" +
+            System.out.println("┌─────────────────────┐\n" +
                     "│  미성년자 출석했습니다. │\n" +
-                    "└∩────────────────∩┘\n" +
+                    "└∩────────────────────∩┘\n" +
                     "   ヽ(`・ω・´)ノ\n");
         } else {
-            System.out.println("┌─────────────────┐\n" +
+            System.out.println("┌─────────────────────┐\n" +
                     "│  미성년자 결석했습니다. │\n" +
-                    "└∩────────────────∩┘\n" +
+                    "└∩────────────────────∩┘\n" +
                     "   ヽ(`・ω・´)ノ\n");
         }
-        System.out.println(user);
     }
 
 //    public void printTimeTable(List<Reservation> reservations) {

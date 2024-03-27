@@ -45,8 +45,6 @@ public class UserService {
 
     public void signUp(String name, String phoneNumber, int age, String sex, String id, String pw, User.Role role) {
         User user = new User(name, phoneNumber, age, sex, id, pw, role);
-        //TODO for test set state
-        user.setState(User.State.APPROVED);
         if (user.getRole().equals(User.Role.TRAINER)) {
             repository.saveTrainer(new Trainer(user));
         } else {

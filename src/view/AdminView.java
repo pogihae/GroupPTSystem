@@ -105,7 +105,7 @@ public class AdminView extends BaseView {
     }
 
     public void printUserAbstractInfo(User user) {
-        println("[" + user.getName() + "] " + user.getSex() + " " + user.getAge() + "세 " + user.getId() + " " + user.getPhoneNumber());
+        println("[" + user.getName() + "] " + user.getSex() + " " + user.getAge() + "세 " + user.getPhoneNumber());
     }
 
     public void printConsultReservationInfo(User nonMember, List<Reservation> consultReservations) {

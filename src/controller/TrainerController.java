@@ -31,7 +31,7 @@ public class TrainerController {
     }
 
     public void printTrainerTimeTable(Trainer trainer) {
-        view.printTrainerReservations(service.findReservationsIsNotEnd(trainer));
+        view.printTrainerReservations(service.findReservationsByTrainer(trainer));
     }
 
     public void setTrainerLessonDays(Trainer trainer) {
