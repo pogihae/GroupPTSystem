@@ -96,9 +96,9 @@ public abstract class BaseView {
             sb.append("*********%s(%d)*********\n".formatted(day.name(), date));
 
             for (Reservation reservation : dayReservations) {
-                sb.append("날짜 / 시간 : ").append(reservation.getStartDate()).append("\t");
-                sb.append("트레이너: ").append(reservation.getManager()).append("\t");
-                sb.append("예약 인원 수: ").append(reservation.getUsers().size());
+                sb.append("날짜 / 시간 : ").append(reservation.getStartDate()).append("\n");
+                sb.append("트레이너: ").append(reservation.getManager()).append("\n");
+                sb.append("예약 인원 수: ").append(reservation.getUsers().size()).append('\n');
             }
         }
         sb.append("************************");

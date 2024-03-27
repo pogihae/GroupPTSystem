@@ -16,18 +16,13 @@ public class MainController {
         final UserController userController = new UserController();
         final MemberController memberController = new MemberController();
 //        userController.signUp();
-        userController.login();
+         userController.login();
 
-//        TrainerController trainerController = new TrainerController();
-//
-//        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
-//            trainerController.handleTrainerMenu();
-//        }
+        TrainerController trainerController = new TrainerController();
 
-//
-//        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
-//            trainerController.handleTrainerMenu();
-//        }
+        if (UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
+            trainerController.handleTrainerMenu();
+        }
         if (UserService.getLoginedUserRole().equals(User.Role.MEMBER)) {
             memberController.handleMemberMenu();
         }

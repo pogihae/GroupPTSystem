@@ -1,20 +1,10 @@
 package model;
 
 import lombok.*;
-import repository.GroupPTRepository;
-import util.Utils;
-import view.MemberView;
 
-import java.sql.SQLOutput;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
 public class Member extends User {
     int remainSessionCount;//남은수업횟수 //유효날짜가 지나면 member의 remain횟수를 0으로 만들기
     Payment payment;//결제 객체 => (paymentTime, memberPhoneNumber, paymentOption)
@@ -24,6 +14,28 @@ public class Member extends User {
         super(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw(), user.getRole());
         this.remainSessionCount = 0;
         this.payment = null; // 초기값으로 null 설정
+    }
+
+    public Member(String name, String phone, int age, String gender, String id, String pw, Role role) {
+        super(name, phone, age, gender, id, pw, role);
+    }
+
+    public Member(String name, String phone, int age, String gender, String id, String pw) {
+        super(name, phone, age, gender, id, pw, Role.MEMBER);
+    }
+
+    public void update(Member member) {
+        super.update(member);
+        this.remainSessionCount = member.remainSessionCount;
+        this.payment = member.payment;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Member member) {
+            return this.getPhoneNumber().equals(member.getPhoneNumber());
+        }
+        return false;
     }
 }
 //----------------------------------------------------------------------------------------------------------------------------

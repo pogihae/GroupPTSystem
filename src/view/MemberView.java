@@ -78,12 +78,12 @@ public class MemberView extends BaseView{
                     LocalDateTime slotStartDateTime = LocalDateTime.of(date, tempStartTime);
                     LocalDateTime slotEndDateTime = slotStartDateTime.plusHours(1);
 
-                    boolean isReserved = filteredReservations.stream().anyMatch(reservation ->
-                            reservation.getStartDate().equals(slotStartDateTime));
+                    boolean isReserved = filteredReservations.stream()
+                            .anyMatch(reservation -> Utils.getDate(reservation.getStartDate()) == Utils.getDate(slotStartDateTime));
 
                     if (!isReserved) {
                         System.out.println("[ "+slotIndex + " ]"+ ". " + slotStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, E"))
-                                + " - " + slotEndDateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+                                + " - " + slotStartDateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
                         slotIndexToDateTimeMap.put(slotIndex, slotStartDateTime);
                         slotIndex++;
                     }

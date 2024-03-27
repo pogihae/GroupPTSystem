@@ -61,13 +61,13 @@ public class GroupPTRepository {
      * */
     public User findUserById(String id) {
         // 멤버 파일에서 검색 (비회원, 회원, 관리자)
-        User user = findAllMembers().stream()
+        User user = findAllMembersUtil().stream()
                 .filter(mUser -> mUser.getId().equals(id))
                 .findFirst().orElse(null);
 
         // 트레이너 파일에서 검색 (트레이너)
         if (user == null) {
-            user = findAllTrainers().stream()
+            user = findAllTrainersUtil().stream()
                     .filter(mUser -> mUser.getId().equals(id))
                     .findFirst().orElse(null);
         }
@@ -197,13 +197,13 @@ public class GroupPTRepository {
                 .map(obj -> (Reservation) obj)
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        reservations.forEach(r -> {
-            List<User> mUsers = r.getUsers();
-            mUsers.forEach(u -> u.update(findUserById(u.getId())));
-
-            User mManager = r.getManager();
-            mManager.update(findUserById(mManager.getId()));
-        });
+//        reservations.forEach(r -> {
+//            List<User> mUsers = r.getUsers();
+//            mUsers.forEach(u -> u.update(findUserById(u.getId())));
+//
+//            User mManager = r.getManager();
+//            mManager.update(findUserById(mManager.getId()));
+//        });
 
         return reservations;
     }
@@ -229,7 +229,7 @@ public class GroupPTRepository {
                 .findFirst()
                 .ifPresentOrElse(org -> {
                     org.update(reservation);
-                    writeListToFile(MEMBER_FILE, reservations);
+                    writeListToFile(RESERVATION_FILE, reservations);
                 }, () -> System.out.println(reservation + "가 존재하지 않습니다."));
     }
 
@@ -320,7 +320,7 @@ public class GroupPTRepository {
 
     private void writeListToFile(String fileName, List<?> object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
-            //System.out.println("TEST-REPO: wrote " + object);
+            System.out.println("TEST-REPO: wrote " + object);
             oos.writeObject(object);
         } catch (IOException e) {
             throw new RuntimeException(e);

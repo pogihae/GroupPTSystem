@@ -28,17 +28,19 @@ public class UserService {
         }
 
         User user = repository.findUserById(id);
+        System.out.println(user);
         if (user == null || !user.getPw().equals(pw)) {
             return false;
-        }
+}
         loginedUser = user;
         return true;
     }
 
     public void signUp(String name,String phoneNumber,int age,String sex,String id,String pw, User.Role role) {
         User user = new User(name,phoneNumber, age, sex, id, pw, role);
+        //TODO for test set state
+        user.setState(User.State.APPROVED);
         if (user.getRole().equals(User.Role.TRAINER)) {
-            user.setState(User.State.APPROVED);
             repository.saveTrainer(new Trainer(user));
         } else {
             repository.saveMember(new Member(user));
