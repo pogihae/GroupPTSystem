@@ -61,13 +61,13 @@ public class GroupPTRepository {
      * */
     public User findUserById(String id) {
         // 멤버 파일에서 검색 (비회원, 회원, 관리자)
-        User user = findAllMembers().stream()
+        User user = findAllMembersUtil().stream()
                 .filter(mUser -> mUser.getId().equals(id))
                 .findFirst().orElse(null);
 
         // 트레이너 파일에서 검색 (트레이너)
         if (user == null) {
-            user = findAllTrainers().stream()
+            user = findAllTrainersUtil().stream()
                     .filter(mUser -> mUser.getId().equals(id))
                     .findFirst().orElse(null);
         }

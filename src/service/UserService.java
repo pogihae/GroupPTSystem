@@ -30,7 +30,7 @@ public class UserService {
         User user = repository.findUserById(id);
         if (user == null || !user.getPw().equals(pw)) {
             return false;
-        }
+}
         loginedUser = user;
         return true;
     }
