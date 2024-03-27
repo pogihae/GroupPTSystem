@@ -30,6 +30,7 @@ public class UserController {
     }
 
     public void login() {
+        view.printLoginScreen();
         String id = view.requestId();
         String pw = view.requestPw("login");
 
@@ -47,6 +48,7 @@ public class UserController {
     }
 
     public void signUp(){
+        view.showLogo();
         view.showSignupMenu();
         String name = view.requestName();
         int age = view.requestAge();

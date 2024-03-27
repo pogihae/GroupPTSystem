@@ -11,8 +11,12 @@ import java.util.Scanner;
 
 public class UserView extends BaseView{
     private final Scanner sc = new Scanner(System.in);
-
+    public void printLoginScreen(){
+        //로그인 화면 ID, PW 입력하세요
+    }
     public String requestUserMenus() throws IllegalAccessException {
+        // 첫 화면 출력
+        showLogo();
         return requestMenuSelect(
                 "로그인",
                 "회원가입",
