@@ -49,7 +49,6 @@ public class MemberView extends BaseView{
                 " ┏--∪-∪━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
                 " ♡ " +choice+"번 옵션 , "+priceOfSelectedOption+"원 결제가 완료되었습니다 .。♡\n" +
                 " ┗-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"+ Color.ANSI_RESET);
-        println(formatTitle("choice"+ choice + "번 옵션," + priceOfSelectedOption+ "원 결제가 완료되었습니다"));
     }
     public void displayInvalidOption() {
         printlnError("잘못된 선택입니다.");
@@ -67,7 +66,7 @@ public class MemberView extends BaseView{
     public int getTrainerChoice() {
         print(".   /\\_/\\\n" +
                 "  /  • - • \\\n" +
-                "/ づ \uD83C\uDF38づ  [ 번호 입력 ] =>  ");
+                "/ づ \uD83C\uDF38づ  [ 번호 입력 ] => ");
         int choice = Integer.parseInt(readLine());
         return choice;
         //+) 유효한 번호가 아니면 메뉴 다시 보여주기 구현해야함
@@ -119,7 +118,8 @@ public class MemberView extends BaseView{
     }
     public int getReservationSlotChoice() {
         print(".   /\\_/\\\n" +
-                "  /  • - • \\\n" +"/ づ \uD83C\uDF38づ [ 예약할 시간의 번호를 입력해주세요 ] => ");
+                "  /  • - • \\\n" +
+                "/ づ \uD83C\uDF38づ  [ 예약할 시간의 번호를 입력해주세요 ] => ");
         int choice = Integer.parseInt(readLine());
         System.out.println("--------------------------------------------");
         return choice;
@@ -129,7 +129,7 @@ public class MemberView extends BaseView{
         //printlnError("!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!");
     }
     public void displayReservationConfirmation(LocalDateTime selectedDateTime) {
-        System.out.println(Color.GREEN + "  　  /)⋈/)\n" +
+        println(Color.GREEN + "  　  /)⋈/)\n" +
                 "    (｡•ㅅ•｡)♡\n" +
                 " ┏--∪-∪━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
                 " ♡  \" 예약이 완료되었습니다. \"\n\t[ 예약일자: "+ selectedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " ]\n"
@@ -163,7 +163,10 @@ public class MemberView extends BaseView{
     // 사용자로부터 변경할 예약의 인덱스를 입력받음 (1부터 시작하는 인덱스)
     // 인덱스가 아닌 다른 숫자를 누르면 메인화면으로 돌아간다.
     public int getReservationChoiceToUpdate(){
-        printRequestInput("변경 혹은 취소하고 싶은 예약의 인덱스: ");
+        System.out.println("예약한 수업을 변경 혹은 취소하고 싶다면 해당 예약의 인덱스를 입력하세요 ==>");
+        System.out.print(".   /\\_/\\\n" +
+                "  /  • - • \\\n" +
+                "/ づ \uD83C\uDF38づ  [ 번호 입력 ] => ");
         return Integer.parseInt(readLine())-1;
     }
 
@@ -171,8 +174,9 @@ public class MemberView extends BaseView{
     public int getUpdateOrCancel(Reservation reservationToUpdate){
         System.out.printf("선택한 예약: [ %s 트레이너/ %s ]\n해당 예약을 변경하고 싶다면 1번, 취소하고싶다면 2번을 입력하세요: ", reservationToUpdate.getManager().getName(),
                 reservationToUpdate.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        System.out.print(".   /\\\\_/\\\\\\n\" +\n" +
-                "                \"  /  • - • \\\\\\n\" +\"/ づ \\uD83C\\uDF38づ [ 번호 입력 ] => ");
+        print("\n    /\\_/\\\n" +
+                "  /  • - • \\\n" +
+                "/ づ \uD83C\uDF38づ  [ 번호 입력 ] => ");
         int choice = Integer.parseInt(readLine());// 사용자는 1부터 인덱싱을 시작하지만, 내부적으로는 0부터 시작하는 인덱스에 맞춰 조정
         System.out.println("--------------------------------------------");
         return choice;
@@ -190,9 +194,8 @@ public class MemberView extends BaseView{
 
     public String requestMemberMenu() throws IllegalAccessException {
         print("\n\n\n");
-        print("                 USER MENU                   \n");
+        print("                MEMBER MENU                   \n");
         return requestMenuSelect(
-                "회원 메뉴",
                 "수강권 결제",
                 "수업 예약",
                 "수업 변경 및 취소"
