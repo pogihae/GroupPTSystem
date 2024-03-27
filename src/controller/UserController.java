@@ -9,9 +9,10 @@ import view.BaseView;
 import view.UserView;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserController {
     private final UserView view = new UserView();
@@ -49,7 +50,7 @@ public class UserController {
         view.printLoginSuccess(UserService.loginedUser);
     }
 
-    public void signUp(){
+    public void signUp() {
         view.showSignupMenu();
         String name = view.requestName();
         int age = view.requestAge();
@@ -57,36 +58,36 @@ public class UserController {
         String id = view.requestId();
         System.out.println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
         //정규표현식 확인
-        if(!userService.isDuplicateId(id)){
+        if (!userService.isDuplicateId(id)) {
             view.printInvalid(1);
             return;
         }
-        if(!userService.isValidId(id)) {
+        if (!userService.isValidId(id)) {
             view.printInvalid(3);
             return;
         }
         String pw = view.requestPw("signUp");
-        if(!userService.isValidPw(pw)){
+        if (!userService.isValidPw(pw)) {
             view.printInvalid(4);
             return;
         }
         String phoneNumber = view.requestPhoneNumber();
-        if(!userService.isDuplicatePhone(phoneNumber)){
+        if (!userService.isDuplicatePhone(phoneNumber)) {
             view.printInvalid(2);
             return;
         }
-        if(!userService.isValidPhone(phoneNumber)){
+        if (!userService.isValidPhone(phoneNumber)) {
             view.printInvalid(5);
             return;
         }
 
         int roleChoice = view.requestRole();
-        User.Role role = (roleChoice==1)? User.Role.TRAINER: User.Role.MEMBER;
-        userService.signUp(name,phoneNumber, age, sex, id, pw, role);
+        User.Role role = (roleChoice == 1) ? User.Role.TRAINER : User.Role.MEMBER;
+        userService.signUp(name, phoneNumber, age, sex, id, pw, role);
         view.showSigned();
     }
 
-    public Trainer requestTrainers(){
+    public Trainer requestTrainers() {
         List<Trainer> trainers = userService.findAllTrainers();
         String choice = view.showTrainers(trainers);
         return trainers.get(Integer.parseInt(choice) - 1);
@@ -98,7 +99,7 @@ public class UserController {
         makeConsultReservation(trainer, start);
     }
 
-    private LocalDateTime chooseAvailableTime(Trainer trainer){
+    private LocalDateTime chooseAvailableTime(Trainer trainer) {
         List<Utils.Day> lessonDays = trainer.getLessonDays();
         List<LocalDateTime> availableTime = new ArrayList<>();
         LocalDateTime end = LocalDateTime.now().plusDays(8);
@@ -133,21 +134,21 @@ public class UserController {
 //        }
         //이름, 번호를 받아 User 객체를 생성한다.
 
-        return availableTime.get(Integer.parseInt(choice)-1);
+        return availableTime.get(Integer.parseInt(choice) - 1);
     }
 
     private void makeConsultReservation(Trainer trainer, LocalDateTime startTime) throws IllegalAccessException {
         view.print(view.formatTitle("예약 정보 입력"));
-        String name =  view.requestName();
+        String name = view.requestName();
         String phoneNumber = view.requestPhoneNumber();
-        if(!userService.isValidPhone(phoneNumber)){
+        if (!userService.isValidPhone(phoneNumber)) {
             view.printInvalid(5);
             throw new IllegalAccessException("번호 형식이 맞지 않습니다.");
         }
-        User user = new User(name,phoneNumber);
+        User user = new User(name, phoneNumber);
 
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
-        userService.saveReservation(user,trainer,startTime);
+        userService.saveReservation(user, trainer, startTime);
         view.println(BaseView.SEPARATOR);
         view.printSpecial(startTime + "에 상담 예약 완료");
         view.println(BaseView.SEPARATOR);
@@ -159,25 +160,25 @@ public class UserController {
         Reservation reservation = userService.checkMyReservation(phoneNumber);
         view.printReservation(reservation);
         String choice = view.myReservationMenu();
-        switch (choice){
+        switch (choice) {
             case "1" -> changeReservation(reservation);
             case "2" -> cancelReservation(reservation);
         }
     }
 
-    public void changeReservation(Reservation reservation){
+    public void changeReservation(Reservation reservation) {
         userService.cancelReservation(reservation);
 
         Trainer trainer = requestTrainers();
         LocalDateTime start = chooseAvailableTime(trainer);
         User user = reservation.getUsers().get(0);
-        userService.saveReservation(user,trainer,start);
+        userService.saveReservation(user, trainer, start);
 
         view.showResult("예약 변경");
     }
 
     public void cancelReservation(Reservation reservation) throws IllegalAccessException {
-        if(view.confirmAction("정말로 취소하시겠습니까?")){
+        if (view.confirmAction("정말로 취소하시겠습니까?")) {
             userService.cancelReservation(reservation);
             view.showResult("예약 취소");
             return;

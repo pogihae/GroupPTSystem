@@ -4,11 +4,10 @@ import model.Member;
 import model.Reservation;
 import model.Trainer;
 import model.User;
+import service.AdminService;
 import view.AdminView;
 
 import java.util.List;
-
-import service.AdminService;
 
 public class AdminController {
     private final AdminView adminView;

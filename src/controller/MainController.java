@@ -6,8 +6,8 @@ import service.AdminService;
 import service.MemberService;
 import service.TrainerService;
 import service.UserService;
-import view.UserView;
 import util.Utils;
+import view.UserView;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -97,8 +97,8 @@ public class MainController {
         repository.saveMember(admin);
 
         List<Member> members = new ArrayList<>(10);
-        for (int i=1; i<=10; i++) {
-            Member member = new Member("멤버"+i, Integer.toString(i), i, "male", "m"+i, "m"+i);
+        for (int i = 1; i <= 10; i++) {
+            Member member = new Member("멤버" + i, Integer.toString(i), i, "male", "m" + i, "m" + i);
             members.add(member);
             repository.saveMember(member);
         }
@@ -111,9 +111,9 @@ public class MainController {
                 {Utils.Day.MON, Utils.Day.TUE, Utils.Day.WED, Utils.Day.THU, Utils.Day.FRI, Utils.Day.SAT, Utils.Day.SUN},
                 {Utils.Day.MON, Utils.Day.TUE, Utils.Day.WED, Utils.Day.THU, Utils.Day.FRI, Utils.Day.SAT, Utils.Day.SUN}
         };
-        for (int i=1; i<=5; i++) {
-            Trainer trainer = new Trainer("트레이너"+i, Integer.toString(i), i, "male", "t"+i, "t"+i);
-            trainer.setLessonDays(trainerWorkDays[i-1]);
+        for (int i = 1; i <= 5; i++) {
+            Trainer trainer = new Trainer("트레이너" + i, Integer.toString(i), i, "male", "t" + i, "t" + i);
+            trainer.setLessonDays(trainerWorkDays[i - 1]);
             trainers.add(trainer);
             repository.saveTrainer(trainer);
         }

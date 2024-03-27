@@ -44,7 +44,7 @@ public class AdminService {
     }
 
     //2. 회원 목록 보기 O
-    public List<Member> getMemberList(){
+    public List<Member> getMemberList() {
         return groupPTRepository.findAllMembers();
     }
 
@@ -141,9 +141,8 @@ public class AdminService {
     }
 
 
-
     //3. 비회원 목록 보기 O __ User에서 Reservation 의 Type이 Consult인 사람들을 불러와야함
-    public List<User> getNonMemberList(){
+    public List<User> getNonMemberList() {
         List<User> allUsers = groupPTRepository.findAllUsers();
 
         // Consult 타입의 예약을 가진 사용자 필터링
@@ -156,7 +155,6 @@ public class AdminService {
     }
 
 
-
     //비회원 상담 스케쥴 확인
     public List<Reservation> getConsultReservation(User user) {
         return groupPTRepository.findAllReservations().stream()
@@ -166,10 +164,9 @@ public class AdminService {
     }
 
 
-
     //4. 트레이너 목록
     // 트레이너 목록 출력
-    public List<Trainer> getTrainerList(){
+    public List<Trainer> getTrainerList() {
         return groupPTRepository.findAllTrainers();
     }
 
@@ -178,7 +175,7 @@ public class AdminService {
     public List<String> getTrainerDetails(Trainer trainer, int year) {
         List<String> res = new ArrayList<>();
 
-        for (int month=1; month<=12; month++) {
+        for (int month = 1; month <= 12; month++) {
             int monthIncome = trainerService.calculateIncome(trainer, month, year);
             res.add(year + "년 " + month + "월  " + monthIncome + "원");
         }
@@ -228,7 +225,7 @@ public class AdminService {
         // 현재까지 총 매출
         int totalRevenue = calculateTotalRevenue();
 
-        return new int[] {monthlyRevenue, totalLaborCost, totalRevenue};
+        return new int[]{monthlyRevenue, totalLaborCost, totalRevenue};
     }
 
     public int calculateTotalLaborCost(List<Trainer> trainers, int month, int year) {

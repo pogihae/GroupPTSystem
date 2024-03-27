@@ -8,7 +8,6 @@ import service.UserService;
 import util.Utils;
 import view.TrainerView;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TrainerController {

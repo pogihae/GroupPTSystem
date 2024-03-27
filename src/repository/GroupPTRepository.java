@@ -4,9 +4,7 @@ import model.*;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,9 +17,11 @@ public class GroupPTRepository {
     private static final String TRAINER_FILE = "trainers.dat";
     private static final String RESERVATION_FILE = "reservations.dat";
     private static final String PAYMENT_FILE = "payments.dat";
-
-    private GroupPTRepository() {}
     private static GroupPTRepository instance = null;
+
+    private GroupPTRepository() {
+    }
+
     public static GroupPTRepository getInstance() {
         if (instance == null) {
             instance = new GroupPTRepository();
@@ -84,7 +84,7 @@ public class GroupPTRepository {
      *
      * @param id 유저의 아이디
      * @return 해당 아이디를 가지는 유저가 존재 시 User, 없을 시 null
-     * */
+     */
     public User findUserById(String id) {
         // 멤버 파일에서 검색 (비회원, 회원, 관리자)
         User user = findAllMembersUtil().stream()
@@ -108,8 +108,9 @@ public class GroupPTRepository {
 
     /**
      * 모든 회원/비회원/트레이너/관리자 목록을 불러올 수 있다,
+     *
      * @return 모든 유저 목록
-     * */
+     */
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
 
@@ -130,16 +131,18 @@ public class GroupPTRepository {
 
     /**
      * 멤버를 저장할 수 있다.
+     *
      * @param member 저장할 멤버
-     * */
+     */
     public void saveMember(Member member) {
         addObjectToFile(MEMBER_FILE, member);
     }
 
     /**
      * 모든 승인된 멤버 목록을 불러올 수 있다.
+     *
      * @return 모든 멤버 목록
-     * */
+     */
     public List<Member> findAllMembers() {
         return findAllMembersUtil().stream()
                 .filter(member -> member.getState().equals(User.State.APPROVED))
@@ -155,8 +158,9 @@ public class GroupPTRepository {
 
     /**
      * 멤버를 수정할 수 있다.
+     *
      * @param member 수정할 멤버
-     * */
+     */
     public void updateMember(Member member) {
         List<Member> members = findAllMembersUtil();
         members.stream()
@@ -172,16 +176,18 @@ public class GroupPTRepository {
 
     /**
      * 트레이너를 저장할 수 있다.
+     *
      * @param trainer 저장할 트레이너
-     * */
+     */
     public void saveTrainer(Trainer trainer) {
         addObjectToFile(TRAINER_FILE, trainer);
     }
 
     /**
      * 트레이너를 수정할 수 있다.
+     *
      * @param trainer 수정할 트레이너
-     * */
+     */
     public void updateTrainer(Trainer trainer) {
         List<Trainer> trainers = findAllTrainersUtil();
         trainers.stream()
@@ -195,8 +201,9 @@ public class GroupPTRepository {
 
     /**
      * 모든 승인된 트레이너 목록을 불러올 수 있다.
+     *
      * @return 모든 트레이너 목록
-     * */
+     */
     public List<Trainer> findAllTrainers() {
         //System.out.println(findAllTrainersUtil().stream().map(User::getState).toList());
         return findAllTrainersUtil().stream()
@@ -216,8 +223,9 @@ public class GroupPTRepository {
     /**
      * 모든 예약 목록을 불러올 수 있다.
      * 예약 정보 속 유저 정보들은 최신 정보로 업데이트 된다. (join)
+     *
      * @return 모든 예약 목록
-     * */
+     */
     public List<Reservation> findAllReservations() {
         List<Reservation> reservations = readListFromFile(RESERVATION_FILE).stream()
                 .map(obj -> (Reservation) obj)
@@ -236,8 +244,9 @@ public class GroupPTRepository {
 
     /**
      * 예약을 저장할 수 있다.
+     *
      * @param reservation 저장할 예약 정보
-     * */
+     */
     public void saveReservation(Reservation reservation) {
         //System.out.println(reservation);
         addObjectToFile(RESERVATION_FILE, reservation);
@@ -245,8 +254,9 @@ public class GroupPTRepository {
 
     /**
      * 예약을 수정할 수 있다.
+     *
      * @param reservation 수정할 예약 정보
-     * */
+     */
     public void updateReservation(Reservation reservation) {
         List<Reservation> reservations = findAllReservations();
 
@@ -261,8 +271,9 @@ public class GroupPTRepository {
 
     /**
      * 예약을 삭제할 수 있다.
+     *
      * @param reservation 삭제할 예약 정보
-     * */
+     */
     public void deleteReservation(Reservation reservation) {
         List<Reservation> reservations = findAllReservations();
         reservations.remove(reservation);
@@ -271,9 +282,10 @@ public class GroupPTRepository {
 
     /**
      * 해당하는 트레이너의 예약 목록읇 불러올 수 있다,
+     *
      * @param trainer 예약 목록을 불러올 트레이너
      * @return 트레이너의 예약 목록
-     * */
+     */
     public List<Reservation> findReservationsByTrainer(Trainer trainer) {
         return findAllReservations().stream()
                 .filter(r -> r.getManager().equals(trainer))
@@ -282,9 +294,10 @@ public class GroupPTRepository {
 
     /**
      * 핸드폰 번호를 기반으로 해당하는 유저의 예약 목록을 불러올 수 있다,
+     *
      * @param phone 찾을 유저의 핸드폰 번호
      * @return 유저의 예약 목록
-     * */
+     */
     public List<Reservation> findReservationsByPhone(String phone) {
         return findAllReservations().stream()
                 .filter(r -> r.getUsers().stream().anyMatch(u -> u.getPhoneNumber().equals(phone)))
@@ -293,9 +306,10 @@ public class GroupPTRepository {
 
     /**
      * 유저의 노쇼 횟수를 알 수 있다.
+     *
      * @param user 확인할 유저
      * @return 해당하는 유저의 노쇼 힛수
-     * */
+     */
     public int countNoShow(User user) {
         List<Reservation> reservations = findReservationsByPhone(user.getPhoneNumber());
         return (int) reservations.stream()

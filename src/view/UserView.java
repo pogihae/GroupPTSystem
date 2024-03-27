@@ -3,20 +3,21 @@ package view;
 import model.Reservation;
 import model.Trainer;
 import model.User;
-import util.Color;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserView extends BaseView{
+public class UserView extends BaseView {
     private final Scanner sc = new Scanner(System.in);
-    public void showLoginScreen(){
+
+    public void showLoginScreen() {
         println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
         println("           [ 로그인 ]           ");
         println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
     }
+
     /*
     ┊　　┊　　┊ 　 ┊    　┊　   ┊　 ┊
     ┊　　┊　　┊ 　 ☆    　┊　   ┊　 ┊
@@ -25,7 +26,7 @@ public class UserView extends BaseView{
     ☆ 　　 　　　 　 　    　　　　　　 ☆
 
      */
-    public void showMainScreen(){
+    public void showMainScreen() {
         String[] startLines = {
                 "┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊",
                 "┊    ┊    ┊    ┊    ☆    ┊    ┊    ┊    ┊",
@@ -37,12 +38,12 @@ public class UserView extends BaseView{
                 "                 환영합니다              "
 
 
-
-                        };
-        for(String line: startLines){
+        };
+        for (String line : startLines) {
             println(line);
         }
     }
+
     public String requestUserMenus() throws IllegalAccessException {
         print("\n\n\n");
         print("                 MAIN MENU                   \n");
@@ -93,7 +94,7 @@ public class UserView extends BaseView{
     }
 
     public String requestPw(String type) {
-        if(type.equals("signUp")) println("비밀번호: 8자 이상의 영문 대/소문자, 숫자, 특수문자를 포함해 주세요.");
+        if (type.equals("signUp")) println("비밀번호: 8자 이상의 영문 대/소문자, 숫자, 특수문자를 포함해 주세요.");
         print("비밀번호: ");
         return readLine();
     }
@@ -120,18 +121,19 @@ public class UserView extends BaseView{
     public String showConsultMenu() throws IllegalAccessException {
         print("\n\n\n");
         print("                Consulting                  \n");
-        return requestMenuSelect("상담 예약","상담 예약 확인");
+        return requestMenuSelect("상담 예약", "상담 예약 확인");
     }
 
     public void showReserveConsultation() {
-        println(SEPARATOR);;
+        println(SEPARATOR);
+        ;
     }
 
-    public String showTrainers(List<Trainer> trainers){
+    public String showTrainers(List<Trainer> trainers) {
         print(formatTitle("트레이너 목록"));
         //!!!!!!!!!!!!!!!!여기서 모든 트레이너의 이름과 전 월 수입이 전 월 수입이 높은순으로 출력!!!!!!!!!!!!!!!!
-        for (int i=0; i< trainers.size(); i++) {
-            print((i+1) + ": ");
+        for (int i = 0; i < trainers.size(); i++) {
+            print((i + 1) + ": ");
             printUserAbstractInfo(trainers.get(i));
         }
         println(SEPARATOR);
@@ -150,7 +152,7 @@ public class UserView extends BaseView{
     (3)2024-04-02, 화 - 17:00 (6)2024-04-02, 화 - 18:00
     ####################
     */
-    public String showAvailableTime(List<LocalDateTime> availableTime){
+    public String showAvailableTime(List<LocalDateTime> availableTime) {
         print(formatTitle("예약 가능 시간"));
         if (availableTime.isEmpty()) {
             printlnError("No available time slots.");
@@ -159,7 +161,7 @@ public class UserView extends BaseView{
 
         for (int i = 0; i < availableTime.size(); i++) {
             LocalDateTime dateTime = availableTime.get(i);
-            println((i+1) + ". " + dateTime.format(formatter));
+            println((i + 1) + ". " + dateTime.format(formatter));
         }
 
         println(SEPARATOR);
@@ -167,19 +169,20 @@ public class UserView extends BaseView{
         return readLine();
     }
 
-    public String showCheckMyReservation(){
+    public String showCheckMyReservation() {
         println(SEPARATOR);
         printRequestInput("예약하신 전화번호");
-        return  readLine();
+        return readLine();
     }
-    public void printReservation(Reservation reservation){
+
+    public void printReservation(Reservation reservation) {
         print(formatTitle("예약 정보"));
         if (reservation == null) {
             printlnError("예약 없음");
         }
-        printSpecial("담당자 : "+reservation.getManager().getName() + "\n");
-        printSpecial("예약자명 : "+reservation.getUsers().get(0).getName()+"님\n");
-        printSpecial("전화번호 : "+reservation.getUsers().get(0).getPhoneNumber());
+        printSpecial("담당자 : " + reservation.getManager().getName() + "\n");
+        printSpecial("예약자명 : " + reservation.getUsers().get(0).getName() + "님\n");
+        printSpecial("전화번호 : " + reservation.getUsers().get(0).getPhoneNumber());
         println(SEPARATOR);
     }
 
@@ -189,12 +192,12 @@ public class UserView extends BaseView{
         return requestMenuSelect("상담 변경", "상담 취소");
     }
 
-    public void showResult(String type){
-        printSpecial(type+" 완료 되었습니다.\n");
+    public void showResult(String type) {
+        printSpecial(type + " 완료 되었습니다.\n");
     }
 
     public void printInvalid(int i) {
-        switch (i){
+        switch (i) {
             case 1 -> printlnError("중복된 아이디 입니다.");
             case 2 -> printlnError("중복된 전화번호 입니다.");
             case 3 -> printlnError("유효하지 않은 아이디 입니다.");

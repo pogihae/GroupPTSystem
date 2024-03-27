@@ -9,6 +9,7 @@ import java.util.*;
 
 public abstract class BaseView {
     private static final Scanner scanner = new Scanner(System.in);
+    public static String SEPARATOR = "჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻";
 
     public void print(String line) {
         System.out.print(line);
@@ -65,37 +66,39 @@ public abstract class BaseView {
         return input;
     }
 
-    public void showLogo(){
-        String[] logoLines = {Color.CYAN+
+    public void showLogo() {
+        String[] logoLines = {Color.CYAN +
                 "      ██████╗ ██████╗  ██████╗ ██╗   ██╗██████╗     ██████╗ ████████╗    ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗",
                 "██╔════╝ ██╔══██╗██╔═══██╗██║   ██║██╔══██╗    ██╔══██╗╚══██╔══╝    ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║",
                 "██║  ███╗██████╔╝██║   ██║██║   ██║██████╔╝    ██████╔╝   ██║       ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║",
                 "██║   ██║██╔══██╗██║   ██║██║   ██║██╔═══╝     ██╔═══╝    ██║       ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║",
                 "╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║         ██║        ██║       ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║",
-                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝"+ Color.ANSI_RESET
-       };
+                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝" + Color.ANSI_RESET
+        };
 
         addSpace(logoLines);
 
     }
 
-    public void showStart(){
-        String[] startLines = {Color.CYAN+
+    public void showStart() {
+        String[] startLines = {Color.CYAN +
                 "              +-------------------------------------+",
                 "|    해당 프로그램을 시작하시겠습니까?    |",
                 "         |         [Y]es        [N]o         |",
                 "              +-------------------------------------+"
-        + Color.ANSI_RESET};
-    addSpace(startLines);
+                        + Color.ANSI_RESET};
+        addSpace(startLines);
     }
+
     //가운데 정렬을 위한 공백 추가 함수
-    public void addSpace(String[] Lines){
+    public void addSpace(String[] Lines) {
         for (String line : Lines) {
             // 각 줄을 가운데 정렬하기 위해 앞에 공백 추가
             String centeredLine = centerLine(line);
             System.out.println(centeredLine);
         }
     }
+
     // 문자열의 앞에 붙일 공백의 길이를 계산
     public String centerLine(String line) {
         int consoleWidth = 174;
@@ -111,8 +114,8 @@ public abstract class BaseView {
         //변경가능한 문자열
         StringBuilder sb = new StringBuilder();
         sb.append("        .・*・.・*・.・*・.・*・.・*・.        \n");
-        for (int i=0; i< menus.length; i++) {
-            sb.append("\t\t\t\t%d. %s\t\t\t\t\t\n".formatted(i+1, menus[i]));
+        for (int i = 0; i < menus.length; i++) {
+            sb.append("\t\t\t\t%d. %s\t\t\t\t\t\n".formatted(i + 1, menus[i]));
         }
         if (UserService.loginedUser != null) {
             sb.append("\t\t\t\t0. 로그아웃\t\t\t\t\t\n");
@@ -138,12 +141,9 @@ public abstract class BaseView {
         println(Color.BLUE + msg + Color.ANSI_RESET);
     }
 
-    public static String SEPARATOR = "჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻";
-
     /**
-     *
      * @param reservations 오늘부터 다음주 까지(ex. 오늘이 화요일이면 오늘 포함해서 다음 주 월요일까지)의 예약목록
-     * */
+     */
     public void printReservations(List<Reservation> reservations) {
         // 시간순 정렬
         reservations.sort(Comparator.comparing(Reservation::getStartDate));

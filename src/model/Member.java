@@ -1,6 +1,8 @@
 package model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -31,7 +33,7 @@ public class Member extends User {
     }
 }
 //----------------------------------------------------------------------------------------------------------------------------
-    //수업결제
+//수업결제
 //    public void payForClass(){
 //        initScanner();
 //        if (repository == null) {
@@ -65,7 +67,7 @@ public class Member extends User {
 //        System.out.println("*********"+choice+"번 옵션, "+selectedOption.getPrice()+"원 결제가 완료되었습니다*********");
 //    }
 //----------------------------------------------------------------------------------------------------------------------------
-    //수업예약
+//수업예약
 //    public void reserveClass(){
 //        //남은횟수 있는지 확인 후 => 있으면
 //        //1. 트레이너 선택메뉴 => 선택
@@ -238,9 +240,9 @@ public class Member extends User {
 //        return 0; //결제 정보가 없는 경우
 //    }
 //----------------------------------------------------------------------------------------------------------------------------
-    //displayReservationInfo() == 1 이라면
-    //수업예약 변경
-    //당일예약변경 불가능하다
+//displayReservationInfo() == 1 이라면
+//수업예약 변경
+//당일예약변경 불가능하다
 //    public void updateClassReservation(Reservation reservationToUpdate){
 //        LocalDate today = LocalDate.now();
 //        // 당일은 변경 가능한 목록이 아니라고 출력

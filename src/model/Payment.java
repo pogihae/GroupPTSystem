@@ -1,4 +1,5 @@
 package model;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
@@ -14,6 +15,12 @@ public class Payment implements Serializable {
     private LocalDate paymentTime;//결제 일자(yyyy-MM-dd)
     private String memberPhoneNumber;//멤버
     private PaymentOption paymentOption;//결제 타입
+
+    public Payment(LocalDate paymentTime, String memberPhoneNumber, PaymentOption paymentOption) {
+        this.paymentTime = paymentTime;
+        this.memberPhoneNumber = memberPhoneNumber;
+        this.paymentOption = paymentOption;
+    }
 
     @Getter
     public enum PaymentOption {
@@ -31,11 +38,5 @@ public class Payment implements Serializable {
             this.price = price;
         }
 
-    }
-
-    public Payment(LocalDate paymentTime, String memberPhoneNumber, PaymentOption paymentOption) {
-        this.paymentTime = paymentTime;
-        this.memberPhoneNumber = memberPhoneNumber;
-        this.paymentOption = paymentOption;
     }
 }

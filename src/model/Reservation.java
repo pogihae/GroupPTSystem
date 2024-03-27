@@ -37,13 +37,6 @@ public class Reservation implements Serializable {
         this.durationMinute = 60;
     }
 
-    @AllArgsConstructor
-    public enum Type {
-        CLASS(4), CONSULT(1);
-
-        final int maxNum;
-    }
-
     public Reservation(Type type, User manager, LocalDateTime startDate, int durationMinute) {
         this.id = new Random().nextLong(Long.MAX_VALUE);
         this.type = type;
@@ -57,9 +50,9 @@ public class Reservation implements Serializable {
     /**
      * 예약 업데이트
      * 보통 join을 위해 사용된다.
-     * @param reservation 최신 예약 정보
      *
-     * */
+     * @param reservation 최신 예약 정보
+     */
     public void update(Reservation reservation) {
         if (!reservation.id.equals(this.id)) {
             throw new IllegalArgumentException("NO MATCHED RESERVATION");
@@ -70,25 +63,28 @@ public class Reservation implements Serializable {
 
     /**
      * 예약한 유저 추가
+     *
      * @param user 예약한 유저
-     * */
+     */
     public void addUser(User user) {
         this.users.add(user);
     }
 
     /**
      * 출석체크
+     *
      * @param users 출석한 유저들 (ex. addAttendants(user1, user2, user3))
-     * */
+     */
     public void addAttendants(User... users) {
         attendants.addAll(Arrays.asList(users));
     }
 
     /**
      * 유저가 해당 예약을 노쇼했는지 여부
+     *
      * @param user 확인할 유저
      * @return 노쇼: true | 예약안함 or 시작 시간 전 or 출석: false
-     * */
+     */
     public boolean isNoShowUser(User user) {
         if (!isReservedUser(user)) return false;
         //if (Utils.isOverDate(startDate)) return false;
@@ -98,16 +94,17 @@ public class Reservation implements Serializable {
 
     /**
      * 유저가 예약한 수업(상담)인지 여부를 알 수 있다.
-     * */
+     */
     public boolean isReservedUser(User user) {
         return users.stream().anyMatch(u -> u.equals(user));
     }
 
     /**
      * 유저가 해당 예약을 취소할 수 있다.
+     *
      * @param user 취소할 유저
      * @return 취소 성공: true | 예약하지 않은 유저 : false
-     * */
+     */
     public boolean cancelReservation(User user) {
         if (!isReservedUser(user)) return false;
         return users.remove(user);
@@ -115,7 +112,7 @@ public class Reservation implements Serializable {
 
     /**
      * 가득찬 예약인지를 확인할 수 있다.
-     * */
+     */
     public boolean isFull() {
         return users.size() >= type.maxNum;
     }
@@ -134,6 +131,13 @@ public class Reservation implements Serializable {
             return this.id.equals(((Reservation) obj).id);
         }
         return false;
+    }
+
+    @AllArgsConstructor
+    public enum Type {
+        CLASS(4), CONSULT(1);
+
+        final int maxNum;
     }
 }
 

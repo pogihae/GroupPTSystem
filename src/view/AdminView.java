@@ -1,9 +1,11 @@
 package view;
 
-import model.*;
+import model.Member;
+import model.Reservation;
+import model.Trainer;
+import model.User;
 import util.Color;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class AdminView extends BaseView {
         printRequestInput("승인할 회원의 번호(,로 구분)");
     }
 
-    public void showNoPendingApprovalsMessage(){
+    public void showNoPendingApprovalsMessage() {
         printlnError("\"승인 대기 중인 회원이 없습니다.\"\n");
     }
 
@@ -45,13 +47,13 @@ public class AdminView extends BaseView {
         println(SEPARATOR);
         printSpecial(
                 """
-                이름: %s
-                성별: %s
-                나이: %d세
-                아이디: %s
-                휴대폰 번호: %s
-                
-                """.formatted(
+                        이름: %s
+                        성별: %s
+                        나이: %d세
+                        아이디: %s
+                        휴대폰 번호: %s
+                                        
+                        """.formatted(
                         member.getName(),
                         member.getSex(),
                         member.getAge(),
@@ -65,9 +67,10 @@ public class AdminView extends BaseView {
 //        System.out.println(user.getName() + "님이 승인되었습니다.\n");
 //    }
 
-    public void printInvalidMessage(){
+    public void printInvalidMessage() {
         printlnError("잘못된 입력입니다.");
     }
+
     public void printMemberClassSchedule(Member member, List<Reservation> reservations) {
         int totalAttendanceCount = 0;
         int noShowCount = 0;
@@ -81,7 +84,7 @@ public class AdminView extends BaseView {
             if (reservation.isNoShowUser(member)) {
                 sb.append("노쇼");
                 noShowCount += 1;
-            } else if (reservation.isEnd()){
+            } else if (reservation.isEnd()) {
                 sb.append("출석 트레이너 ").append(reservation.getManager().getName());
                 totalAttendanceCount++;
             } else {
@@ -95,9 +98,9 @@ public class AdminView extends BaseView {
 
         printSpecial(
                 "남은 횟수 : " + remainingCount + "회 /" +
-                "예약된 횟수 : " + reservationCount + "회 /" +
-                "출석 : " + totalAttendanceCount + "회 /" +
-                "노쇼 : " + noShowCount + "회");
+                        "예약된 횟수 : " + reservationCount + "회 /" +
+                        "출석 : " + totalAttendanceCount + "회 /" +
+                        "노쇼 : " + noShowCount + "회");
         println(SEPARATOR);
     }
 
@@ -133,13 +136,13 @@ public class AdminView extends BaseView {
         println(SEPARATOR);
     }
 
-    public void printNoNonMemberReservationInfoMessage(){
+    public void printNoNonMemberReservationInfoMessage() {
         printlnError("상담 예약 정보를 확인할 비회원이 없습니다.\n");
     }
 
 
     // 메뉴 2번(회원 목록 보기)을 선택했을 경우
-    public void printMembers(List<Member> members){
+    public void printMembers(List<Member> members) {
         // !!!!!!!!!!!!!!!!여기서 회원 이름, 나이, 아이디, 휴대폰 번호 이름 순으로 출력!!!!!!!!!!!!!!!!
         members.sort(Comparator.comparing(User::getName));
         print(formatTitle("\t회원 목록\t"));
@@ -153,8 +156,8 @@ public class AdminView extends BaseView {
     }
 
 
-    public void sendMarketingMessagesToMembers(List<Member> membersWithFewSessionsLeft){
-        System.out.println(Color.BLUE+"︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵＼ʕ •ᴥ•ʔ／︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵　\n" +
+    public void sendMarketingMessagesToMembers(List<Member> membersWithFewSessionsLeft) {
+        System.out.println(Color.BLUE + "︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵＼ʕ •ᴥ•ʔ／︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵　\n" +
                 "　　　　　　다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:　　　　　\n" +
                 "︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵((ฅ)　(ฅ))︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵\n");
         for (Member member : membersWithFewSessionsLeft) {
@@ -162,10 +165,11 @@ public class AdminView extends BaseView {
             System.out.println("성별: " + member.getSex());
             System.out.println("나이: " + member.getAge());
             System.out.println("아이디: " + member.getId());
-            System.out.println("휴대폰 번호: " + member.getPhoneNumber()+ Color.ANSI_RESET);
+            System.out.println("휴대폰 번호: " + member.getPhoneNumber() + Color.ANSI_RESET);
             println(SEPARATOR);
         }
     }
+
     public void printNonMemberList(List<User> nonMemberList) {
         print(formatTitle("\t  비회원 목록  \t"));
         if (!nonMemberList.isEmpty()) {
@@ -181,11 +185,11 @@ public class AdminView extends BaseView {
     }
 
     //메뉴 4번(트레이너 목록)을 선택했을 경우
-    public void printTrainers(List<Trainer> trainers){
+    public void printTrainers(List<Trainer> trainers) {
         print(formatTitle("트레이너 목록"));
         //!!!!!!!!!!!!!!!!여기서 모든 트레이너의 이름과 전 월 수입이 전 월 수입이 높은순으로 출력!!!!!!!!!!!!!!!!
-        for (int i=0; i< trainers.size(); i++) {
-            print((i+1) + ": ");
+        for (int i = 0; i < trainers.size(); i++) {
+            print((i + 1) + ": ");
             printUserAbstractInfo(trainers.get(i));
         }
         println(SEPARATOR);
@@ -196,21 +200,21 @@ public class AdminView extends BaseView {
         println(SEPARATOR);
         printSpecial(
                 """
-                이름: %s
-                성별: %s
-                나이: %d세
-                아이디: %s
-                휴대폰 번호: %s
-                등급: %s
-                
-                """.formatted(
+                        이름: %s
+                        성별: %s
+                        나이: %d세
+                        아이디: %s
+                        휴대폰 번호: %s
+                        등급: %s
+                                        
+                        """.formatted(
                         trainer.getName(),
                         trainer.getSex(),
                         trainer.getAge(),
                         trainer.getId(),
                         trainer.getPhoneNumber(),
                         trainer.getGrade().name()
-                        ).trim()
+                ).trim()
         );
         println(SEPARATOR);
     }

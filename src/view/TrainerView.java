@@ -29,7 +29,7 @@ public class TrainerView extends BaseView {
 
     //메뉴 2번(수업 요일 선택하기)을 선택했을 경우
     //메뉴 2번(수업 요일 선택하기)을 선택했을 경우
-    public Utils.Day[] requestLessonDays(){
+    public Utils.Day[] requestLessonDays() {
         println(".   /\\_/\\\n" +
                 "  /  • - • \\\n" +
                 "/ づ \uD83C\uDF38づ  [ 원하는 요일을 선택하세요 (,로 구분) ] : ");
@@ -41,9 +41,10 @@ public class TrainerView extends BaseView {
     }
 
     //메뉴 3번(회원 출석체크)을 선택했을 경우
+
     /**
      * @param reservation 해당 시각 예약
-     * */
+     */
     public List<User> requestAttendance(Reservation reservation) {
         StringBuilder sb = new StringBuilder();
         sb.append("＿人人人人人人人人＿\n" +
@@ -70,9 +71,9 @@ public class TrainerView extends BaseView {
         println("♡       ߍ\uD83C\uDF80ߍ       ♡\n" +
                 "     ♡ ( ⌯′-′⌯) ♡\n" +
                 "┏━━━━━━━━━━━━━━━━━ U U━━━━━━━━━━━━━━━━━┓\n" +
-                "♡  "+"""
+                "♡  " + """
                 %s님의 %d년 %d월 수입은 %d원 입니다.
-                """.formatted(trainer.getName(), year, month, income).trim()+" ♡\n" +
+                """.formatted(trainer.getName(), year, month, income).trim() + " ♡\n" +
                 "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
     }
 
@@ -86,7 +87,7 @@ public class TrainerView extends BaseView {
                 "(,(')(') ");
         int month = Integer.parseInt(readLine());
 
-        return new int[] {year, month};
+        return new int[]{year, month};
     }
 
     public void printMinorUserAttendance(boolean attempt, User user) {

@@ -11,33 +11,6 @@ import java.io.Serializable;
 @ToString
 public class User implements Serializable {
 
-    //상담신청한 유저일경우
-    public User(String name, String phoneNumber){
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.age = null;
-        this.sex = null;
-        this.id = null;
-        this.pw = null;
-        this.role  = null;
-        this.state = State.NONMEMBER;
-    }
-
-    public User(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
-        this(name, phoneNumber,age,sex,id,pw,role, State.PENDING);
-        if (role.equals(Role.ADMIN)) {
-            this.state = State.APPROVED;
-        }
-    }
-
-    public enum Role {
-        TRAINER, MEMBER, USER, ADMIN, NONMEMBER
-    }
-
-    public enum State{
-        APPROVED, PENDING, NONMEMBER
-    }
-
     private String name;
     private String phoneNumber;
     private Integer age;
@@ -46,7 +19,23 @@ public class User implements Serializable {
     private String pw;
     private Role role;
     private State state;
-
+    //상담신청한 유저일경우
+    public User(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.age = null;
+        this.sex = null;
+        this.id = null;
+        this.pw = null;
+        this.role = null;
+        this.state = State.NONMEMBER;
+    }
+    public User(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
+        this(name, phoneNumber, age, sex, id, pw, role, State.PENDING);
+        if (role.equals(Role.ADMIN)) {
+            this.state = State.APPROVED;
+        }
+    }
     public User(User user) {
         update(user);
     }
@@ -75,5 +64,13 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return this.phoneNumber.hashCode();
+    }
+
+    public enum Role {
+        TRAINER, MEMBER, USER, ADMIN, NONMEMBER
+    }
+
+    public enum State {
+        APPROVED, PENDING, NONMEMBER
     }
 }

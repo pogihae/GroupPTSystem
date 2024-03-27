@@ -15,7 +15,7 @@ public class MemberController {
     private final MemberService service = new MemberService();
     private final MemberView view = new MemberView();
 
-    public void payForClass(Member member){
+    public void payForClass(Member member) {
         view.displayPaymentOptions();
         int choice = view.getPaymentOptionsChoice(); //가격옵션번호
         Payment.PaymentOption selectedOption = null;
@@ -42,12 +42,12 @@ public class MemberController {
     }
 
     //수업예약
-    public void reserveClass(Member member){
+    public void reserveClass(Member member) {
         //남은횟수 있는지 확인 후 => 있으면
         //1. 트레이너 선택메뉴 => 선택
         //2. 해당 트레이너의 수업 예약 가능한 시간 목록 출력 => 선택
         //3. 예약 확정 => 예약확정 메세지 출력
-        if(member.getRemainSessionCount()==0){
+        if (member.getRemainSessionCount() == 0) {
             view.displayNoSessionsLeft();
             return;
         }
@@ -55,7 +55,7 @@ public class MemberController {
         List<Trainer> allTrainersList = service.findAllTrainers();
         view.displayTrainers(allTrainersList);
         int choice = view.getTrainerChoice();
-        Trainer selectedTrainer = allTrainersList.get(choice-1);
+        Trainer selectedTrainer = allTrainersList.get(choice - 1);
 
         //2. 선택한 트레이너의 예약 목록 출력
         List<Reservation> reservationOfSelectedTrainer = service.findreservationOfSelectedTrainer(selectedTrainer);
@@ -68,8 +68,8 @@ public class MemberController {
         // 예약 가능한 시간대 목록 생성
         LocalDate today = LocalDate.now();
         LocalDate endDay = today.plusWeeks(1); //일주일 후
-        Map<Integer, LocalDateTime> slotIndexToDateTimeMap= view.displayReservationSlots(today, endDay,
-                                workDays, filteredReservations);
+        Map<Integer, LocalDateTime> slotIndexToDateTimeMap = view.displayReservationSlots(today, endDay,
+                workDays, filteredReservations);
 
         //3. 사용자로부터 예약할 시간대 선택 받기
         int selectedSlotIndex = view.getReservationSlotChoice();
@@ -123,15 +123,18 @@ public class MemberController {
         //해당 예약 변경할지 삭제할지 결정
         return reservationsByPhone.get(index);
     }
+
     //예약정보확인 -> 변경하고싶은 인덱스를 누른 경우
-    public void updateOrCancel(Member member){
+    public void updateOrCancel(Member member) {
         Reservation reservationToUpdate = requestChangeReservation(member);
         if (reservationToUpdate == null) return;
         int choice = view.getUpdateOrCancel(reservationToUpdate);
-        switch (choice){
-            case 1: this.updateClassReservation(reservationToUpdate, member);
+        switch (choice) {
+            case 1:
+                this.updateClassReservation(reservationToUpdate, member);
                 break;
-            case 2: this.cancelClassReservation(reservationToUpdate, member);
+            case 2:
+                this.cancelClassReservation(reservationToUpdate, member);
                 break;
         }
     }
@@ -139,7 +142,7 @@ public class MemberController {
     //displayReservationInfo() == 1 이라면
     //수업예약 변경
     //당일예약변경 불가능하다
-    public void updateClassReservation(Reservation reservationToUpdate, Member member){
+    public void updateClassReservation(Reservation reservationToUpdate, Member member) {
         LocalDate today = LocalDate.now();
         // 당일은 변경 가능한 목록이 아니라고 출력
         // 남은 세션 수 복구
@@ -151,10 +154,11 @@ public class MemberController {
         service.cancelReservation(reservationToUpdate);
         this.reserveClass(member);
     }
+
     //당일취소할 경우, 취소는 되지만 횟수가 차감된다
     //displayReservationInfo() == 2 라면
     //수업예약취소
-    public void cancelClassReservation(Reservation reservationToUpdate, Member member){
+    public void cancelClassReservation(Reservation reservationToUpdate, Member member) {
         // 유효한 인덱스 범위 검사
         //if (index >= 0 && index < reservationsByPhone.size())
         LocalDate today = LocalDate.now();
@@ -171,7 +175,7 @@ public class MemberController {
         if (!UserService.getLoginedUserRole().equals(User.Role.MEMBER)) {
             throw new IllegalStateException("회원으로 로그인되어있지 않습니다,");
         }
-        Member member = (Member)UserService.loginedUser;
+        Member member = (Member) UserService.loginedUser;
         String input = view.requestMemberMenu();
         switch (input) {
             case "1" -> payForClass(member);
@@ -179,8 +183,6 @@ public class MemberController {
             case "3" -> updateOrCancel(member);
         }
     }
-
-
 
 
 }
