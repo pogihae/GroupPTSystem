@@ -45,16 +45,16 @@ public class TestController {
         final GroupPTRepository repository = GroupPTRepository.getInstance();
 
         // 유저 저장
-        Member admin = new Member("관리자", "010-0000-0000", 21,
-                "male", "a1", "a1", User.Role.ADMIN);
-        repository.saveMember(admin);
-
-        List<Member> members = new ArrayList<>(10);
-        for (int i=1; i<=10; i++) {
-            Member member = new Member("멤버"+i, Integer.toString(i), i, "male", "m"+i, "m"+i);
-            members.add(member);
-            repository.saveMember(member);
-        }
+//        Member admin = new Member("관리자", "010-0000-0000", 21,
+//                "male", "a1", "a1", User.Role.ADMIN);
+//        repository.saveMember(admin);
+//
+//        List<Member> members = new ArrayList<>(10);
+//        for (int i=1; i<=10; i++) {
+//            Member member = new Member("멤버"+i, Integer.toString(i), i, "male", "m"+i, "m"+i);
+//            members.add(member);
+//            repository.saveMember(member);
+//        }
 
         List<Trainer> trainers = new ArrayList<>(5);
         Utils.Day[][] trainerWorkDays = {
