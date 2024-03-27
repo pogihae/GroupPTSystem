@@ -31,7 +31,7 @@ public class UserService {
         System.out.println(user);
         if (user == null || !user.getPw().equals(pw)) {
             return false;
-        }
+}
         loginedUser = user;
         return true;
     }

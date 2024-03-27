@@ -25,6 +25,14 @@ public class Member extends User {
         this.remainSessionCount = 0;
         this.payment = null; // 초기값으로 null 설정
     }
+
+    public Member(String name, String phone, int age, String gender, String id, String pw, Role role) {
+        super(name, phone, age, gender, id, pw, role);
+    }
+
+    public Member(String name, String phone, int age, String gender, String id, String pw) {
+        super(name, phone, age, gender, id, pw, Role.MEMBER);
+    }
 }
 //----------------------------------------------------------------------------------------------------------------------------
     //수업결제

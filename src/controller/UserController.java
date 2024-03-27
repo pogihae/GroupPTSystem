@@ -114,6 +114,10 @@ public class UserController {
             availableTime.remove(schedule.getStartDate());
         }
         String choice = view.showAvailableTime(availableTime);
+//        if(choice.equals("0")){
+//            requestTrainers();
+//            return;
+//        }
         //이름, 번호를 받아 User 객체를 생성한다.
 
         return availableTime.get(Integer.parseInt(choice)-1);
@@ -153,7 +157,11 @@ public class UserController {
     }
 
     public void cancelReservation(Reservation reservation){
-        userService.cancelReservation(reservation);
-        view.showResult("예약 취소");
+        if(view.confirmAction("정말로 취소하시겠습니까?")){
+            userService.cancelReservation(reservation);
+            view.showResult("예약 취소");
+            return;
+        }
+        checkMyReservation();
     }
 }
