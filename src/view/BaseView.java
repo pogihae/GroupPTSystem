@@ -172,8 +172,7 @@ public abstract class BaseView {
             if (dayReservations.isEmpty()) continue;
 
             int date = Utils.getDate(dayReservations.get(0).getStartDate());
-            sb.append("%s(%d)\n".formatted(day.name(), date));
-            sb.append(SEPARATOR).append("\n");
+            sb.append(formatTitle("%s(%d)".formatted(day.name(), date)));
 
             for (Reservation reservation : dayReservations) {
                 sb.append(reservation.getStartDate()).append("\t");
@@ -182,7 +181,7 @@ public abstract class BaseView {
             }
         }
 
-        System.out.println(sb);
+        printSpecial(sb.toString());
         println(SEPARATOR);
     }
 

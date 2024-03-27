@@ -172,6 +172,7 @@ public class AdminView extends BaseView {
                 println("휴대폰 번호: " + user.getPhoneNumber());
             }
         }
+        println(SEPARATOR);
     }
 
     //메뉴 4번(트레이너 목록)을 선택했을 경우
@@ -187,42 +188,26 @@ public class AdminView extends BaseView {
     }
 
     public void printTrainerInfo(Trainer trainer) {
-        println(
+        println(SEPARATOR);
+        printSpecial(
                 """
-                %s
                 이름: %s
                 성별: %s
                 나이: %d세
                 아이디: %s
                 휴대폰 번호: %s
                 등급: %s
-                %s
-                """.formatted(SEPARATOR,
+                
+                """.formatted(
                         trainer.getName(),
                         trainer.getSex(),
                         trainer.getAge(),
                         trainer.getId(),
                         trainer.getPhoneNumber(),
-                        trainer.getGrade().name(),
-                        SEPARATOR).trim()
+                        trainer.getGrade().name()
+                        ).trim()
         );
-    }
-
-    public void printTrainerIncomeRecords(Trainer trainer) {
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("[트레이너 " + trainer.getName() + "의 수입 기록]");
-
-    }
-
-//    public void printReservationDetails(Reservation reservation) {
-//        System.out.print("날짜 / 시간 : " + reservation.getStartDate() + "\t");
-//        System.out.print("트레이너: " + reservation.getManager() + "\t");
-//        System.out.println("예약 인원 수: " + reservation.getUsers().size());
-//        System.out.println("-------------------------------------------------");
-//    }
-
-    public void printNoClassSchedule(){
-        System.out.println("\"예정된 수업이 없습니다.\"\n");
+        println(SEPARATOR);
     }
 
     public void printFinancialSummary(int monthlyRevenue, int totalLaborCost, int totalRevenue) {
@@ -236,13 +221,13 @@ public class AdminView extends BaseView {
     }
 
     public void printTrainerDetails(Trainer trainer, List<String> details) {
-        println(SEPARATOR);
+        println(formatTitle("수입 정보"));
         printTrainerInfo(trainer);
         StringBuilder sb = new StringBuilder();
         for (String detail : details) {
             sb.append(detail).append('\n');
         }
-        System.out.println(sb);
+        printSpecial(sb.toString());
         println(SEPARATOR);
     }
 }
