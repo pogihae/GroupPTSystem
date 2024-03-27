@@ -62,12 +62,11 @@ public class UserView extends BaseView{
     }
 
     public void printLoginFailed() {
-        println("로그인 실패");
+        printlnError("로그인 실패");
     }
 
     public void printLoginSuccess(User user) {
-        println("로그인 성공");
-        System.out.println(user);
+        printSpecial("환영합니다. " + user.getName() + "님\n");
     }
 
     public String requestName() {
@@ -99,9 +98,8 @@ public class UserView extends BaseView{
         return readLine();
     }
 
-    public String requestPhoneNumber(String type) {
-        println("전화번호: 010-****-**** 형식으로 작성해주세요.");
-        print("휴대폰번호: ");
+    public String requestPhoneNumber() {
+        print("전화번호(010-****-****): ");
         return readLine();
     }
 
@@ -130,14 +128,19 @@ public class UserView extends BaseView{
     }
 
     public String showTrainers(List<Trainer> trainers){
-        Trainer trainer;
-        for(int i = 0;i<trainers.size();i++){
-            trainer = trainers.get(i);
-            System.out.printf("%d. %s 트레이너/ 등급 %s/ %s\n", i+1, trainer.getName(), trainer.getGrade(), trainer.getSex());
+        print(formatTitle("트레이너 목록"));
+        //!!!!!!!!!!!!!!!!여기서 모든 트레이너의 이름과 전 월 수입이 전 월 수입이 높은순으로 출력!!!!!!!!!!!!!!!!
+        for (int i=0; i< trainers.size(); i++) {
+            print((i+1) + ": ");
+            printUserAbstractInfo(trainers.get(i));
         }
         println(SEPARATOR);
-        println("원하시는 트레이너의 번호를 입력하세요.:");
+        printRequestInput("확인할 트레이너의 번호");
         return readLine();
+    }
+
+    public void printUserAbstractInfo(User user) {
+        println("[" + user.getName() + "] " + user.getSex() + " " + user.getAge() + "세 " + user.getId() + " " + user.getPhoneNumber());
     }
 
     /*
@@ -148,8 +151,9 @@ public class UserView extends BaseView{
     ####################
     */
     public String showAvailableTime(List<LocalDateTime> availableTime){
+        print(formatTitle("예약 가능 시간"));
         if (availableTime.isEmpty()) {
-            println("No available time slots.");
+            printlnError("No available time slots.");
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, E - HH:mm");
 
@@ -159,21 +163,24 @@ public class UserView extends BaseView{
         }
 
         println(SEPARATOR);
+        printRequestInput("예약할 시간의 번호");
         return readLine();
     }
 
     public String showCheckMyReservation(){
         println(SEPARATOR);
-        println("예약하신 전화번호를 입력해주세요: ");
+        printRequestInput("예약하신 전화번호");
         return  readLine();
     }
     public void printReservation(Reservation reservation){
+        print(formatTitle("예약 정보"));
         if (reservation == null) {
-            println("예약 없음");
+            printlnError("예약 없음");
         }
-        println("담당자 : "+reservation.getManager().getName());
-        println("예약자명 : "+reservation.getUsers().get(0).getName()+"님");
-        println("전화번호 : "+reservation.getUsers().get(0).getPhoneNumber());
+        printSpecial("담당자 : "+reservation.getManager().getName() + "\n");
+        printSpecial("예약자명 : "+reservation.getUsers().get(0).getName()+"님\n");
+        printSpecial("전화번호 : "+reservation.getUsers().get(0).getPhoneNumber());
+        println(SEPARATOR);
     }
 
     public String myReservationMenu() throws IllegalAccessException {

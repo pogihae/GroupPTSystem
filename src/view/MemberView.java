@@ -59,7 +59,7 @@ public class MemberView extends BaseView{
         println("");
         for (int i = 0; i < allTrainersList.size(); i++) {
             Trainer trainer = allTrainersList.get(i);
-            println("[%d] %s 트레이너/ 등급 %s/ %s".formatted(i + 1, trainer.getName(), trainer.getGrade(), trainer.getSex()));
+            println("%d. %s 트레이너 / %s등급 / %s".formatted(i + 1, trainer.getName(), trainer.getGrade(), trainer.getSex()));
         }
         println(SEPARATOR);
     }
@@ -126,7 +126,7 @@ public class MemberView extends BaseView{
         return choice;
     }
     public void displayNoSessionsLeft() {
-        System.out.println(Color.RED+"!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!" + Color.ANSI_RESET);
+        println(Color.RED+"!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!" + Color.ANSI_RESET);
         //printlnError("!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!");
     }
     public void displayReservationConfirmation(LocalDateTime selectedDateTime) {

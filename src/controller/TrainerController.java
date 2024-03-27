@@ -50,7 +50,7 @@ public class TrainerController {
     public void checkAttendances(Trainer trainer) {
         Reservation reservation = service.findCurrentReservation(trainer);
         if (reservation == null) {
-            System.out.println("수업 없음");
+            view.printlnError("수업 없음");
             return;
         }
         List<User> attendances = view.requestAttendance(reservation);
