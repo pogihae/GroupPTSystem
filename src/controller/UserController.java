@@ -17,6 +17,7 @@ public class UserController {
     private final UserService userService = new UserService();
 
     public void run() throws IllegalAccessException {
+        view.showMainScreen();
         switch (view.requestUserMenus()) {
             case "1" -> login();
             case "2" -> signUp();
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     public void login() {
-        view.printLoginScreen();
+        view.showLoginScreen();
         String id = view.requestId();
         String pw = view.requestPw("login");
 
@@ -48,7 +49,6 @@ public class UserController {
     }
 
     public void signUp(){
-        view.showLogo();
         view.showSignupMenu();
         String name = view.requestName();
         int age = view.requestAge();

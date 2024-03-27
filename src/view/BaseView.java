@@ -27,11 +27,8 @@ public abstract class BaseView {
 
     public boolean confirmAction(String message) {
         System.out.println(message + " (Y/N)");
-        String input = scanner.nextLine().trim().toLowerCase();
+        String input = readLine().toLowerCase();
         return input.equals("y");
-    }
-    public void requestMenuSelect2(String... menus) {
-        System.out.print(formatMenu2(menus));
     }
 
     public List<String> readLineBySeparate(String opt) {
@@ -74,11 +71,21 @@ public abstract class BaseView {
                 "██║  ███╗██████╔╝██║   ██║██║   ██║██████╔╝    ██████╔╝   ██║       ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║",
                 "██║   ██║██╔══██╗██║   ██║██║   ██║██╔═══╝     ██╔═══╝    ██║       ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║",
                 "╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║         ██║        ██║       ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║",
-                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝"+ColorView.ANSI_RESET,
-        };
+                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝"+ColorView.ANSI_RESET
+       };
 
         addSpace(logoLines);
 
+    }
+
+    public void showStart(){
+        String[] startLines = {ColorView.CYAN+
+                "              +-------------------------------------+",
+                "|    해당 프로그램을 시작하시겠습니까?    |",
+                "         |         [Y]es        [N]o         |",
+                "              +-------------------------------------+"
+        +ColorView.ANSI_RESET};
+    addSpace(startLines);
     }
     //가운데 정렬을 위한 공백 추가 함수
     public void addSpace(String[] Lines){
@@ -110,17 +117,6 @@ public abstract class BaseView {
             sb.append("0. 로그아웃\n");
         }
         sb.append("#. 종료\n");
-        sb.append("*******************\n");
-        sb.append("입력: ");
-        return sb.toString();
-    }
-    //로그인 전 완전 초기 메뉴
-    private String formatMenu2(String... menus) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("*******************\n");
-        for (int i=0; i< menus.length; i++) {
-            sb.append("%d. %s\n".formatted(i+1, menus[i]));
-        } //0이나 *누르면...?
         sb.append("*******************\n");
         sb.append("입력: ");
         return sb.toString();

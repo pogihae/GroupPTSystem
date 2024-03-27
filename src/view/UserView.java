@@ -11,12 +11,34 @@ import java.util.Scanner;
 
 public class UserView extends BaseView{
     private final Scanner sc = new Scanner(System.in);
-    public void printLoginScreen(){
+    public void showLoginScreen(){
         //로그인 화면 ID, PW 입력하세요
     }
+    /*
+    ┊　　┊　　┊ 　 ┊    　┊　   ┊　 ┊
+    ┊　　┊　　┊ 　 ☆    　┊　   ┊　 ┊
+    ┊　　┊　　 ✬ 　 　   　✬ 　  ┊　 ┊
+    ┊　　★ 　　　 　 　    　　　   ★　 ┊
+    ☆ 　　 　　　 　 　    　　　　　　 ☆
+
+     */
+    public void showMainScreen(){
+        String[] startLines = {ColorView.GREEN+
+                "    ┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊",
+                "┊    ┊    ┊    ┊    ☆    ┊    ┊     ┊    ┊",
+                "┊    ┊    ┊     ✬        ✬     ┊    ┊    ┊",
+                "┊    ┊    ★      WELCOME      ★    ┊    ┊",
+                "┊    ☆                             ☆    ┊",
+                "✬            Group PT System            ✬",
+                "              에 오신 것을               ",
+                "                환영합니다                "
+
+
+
+                        +ColorView.ANSI_RESET};
+        addSpace(startLines);
+    }
     public String requestUserMenus() throws IllegalAccessException {
-        // 첫 화면 출력
-        showLogo();
         return requestMenuSelect(
                 "로그인",
                 "회원가입",
@@ -24,6 +46,8 @@ public class UserView extends BaseView{
                 "상담확인"
         );
     }
+
+
     public void showSignupMenu() {
         println("****************************");
         println("        [ 회원 가입 ]");
