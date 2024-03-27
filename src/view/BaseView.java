@@ -39,8 +39,8 @@ public abstract class BaseView {
                 .toList();
     }
 
-    public String requestMenuSelect(String title, String... menus) throws IllegalAccessException {
-        System.out.print(formatMenu(title, menus));
+    public String requestMenuSelect(String... menus) throws IllegalAccessException {
+        System.out.print(formatMenu(menus));
         String input = readLine();
 
         if (input.equals("#")) {
@@ -107,7 +107,7 @@ public abstract class BaseView {
         println(Color.RED + msg + Color.ANSI_RESET);
     }
 
-    private String formatMenu(String title, String... menus) {
+    private String formatMenu(String... menus) {
         //변경가능한 문자열
         StringBuilder sb = new StringBuilder();
         sb.append("        .・*・.・*・.・*・.・*・.・*・.        \n");
