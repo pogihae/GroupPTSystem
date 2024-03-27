@@ -26,7 +26,10 @@ public class MainController {
         final UserView userView = new UserView();
         userView.showLogo();
         userView.showStart();
-        while (userView.confirmAction("입력해주세요")) {
+        if (!userView.confirmAction("입력해주세요")) {
+            userView.printlnError("종료합니다");
+        }
+        while (true) {
             try {
                 runUtil();
             } catch (IllegalAccessException | NumberFormatException e) {

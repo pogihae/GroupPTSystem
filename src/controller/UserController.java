@@ -5,6 +5,7 @@ import model.Trainer;
 import model.User;
 import service.UserService;
 import util.Utils;
+import view.BaseView;
 import view.UserView;
 
 import java.time.LocalDate;
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     public void login() {
-        view.showLoginScreen();
+        view.print(view.formatTitle("로그인"));
         String id = view.requestId();
         String pw = view.requestPw("login");
 
@@ -41,10 +42,10 @@ public class UserController {
         }
 
         if (!UserService.loginedUser.getState().equals(User.State.APPROVED)) {
-            view.println("승인대기중입니다.");
+            view.printlnError("승인대기중입니다.");
             return;
         }
-
+        view.println(BaseView.SEPARATOR);
         view.printLoginSuccess(UserService.loginedUser);
     }
 
@@ -68,7 +69,7 @@ public class UserController {
             view.printInvalid(4);
             return;
         }
-        String phoneNumber = view.requestPhoneNumber("signUp");
+        String phoneNumber = view.requestPhoneNumber();
         if(!userService.isDuplicatePhone(phoneNumber)){
             view.printInvalid(2);
             return;
@@ -85,13 +86,12 @@ public class UserController {
     }
 
     public Trainer requestTrainers(){
-        view.showReserveConsultation();
         List<Trainer> trainers = userService.findAllTrainers();
         String choice = view.showTrainers(trainers);
         return trainers.get(Integer.parseInt(choice) - 1);
     }
 
-    private void reserveConsultation(){
+    private void reserveConsultation() throws IllegalAccessException {
         Trainer trainer = requestTrainers();
         LocalDateTime start = chooseAvailableTime(trainer);
         makeConsultReservation(trainer, start);
@@ -118,7 +118,6 @@ public class UserController {
         }
 
         List<Reservation> trainerSchedule = userService.findReservationsByTrainer(trainer);
-        System.out.println("TEST:"+trainerSchedule);
         Reservation schedule;
 
         //1시 부터 7시까지 예약가능한 시간만 출력해 보여준다.
@@ -136,28 +135,26 @@ public class UserController {
         return availableTime.get(Integer.parseInt(choice)-1);
     }
 
-    private void makeConsultReservation(Trainer trainer, LocalDateTime startTime) {
+    private void makeConsultReservation(Trainer trainer, LocalDateTime startTime) throws IllegalAccessException {
+        view.print(view.formatTitle("예약 정보 입력"));
         String name =  view.requestName();
-
-        String phoneNumber = view.requestPhoneNumber("");
+        String phoneNumber = view.requestPhoneNumber();
         if(!userService.isValidPhone(phoneNumber)){
             view.printInvalid(5);
-            return;
+            throw new IllegalAccessException("번호 형식이 맞지 않습니다.");
         }
         User user = new User(name,phoneNumber);
 
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
         userService.saveReservation(user,trainer,startTime);
-        view.showResult("예약이");
+        view.println(BaseView.SEPARATOR);
+        view.printSpecial(startTime + "에 상담 예약 완료");
+        view.println(BaseView.SEPARATOR);
     }
 
     public void checkMyReservation() throws IllegalAccessException {
         // 전화번호를 입력받는다.
         String phoneNumber = view.showCheckMyReservation();
-        if(!userService.isDuplicatePhone(phoneNumber)){
-            view.printInvalid(2);
-            return;
-        }
         Reservation reservation = userService.checkMyReservation(phoneNumber);
         view.printReservation(reservation);
         String choice = view.myReservationMenu();

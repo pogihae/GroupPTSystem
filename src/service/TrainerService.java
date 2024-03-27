@@ -17,9 +17,8 @@ public class TrainerService {
 
     public int calculateIncome(Trainer trainer, int month, int year) {
         int totalClassNumber = (int) groupPTRepository.findReservationsByTrainer(trainer).stream()
-                .filter(r -> Utils.getMonth(r.getStartDate()) == month)
+                .filter(r -> r.getStartDate().getMonthValue() == month)
                 .filter(r -> r.getStartDate().getYear() == year)
-                .filter(Reservation::isClass)
                 .count();
 
         return trainer.calculateIncome(totalClassNumber);

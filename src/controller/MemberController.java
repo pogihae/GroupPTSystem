@@ -38,7 +38,7 @@ public class MemberController {
         //노쇼 1회 시 재등록(결제) 불가능하다
         assert selectedOption != null;
         view.displayPaymentResult(choice, selectedOption.getPrice());
-        System.out.println(member.getPayment());
+//        System.out.println(member.getPayment());
     }
 
     //수업예약
@@ -53,7 +53,6 @@ public class MemberController {
         }
         //1. 트레이너 선택 메뉴(이름, 등급, 성별)
         List<Trainer> allTrainersList = service.findAllTrainers();
-        System.out.println("트레이너 목록: " + allTrainersList);
         view.displayTrainers(allTrainersList);
         int choice = view.getTrainerChoice();
         Trainer selectedTrainer = allTrainersList.get(choice-1);
@@ -74,7 +73,6 @@ public class MemberController {
 
         //3. 사용자로부터 예약할 시간대 선택 받기
         int selectedSlotIndex = view.getReservationSlotChoice();
-        System.out.println("선택 체크 " +selectedSlotIndex);
         // 선택한 시간대에 예약 객체 생성
         if (slotIndexToDateTimeMap.containsKey(selectedSlotIndex)) {
             LocalDateTime selectedDateTime = slotIndexToDateTimeMap.get(selectedSlotIndex);
@@ -85,17 +83,13 @@ public class MemberController {
             Reservation existingReservation = null;
             // 선택한 시간대에 해당하는 예약이 있는지 검사
             for (Reservation reservation : reservationOfSelectedTrainer) {
-                System.out.println(selectedDateTime);
-                System.out.println(reservation.getStartDate());
                 if (reservation.getStartDate().isEqual(selectedDateTime)) {
                     existingReservation = reservation;
-                    System.out.println("FOUND");
                     break; // 일치하는 예약을 찾았으므로 루프 탈출
                 }
             }
             service.makeReservation(member, existingReservation, selectedTrainer, selectedDateTime);
             view.displayReservationConfirmation(selectedDateTime);
-            System.out.println(existingReservation);
         } else {
             view.displayInvalidChoice();
         }
@@ -178,7 +172,6 @@ public class MemberController {
             throw new IllegalStateException("회원으로 로그인되어있지 않습니다,");
         }
         Member member = (Member)UserService.loginedUser;
-        System.out.println(member);
         String input = view.requestMemberMenu();
         switch (input) {
             case "1" -> payForClass(member);
