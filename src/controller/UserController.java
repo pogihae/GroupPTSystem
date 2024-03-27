@@ -31,7 +31,7 @@ public class UserController {
 
     public void login() {
         String id = view.requestId();
-        String pw = view.requestPw();
+        String pw = view.requestPw("login");
 
         if (!userService.login(id, pw)) {
             view.printLoginFailed();
@@ -54,25 +54,25 @@ public class UserController {
         String id = view.requestId();
         //정규표현식 확인
         if(!userService.isDuplicateId(id)){
-            view.printRegisterFailed(1);
+            view.printInvalid(1);
             return;
         }
         if(!userService.isValidId(id)) {
-            view.printRegisterFailed(3);
+            view.printInvalid(3);
             return;
         }
-        String pw = view.requestPw();
+        String pw = view.requestPw("signUp");
         if(!userService.isValidPw(pw)){
-            view.printRegisterFailed(4);
+            view.printInvalid(4);
             return;
         }
-        String phoneNumber = view.requestPhoneNumber();
+        String phoneNumber = view.requestPhoneNumber("signUp");
         if(!userService.isDuplicatePhone(phoneNumber)){
-            view.printRegisterFailed(2);
+            view.printInvalid(2);
             return;
         }
         if(!userService.isValidPhone(phoneNumber)){
-            view.printRegisterFailed(5);
+            view.printInvalid(5);
             return;
         }
 
@@ -89,7 +89,7 @@ public class UserController {
         return trainers.get(Integer.parseInt(choice) - 1);
     }
 
-    public void reserveConsultation(){
+    private void reserveConsultation(){
         Trainer trainer = requestTrainers();
         LocalDateTime start = chooseAvailableTime(trainer);
         makeConsultReservation(trainer, start);
@@ -136,7 +136,12 @@ public class UserController {
 
     private void makeConsultReservation(Trainer trainer, LocalDateTime startTime) {
         String name =  view.requestName();
-        String phoneNumber = view.requestPhoneNumber();
+
+        String phoneNumber = view.requestPhoneNumber("");
+        if(!userService.isValidPhone(phoneNumber)){
+            view.printInvalid(5);
+            return;
+        }
         User user = new User(name,phoneNumber);
 
         //모든 형식이 적절하고, 내용이 중복되지 않으면..
@@ -147,6 +152,10 @@ public class UserController {
     public void checkMyReservation() throws IllegalAccessException {
         // 전화번호를 입력받는다.
         String phoneNumber = view.showCheckMyReservation();
+        if(!userService.isDuplicatePhone(phoneNumber)){
+            view.printInvalid(2);
+            return;
+        }
         Reservation reservation = userService.checkMyReservation(phoneNumber);
         view.printReservation(reservation);
         String choice = view.myReservationMenu();

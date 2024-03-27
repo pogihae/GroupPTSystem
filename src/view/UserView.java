@@ -21,9 +21,9 @@ public class UserView extends BaseView{
         );
     }
     public void showSignupMenu() {
-        println("*************************************************");
-        println("형식에 맞는 양식을 작성해 주세요.");
-        println("*************************************************");
+        println("****************************");
+        println("        [ 회원 가입 ]");
+        println("****************************");
     }
 
     public void printLoginFailed() {
@@ -58,13 +58,14 @@ public class UserView extends BaseView{
 
     }
 
-    public String requestPw() {
+    public String requestPw(String type) {
+        if(type.equals("signUp")) println("비밀번호: 8자 이상의 영문 대/소문자, 숫자, 특수문자를 포함해 주세요.");
         print("비밀번호: ");
         return readLine();
-
     }
 
-    public String requestPhoneNumber() {
+    public String requestPhoneNumber(String type) {
+        println("전화번호: 010-****-**** 형식으로 작성해주세요.");
         print("휴대폰번호: ");
         return readLine();
     }
@@ -88,7 +89,7 @@ public class UserView extends BaseView{
     }
 
     public void showReserveConsultation() {
-        println("*************************************************");
+        println("****************************");
     }
 
     public String showTrainers(List<Trainer> trainers){
@@ -97,7 +98,7 @@ public class UserView extends BaseView{
             trainer = trainers.get(i);
             System.out.printf("%d. %s 트레이너/ 등급 %s/ %s\n", i+1, trainer.getName(), trainer.getGrade(), trainer.getSex());
         }
-        println("*************************************************");
+        println("****************************");
         println("원하시는 트레이너의 번호를 입력하세요.:");
         return readLine();
     }
@@ -125,7 +126,7 @@ public class UserView extends BaseView{
     }
 
     public String showCheckMyReservation(){
-        println("*************************************************");
+        println("****************************");
         println("예약하신 전화번호를 입력해주세요: ");
         return  readLine();
     }
@@ -146,7 +147,7 @@ public class UserView extends BaseView{
         println(type+" 완료 되었습니다.");
     }
 
-    public void printRegisterFailed(int i) {
+    public void printInvalid(int i) {
         switch (i){
             case 1 -> println("중복된 아이디 입니다.");
             case 2 -> println("중복된 전화번호 입니다.");
