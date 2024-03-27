@@ -6,6 +6,7 @@ import service.AdminService;
 import service.MemberService;
 import service.TrainerService;
 import service.UserService;
+import view.UserView;
 import util.Utils;
 
 import java.time.LocalDate;
@@ -14,14 +15,18 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainController {
 
     public void run(boolean containSampleData) {
         if (containSampleData) {
             loadSampleData();
         }
-
-        while (true) {
+        //시작
+        final UserView userView = new UserView();
+        userView.showLogo();
+        userView.showStart();
+        while (userView.confirmAction("입력해주세요")) {
             try {
                 runUtil();
             } catch (IllegalAccessException | NumberFormatException e) {
@@ -31,6 +36,7 @@ public class MainController {
     }
 
     private void runUtil() throws IllegalAccessException {
+
         final UserController userController = new UserController();
         while (!userController.hasLoginedUser()) {
             userController.run();

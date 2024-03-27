@@ -27,7 +27,7 @@ public abstract class BaseView {
 
     public boolean confirmAction(String message) {
         System.out.println(message + " (Y/N)");
-        String input = scanner.nextLine().trim().toLowerCase();
+        String input = readLine().toLowerCase();
         return input.equals("y");
     }
 
@@ -71,11 +71,21 @@ public abstract class BaseView {
                 "██║  ███╗██████╔╝██║   ██║██║   ██║██████╔╝    ██████╔╝   ██║       ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║",
                 "██║   ██║██╔══██╗██║   ██║██║   ██║██╔═══╝     ██╔═══╝    ██║       ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║",
                 "╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║         ██║        ██║       ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║",
-                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝"+ColorView.ANSI_RESET,
-        };
+                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝"+ColorView.ANSI_RESET
+       };
 
         addSpace(logoLines);
 
+    }
+
+    public void showStart(){
+        String[] startLines = {ColorView.CYAN+
+                "              +-------------------------------------+",
+                "|    해당 프로그램을 시작하시겠습니까?    |",
+                "         |         [Y]es        [N]o         |",
+                "              +-------------------------------------+"
+        +ColorView.ANSI_RESET};
+    addSpace(startLines);
     }
     //가운데 정렬을 위한 공백 추가 함수
     public void addSpace(String[] Lines){
