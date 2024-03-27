@@ -102,14 +102,14 @@ public class MainController {
         Random random = new Random();
         for (int i = 1; i <= 10; i++) {
             Member member = new Member("멤버" + i, "010-%d%d%d%d-%d%d%d%d".formatted(
-                    random.nextInt(0,9),
-                    random.nextInt(0,9),
-                    random.nextInt(0,9),
-                    random.nextInt(0,9),
-                    random.nextInt(0,9),
-                    random.nextInt(0,9),
-                    random.nextInt(0,9),
-                    random.nextInt(0,9)),
+                    random.nextInt(0, 9),
+                    random.nextInt(0, 9),
+                    random.nextInt(0, 9),
+                    random.nextInt(0, 9),
+                    random.nextInt(0, 9),
+                    random.nextInt(0, 9),
+                    random.nextInt(0, 9),
+                    random.nextInt(0, 9)),
                     random.nextInt(20, 50), "male", "m" + i, "m" + i);
             members.add(member);
             repository.saveMember(member);
@@ -124,8 +124,8 @@ public class MainController {
                 {Utils.Day.MON, Utils.Day.TUE, Utils.Day.WED, Utils.Day.THU, Utils.Day.FRI, Utils.Day.SAT, Utils.Day.SUN}
         };
         for (int i = 1; i <= 5; i++) {
-            Trainer trainer = new Trainer("트레이너" + i, "010-%d%d%d%d-%d%d%d%d".formatted(random.nextInt(0,9), random.nextInt(0,9), random.nextInt(0,9), random.nextInt(0,9), random.nextInt(0,9), random.nextInt(0,9), random.nextInt(0,9),
-                    random.nextInt(0,9),
+            Trainer trainer = new Trainer("트레이너" + i, "010-%d%d%d%d-%d%d%d%d".formatted(random.nextInt(0, 9), random.nextInt(0, 9), random.nextInt(0, 9), random.nextInt(0, 9), random.nextInt(0, 9), random.nextInt(0, 9), random.nextInt(0, 9),
+                    random.nextInt(0, 9),
                     random.nextInt(20, 50)), random.nextInt(20, 50), "male", "t" + i, "t" + i);
             trainer.setLessonDays(trainerWorkDays[i - 1]);
             trainers.add(trainer);
@@ -178,14 +178,14 @@ public class MainController {
 
         // 미성년자
         Member minor = new Member("미성년자", "010-%d%d%d%d-%d%d%d%d".formatted(
-                random.nextInt(0,9),
-                random.nextInt(0,9),
-                random.nextInt(0,9),
-                random.nextInt(0,9),
-                random.nextInt(0,9),
-                random.nextInt(0,9),
-                random.nextInt(0,9),
-                random.nextInt(0,9)),
+                random.nextInt(0, 9),
+                random.nextInt(0, 9),
+                random.nextInt(0, 9),
+                random.nextInt(0, 9),
+                random.nextInt(0, 9),
+                random.nextInt(0, 9),
+                random.nextInt(0, 9),
+                random.nextInt(0, 9)),
                 random.nextInt(3, 15), "female", "minor", "minor");
         repository.saveMember(minor);
         adminService.approveUsers(List.of(minor));
@@ -193,9 +193,9 @@ public class MainController {
         memberService.makeReservation(minor, null, trainers.get(2), LocalDateTime.of(LocalDate.now(), LocalTime.of(LocalDateTime.now().getHour(), 0)));
 
         memberService.processPayment(members.get(0), Payment.PaymentOption.OPTION_1);
-        memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024,1,2), LocalTime.of(17, 0)));
-        memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024,1,2), LocalTime.of(18, 0)));
-        memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024,1,2), LocalTime.of(14, 0)));
-        memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024,2,2), LocalTime.of(17, 0)));
+        memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024, 1, 2), LocalTime.of(17, 0)));
+        memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024, 1, 2), LocalTime.of(18, 0)));
+        memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024, 1, 2), LocalTime.of(14, 0)));
+        memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024, 2, 2), LocalTime.of(17, 0)));
     }
 }

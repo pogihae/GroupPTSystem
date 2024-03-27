@@ -19,6 +19,7 @@ public class User implements Serializable {
     private String pw;
     private Role role;
     private State state;
+
     //상담신청한 유저일경우
     public User(String name, String phoneNumber) {
         this.name = name;
@@ -30,12 +31,14 @@ public class User implements Serializable {
         this.role = null;
         this.state = State.NONMEMBER;
     }
+
     public User(String name, String phoneNumber, int age, String sex, String id, String pw, Role role) {
         this(name, phoneNumber, age, sex, id, pw, role, State.PENDING);
         if (role.equals(Role.ADMIN)) {
             this.state = State.APPROVED;
         }
     }
+
     public User(User user) {
         update(user);
     }

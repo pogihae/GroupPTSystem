@@ -24,6 +24,7 @@ public class Trainer extends User {
         this.grade = Grade.C;
         this.lessonDays = new ArrayList<>(MAX_LESSON_DAY);
     }
+
     public Trainer(User user) {
         this(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw());
         this.setState(user.getState());
