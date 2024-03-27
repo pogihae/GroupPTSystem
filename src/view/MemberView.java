@@ -169,6 +169,8 @@ public class MemberView extends BaseView{
         System.out.println("--------------------------------------------");
     }
     public String requestMemberMenu() throws IllegalAccessException {
+        print("\n\n\n");
+        print("                 USER MENU                   \n");
         return requestMenuSelect(
                 "수강권 결제",
                 "수업 예약",

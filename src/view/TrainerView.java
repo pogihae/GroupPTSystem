@@ -12,9 +12,11 @@ public class TrainerView extends BaseView {
 
     //트레이너 메뉴
     public String requestTrainerMenu() throws IllegalAccessException {
+        print("\n\n\n");
+        print("                TRAINER MENU                   \n");
         return requestMenuSelect(
-                "수업시간표 확인",
-                "수업 요일 선택하기",
+                "수업시간표\n\t\t\t\t   확인",
+                "수업 요일\n\t\t\t\t   선택하기",
                 "회원 출석체크",
                 "수입 확인"
         );
