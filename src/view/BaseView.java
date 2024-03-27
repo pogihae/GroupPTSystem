@@ -128,21 +128,20 @@ public abstract class BaseView {
     }
 
     public String formatTitle(String title) {
-        return "*********\t%s\t*********\n".formatted(title);
+        return "჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻\t%s\t჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻\n".formatted(title);
     }
 
     public void printSpecial(String msg) {
         println(Color.BLUE + msg + Color.ANSI_RESET);
     }
 
-    public static String SEPARATOR = "*****************************";
+    public static String SEPARATOR = "჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻";
 
     /**
      *
      * @param reservations 오늘부터 다음주 까지(ex. 오늘이 화요일이면 오늘 포함해서 다음 주 월요일까지)의 예약목록
      * */
     public void printReservations(List<Reservation> reservations) {
-        System.out.println("******* 예약 목록 *******");
         // 시간순 정렬
         reservations.sort(Comparator.comparing(Reservation::getStartDate));
 
@@ -166,13 +165,13 @@ public abstract class BaseView {
         // 출력
         println(SEPARATOR);
         StringBuilder sb = new StringBuilder();
-        sb.append(formatTitle("예약목록"));
+        sb.append(formatTitle("\t\t예약 목록\t\t")); //예약내역이 0이라면 없다고 출력
         for (Utils.Day day : sortedDays) {
             List<Reservation> dayReservations = dayToReservations.get(day);
             if (dayReservations.isEmpty()) continue;
 
             int date = Utils.getDate(dayReservations.get(0).getStartDate());
-            sb.append(formatTitle("%s(%d)".formatted(day.name(), date)));
+            sb.append(formatTitle("\t\t%s(%d)\t\t".formatted(day.name(), date)));
 
             for (Reservation reservation : dayReservations) {
                 sb.append(reservation.getStartDate()).append("\t");
@@ -180,9 +179,7 @@ public abstract class BaseView {
                 sb.append(reservation.getUsers().size()).append("명 예약\n");
             }
         }
-
         printSpecial(sb.toString());
-        println(SEPARATOR);
     }
 
 

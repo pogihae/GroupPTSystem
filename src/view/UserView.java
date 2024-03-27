@@ -111,9 +111,9 @@ public class UserView extends BaseView{
     }
 
     public void showSigned() {
-        println("*************************************************");
+        println(SEPARATOR);
         println("회원가입 신청이 완료되었습니다. 승인 메시지가 전송되면 로그인이 가능합니다.");
-        println("*************************************************");
+        println(SEPARATOR);
 
     }
 
@@ -124,7 +124,7 @@ public class UserView extends BaseView{
     }
 
     public void showReserveConsultation() {
-        println("****************************");
+        println(SEPARATOR);;
     }
 
     public String showTrainers(List<Trainer> trainers){
@@ -133,7 +133,7 @@ public class UserView extends BaseView{
             trainer = trainers.get(i);
             System.out.printf("%d. %s 트레이너/ 등급 %s/ %s\n", i+1, trainer.getName(), trainer.getGrade(), trainer.getSex());
         }
-        println("****************************");
+        println(SEPARATOR);
         println("원하시는 트레이너의 번호를 입력하세요.:");
         return readLine();
     }
@@ -156,12 +156,12 @@ public class UserView extends BaseView{
             println((i+1) + ". " + dateTime.format(formatter));
         }
 
-        println("--------------------------------------------");
+        println(SEPARATOR);
         return readLine();
     }
 
     public String showCheckMyReservation(){
-        println("****************************");
+        println(SEPARATOR);
         println("예약하신 전화번호를 입력해주세요: ");
         return  readLine();
     }

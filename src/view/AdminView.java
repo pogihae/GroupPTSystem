@@ -1,6 +1,7 @@
 package view;
 
 import model.*;
+import util.Color;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,7 +20,7 @@ public class AdminView extends BaseView {
                 "남은 수업\n\t\t\t\t   스케줄",
                 "매출 및 인건비",
                 "뇨쇼 회원 확인",
-                "수업 연장\n\t\t\t\t   마케팅 전송"
+                "수업 연장\n\t\t\t\t   마케팅 메세지 전송"
         );
     }
 
@@ -122,7 +123,7 @@ public class AdminView extends BaseView {
     public void printNoShowMembers(List<Member> noShowMembers) {
         println(SEPARATOR);
         if (!noShowMembers.isEmpty()) {
-            println(formatTitle("노쇼 회원 목록"));
+            println(formatTitle("\t노쇼 회원 목록\t"));
             for (Member member : noShowMembers) {
                 printUserAbstractInfo(member);
             }
@@ -141,7 +142,7 @@ public class AdminView extends BaseView {
     public void printMembers(List<Member> members){
         // !!!!!!!!!!!!!!!!여기서 회원 이름, 나이, 아이디, 휴대폰 번호 이름 순으로 출력!!!!!!!!!!!!!!!!
         members.sort(Comparator.comparing(User::getName));
-        print(formatTitle("회원 목록"));
+        print(formatTitle("\t회원 목록\t"));
         int index = 1;
         for (Member member : members) {
             print(index + ": ");
@@ -153,18 +154,18 @@ public class AdminView extends BaseView {
 
 
     public void sendMarketingMessagesToMembers(List<Member> membersWithFewSessionsLeft){
-        System.out.println("다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:");
+        System.out.println(Color.BLUE+"다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:");
         for (Member member : membersWithFewSessionsLeft) {
             System.out.println("이름: " + member.getName());
             System.out.println("성별: " + member.getSex());
             System.out.println("나이: " + member.getAge());
             System.out.println("아이디: " + member.getId());
-            System.out.println("휴대폰 번호: " + member.getPhoneNumber());
-            System.out.println("--------------------------------");
+            System.out.println("휴대폰 번호: " + member.getPhoneNumber()+ Color.ANSI_RESET);
+            println(SEPARATOR);
         }
     }
     public void printNonMemberList(List<User> nonMemberList) {
-        print(formatTitle("비회원 목록"));
+        print(formatTitle("\t  비회원 목록  \t"));
         if (!nonMemberList.isEmpty()) {
             for (int i = 0; i < nonMemberList.size(); i++) {
                 User user = nonMemberList.get(i);
@@ -214,16 +215,16 @@ public class AdminView extends BaseView {
 
     public void printFinancialSummary(int monthlyRevenue, int totalLaborCost, int totalRevenue) {
         System.out.println("");
-        System.out.println("--------------------------------");
+        println(SEPARATOR);
         System.out.printf("[한달 총 매출]:\t%,d원%n", monthlyRevenue);
         System.out.printf("[총 인건비]:\t\t%,d원%n", totalLaborCost);
         System.out.printf("[총 매출]:\t\t%,d원%n", totalRevenue);
-        System.out.println("--------------------------------");
+        println(SEPARATOR);
         System.out.println("");
     }
 
     public void printTrainerDetails(Trainer trainer, List<String> details) {
-        println(formatTitle("수입 정보"));
+        println(formatTitle("\t수입 정보\t"));
         printTrainerInfo(trainer);
         StringBuilder sb = new StringBuilder();
         for (String detail : details) {
