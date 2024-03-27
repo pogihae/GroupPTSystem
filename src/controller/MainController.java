@@ -33,7 +33,9 @@ public class MainController {
             try {
                 runUtil();
             } catch (IllegalAccessException | NumberFormatException e) {
-                System.out.println("잘못된 입력입니다.");
+                userView.printlnError(e.getMessage());
+            } catch (Exception e) {
+                userView.printlnError("오류 발생! 다시 시도해주세요.");
             }
         }
     }
