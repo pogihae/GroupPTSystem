@@ -186,6 +186,7 @@ public class MemberView extends BaseView {
     public int getUpdateOrCancel(Reservation reservationToUpdate) {
         System.out.printf("선택한 예약: [ %s 트레이너/ %s ]\n해당 예약을 변경하고 싶다면 1번, 취소하고싶다면 2번을 입력하세요", reservationToUpdate.getManager().getName(),
                 reservationToUpdate.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        printlnError("!!!당일 예약 취소는 횟수가 차감되니 신중하게 선택하시길 바랍니다!!!");
         print("\n    /\\_/\\\n" +
                 "  /  • - • \\\n" +
                 "/ づ \uD83C\uDF38づ  [ 번호 입력 ] => ");
