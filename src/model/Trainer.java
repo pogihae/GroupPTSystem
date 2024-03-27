@@ -9,9 +9,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class Trainer extends User {
     private static final int MAX_LESSON_DAY = 3;
 
@@ -23,6 +22,7 @@ public class Trainer extends User {
 
     public Trainer(User user) {
         this(user.getName(), user.getPhoneNumber(), user.getAge(), user.getSex(), user.getId(), user.getPw());
+        this.setState(user.getState());
     }
 
     @AllArgsConstructor
@@ -52,5 +52,13 @@ public class Trainer extends User {
         super.update(trainer);
         this.grade = trainer.grade;
         this.lessonDays = trainer.lessonDays;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Trainer trainer) {
+            return this.getPhoneNumber().equals(trainer.getPhoneNumber());
+        }
+        return false;
     }
 }

@@ -1,15 +1,13 @@
 package service;
 
-import model.Member;
-import model.Payment;
-import model.Reservation;
-import model.Trainer;
+import model.*;
 import repository.GroupPTRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 public class MemberService {
@@ -18,15 +16,15 @@ public class MemberService {
         Payment payment = new Payment(LocalDate.now(), member.getPhoneNumber(), selectedOption);
         //payment 객체를 "결제" 파일에 저장하는 작업
         groupPTRepository.savePayment(payment);
-        this.updateInfoOfMember(member, payment, member.getRemainSessionCount() + selectedOption.getSessions());
-        //새로운 payment와 reaminsessionscount로 member를 파일에서 업데이트하는 작업
-        groupPTRepository.updateMember(member);
+        updateInfoOfMember(member, payment, member.getRemainSessionCount() + selectedOption.getSessions());
     }
-    public void updateInfoOfMember(Member member, Payment payment, int remainSessionCount) {
-        System.out.println(payment);
-        System.out.println(remainSessionCount);
+    private void updateInfoOfMember(Member member, Payment payment, int remainSessionCount) {
+//        System.out.println(payment);
+//        System.out.println(remainSessionCount);
         member.setRemainSessionCount(remainSessionCount);
         member.setPayment(payment);
+        //새로운 payment와 reaminsessionscount로 member를 파일에서 업데이트하는 작업
+        groupPTRepository.updateMember(member);
     }
     public List<Trainer> findAllTrainers(){
         return groupPTRepository.findAllTrainers();
@@ -34,9 +32,11 @@ public class MemberService {
     public List<Reservation> findreservationOfSelectedTrainer(Trainer selectedTrainer){
         return groupPTRepository.findReservationsByTrainer(selectedTrainer);
     }
-    public List<Reservation> findfilteredReservationsOfSelectedTrainer(List<Reservation> reservationOfSelectedTrainer){
+    public List<Reservation> findfilteredReservationsOfSelectedTrainer(Member member, List<Reservation> reservationOfSelectedTrainer){
         return reservationOfSelectedTrainer.stream()
-                .filter(reservation -> reservation.getUsers().size() == 4)
+                .filter(reservation -> reservation.isReservedUser(member))
+                .filter(reservation -> reservation.isFull())
+                .sorted(Comparator.comparing(Reservation::getStartDate))
                 .toList();
     }
     public void makeReservation(Member member, Reservation existingReservation, Trainer selectedTrainer, LocalDateTime selectedDateTime){
@@ -45,7 +45,9 @@ public class MemberService {
             groupPTRepository.updateReservation(existingReservation);
         } else {
             Reservation newReservation = new Reservation(selectedTrainer, selectedDateTime);
+            newReservation.setType(Reservation.Type.CLASS);
             newReservation.addUser(member);
+            newReservation.setManager(selectedTrainer);
             groupPTRepository.saveReservation(newReservation);
         }
         //횟수차감
@@ -59,9 +61,6 @@ public class MemberService {
     }
     public List<Reservation> getReserationsOfUser(Member member){
         return groupPTRepository.findReservationsByPhone(member.getPhoneNumber());
-    }
-    public Reservation getReservationToUpdate(int index, Member member){
-        return groupPTRepository.findReservationsByPhone(member.getPhoneNumber()).get(index);
     }
     //잔여수업사용 가능 일수 구하기
     public int calculateDaysRemaining(Member member){

@@ -24,6 +24,12 @@ public class UserController {
             view.printLoginFailed();
             return;
         }
+
+        if (!UserService.loginedUser.getState().equals(User.State.APPROVED)) {
+            view.println("승인대기중입니다.");
+            return;
+        }
+
         view.printLoginSuccess(UserService.loginedUser);
     }
 

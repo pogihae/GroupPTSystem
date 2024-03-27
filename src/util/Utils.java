@@ -45,9 +45,8 @@ public class Utils {
      * 현재 시각과 비교
      * @return 현재 시각보다 과거: true, 현재 시각보다 미래: false
      * */
-    public static boolean isOverDate(Date date) {
-        Date cur = new Date();
-        return cur.before(date);
+    public static boolean isOverDate(LocalDateTime date) {
+        return LocalDateTime.now().isAfter(date);
     }
 
     public static LocalDateTime getCurrentTime() {

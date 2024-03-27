@@ -1,23 +1,15 @@
 package controller;
 
 import model.*;
-import repository.GroupPTRepository;
 import service.MemberService;
-import service.TrainerService;
 import service.UserService;
 import util.Utils;
 import view.MemberView;
-import view.TrainerView;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class MemberController {
     private final MemberService service = new MemberService();
@@ -61,14 +53,15 @@ public class MemberController {
         }
         //1. 트레이너 선택 메뉴(이름, 등급, 성별)
         List<Trainer> allTrainersList = service.findAllTrainers();
+        System.out.println("트레이너 목록: " + allTrainersList);
         view.displayTrainers(allTrainersList);
         int choice = view.getTrainerChoice();
         Trainer selectedTrainer = allTrainersList.get(choice-1);
 
         //2. 선택한 트레이너의 예약 목록 출력
         List<Reservation> reservationOfSelectedTrainer = service.findreservationOfSelectedTrainer(selectedTrainer);
-        // users 리스트의 크기가 4개인 예약들만 필터링하여 새로운 리스트를 생성 filteredReservations
-        List<Reservation> filteredReservations = service.findfilteredReservationsOfSelectedTrainer(reservationOfSelectedTrainer);
+        // 불가능한 예약들 새로운 리스트를 생성 filteredReservations
+        List<Reservation> filteredReservations = service.findfilteredReservationsOfSelectedTrainer(member, reservationOfSelectedTrainer);
 
         // 트레이너의 근무 요일 배열을 DayOfWeek 타입의 리스트로 변환
         List<Utils.Day> workDays = selectedTrainer.getLessonDays();
@@ -114,7 +107,7 @@ public class MemberController {
     //잔여 수업횟수/ 잔여 수업 사용 가능 일수
     // 예약한 수업을 변경 혹은 취소하고 싶다면 해당 번호를 입력하세요
     // 강사/ 시간 >> 해당 예약 변경은 1번, 해당 예약 취소는 2번을 입력하세요
-    public Reservation displayReservationInfo(Member member) {
+    public Reservation requestChangeReservation(Member member) {
         List<Reservation> reservationsByPhone = service.getReserationsOfUser(member);
         //예약된수업목록 출력
         view.displayReservationsOfUser(reservationsByPhone);
@@ -124,13 +117,12 @@ public class MemberController {
         // 사용자로부터 취소할 예약의 인덱스를 입력받음 (1부터 시작하는 인덱스; 리턴할 때 -1)
         int index = view.getReservationChoiceToUpdate();
         view.printLine();
-        Reservation reservationToUpdate = service.getReservationToUpdate(index, member);//변경하고싶은 예약 번호 입력
         //해당 예약 변경할지 삭제할지 결정
-        return reservationToUpdate;
+        return reservationsByPhone.get(index);
     }
     //예약정보확인 -> 변경하고싶은 인덱스를 누른 경우
     public void updateOrCancel(Member member){
-        Reservation reservationToUpdate = this.displayReservationInfo(member);
+        Reservation reservationToUpdate = requestChangeReservation(member);
         int choice = view.getUpdateOrCancel(reservationToUpdate);
         switch (choice){
             case 1: this.updateClassReservation(reservationToUpdate, member);
@@ -176,6 +168,7 @@ public class MemberController {
             throw new IllegalStateException("회원으로 로그인되어있지 않습니다,");
         }
         Member member = (Member)UserService.loginedUser;
+        System.out.println(member);
         String input = view.requestMemberMenu();
         switch (input) {
             case "1" -> payForClass(member);

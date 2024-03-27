@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import util.Utils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -125,6 +126,10 @@ public class Reservation implements Serializable {
 
     public boolean isClass() {
         return this.type.equals(Type.CLASS);
+    }
+
+    public boolean isEnd() {
+        return Utils.isOverDate(this.getStartDate());
     }
 
     @Override

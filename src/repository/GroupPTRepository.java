@@ -197,13 +197,13 @@ public class GroupPTRepository {
                 .map(obj -> (Reservation) obj)
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        reservations.forEach(r -> {
-            List<User> mUsers = r.getUsers();
-            mUsers.forEach(u -> u.update(findUserById(u.getId())));
-
-            User mManager = r.getManager();
-            mManager.update(findUserById(mManager.getId()));
-        });
+//        reservations.forEach(r -> {
+//            List<User> mUsers = r.getUsers();
+//            mUsers.forEach(u -> u.update(findUserById(u.getId())));
+//
+//            User mManager = r.getManager();
+//            mManager.update(findUserById(mManager.getId()));
+//        });
 
         return reservations;
     }
@@ -229,7 +229,7 @@ public class GroupPTRepository {
                 .findFirst()
                 .ifPresentOrElse(org -> {
                     org.update(reservation);
-                    writeListToFile(MEMBER_FILE, reservations);
+                    writeListToFile(RESERVATION_FILE, reservations);
                 }, () -> System.out.println(reservation + "가 존재하지 않습니다."));
     }
 
@@ -309,7 +309,7 @@ public class GroupPTRepository {
     private List<Object> readListFromFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
             List<Object> res = (List<Object>) ois.readObject();
-            System.out.println("TEST-REPO: read " + res);
+            //System.out.println("TEST-REPO: read " + res);
             return new ArrayList<>(res);
         } catch (ClassNotFoundException | IOException e) {
             return new ArrayList<>();

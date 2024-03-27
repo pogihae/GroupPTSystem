@@ -36,9 +36,9 @@ public class AdminService {
             user.setState(User.State.APPROVED);
 
             if (user instanceof Trainer) {
-                groupPTRepository.saveTrainer((Trainer) user);
+                groupPTRepository.updateTrainer((Trainer) user);
             } else {
-                groupPTRepository.saveMember((Member) user);
+                groupPTRepository.updateMember((Member) user);
             }
         }
     }

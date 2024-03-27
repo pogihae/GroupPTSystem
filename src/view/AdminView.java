@@ -65,20 +65,21 @@ public class AdminView extends BaseView{
             if (reservation.isNoShowUser(member)) {
                 System.out.println("노쇼");
                 noShowCount += 1;
-            } else {
+            } else if (reservation.isEnd()){
                 System.out.println("출석 트레이너 " + reservation.getManager().getName());
                 totalAttendanceCount++;
+            } else {
+                System.out.println("예약 트레이너 " + reservation.getManager().getName());
             }
         }
-        Payment payment = member.getPayment();
-        int totalPaymentCount = (payment == null)? 0 : payment.getPaymentOption().getSessions();
+
         int remainingCount = member.getRemainSessionCount();
         int reservationCount = reservations.size();
 
-        System.out.println(" 총 결제 횟수 : " + totalPaymentCount + "회 /" +
-                "남은 회수 : " + remainingCount + "회 /" +
+        System.out.println(
+                "남은 횟수 : " + remainingCount + "회 /" +
                 "예약된 횟수 : " + reservationCount + "회 /" +
-                "축석 : " + totalAttendanceCount + "회 /" +
+                "출석 : " + totalAttendanceCount + "회 /" +
                 "노쇼 : " + noShowCount + "회");
     }
 
