@@ -211,7 +211,7 @@ public class AdminService {
 
 
     //6. 매출 및 총 인건비 확인
-    public void getRevenueAndLaborCost() {
+    public int[] getRevenueAndLaborCost() {
         LocalDate currentDate = LocalDate.now();
         int currentMonth = currentDate.getMonthValue();
         int currentYear = currentDate.getYear();
@@ -228,16 +228,7 @@ public class AdminService {
         // 현재까지 총 매출
         int totalRevenue = calculateTotalRevenue();
 
-         //결과 출력
-        //adminView.printFinancialSummary(monthlyRevenue, totalLaborCost, totalRevenue);
-        System.out.println("");
-        System.out.println("--------------------------------");
-        System.out.printf("[한달 총 매출]:\t%,d원%n", monthlyRevenue);
-        System.out.printf("[총 인건비]:\t\t%,d원%n", totalLaborCost);
-        System.out.printf("[총 매출]:\t\t%,d원%n", totalRevenue);
-        System.out.println("--------------------------------");
-        System.out.println("");
-
+        return new int[] {monthlyRevenue, totalLaborCost, totalRevenue};
     }
 
     public int calculateTotalLaborCost(List<Trainer> trainers, int month, int year) {

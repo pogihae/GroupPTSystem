@@ -32,7 +32,7 @@ public class AdminController {
             //(수업 스케줄 확인)을 선택했을 경우
             case "5" -> adminView.printReservations(adminService.getSchedule());
             //(매출 및 인건비 확인)을 선택했을 경우
-            case "6" -> adminService.getRevenueAndLaborCost();
+            case "6" -> handleIncome();
             case "7" -> adminView.printNoShowMembers(adminService.getNoShowMembers());
             case "8" -> adminService.sendMarketingMessage();
         }
@@ -100,12 +100,16 @@ public class AdminController {
         int trainerIndex = adminView.readInt() - 1;
         Trainer trainer = trainers.get(trainerIndex);
 
-        adminView.printRequestInput("정보 확인할 번호");
         adminView.printRequestInput(trainer.getName() + "님의 수입 정보 확인할 연도");
         int year = adminView.readInt();
 
-        adminView.print(adminView.formatTitle(trainer.getName() + "님의 정보\n"));
+        adminView.print(adminView.formatTitle(trainer.getName() + "님의 정보"));
         List<String> details = adminService.getTrainerDetails(trainers.get(trainerIndex), year);
         adminView.printTrainerDetails(trainer, details);
+    }
+
+    private void handleIncome() {
+        int[] income = adminService.getRevenueAndLaborCost();
+        adminView.printFinancialSummary(income[0], income[1], income[2]);
     }
 }
