@@ -18,6 +18,7 @@ public class UserView extends BaseView{
         // 첫 화면 출력
         showLogo();
         return requestMenuSelect(
+                "메인 메뉴",
                 "로그인",
                 "회원가입",
                 "상담예약",

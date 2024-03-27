@@ -13,6 +13,7 @@ public class TrainerView extends BaseView {
     //트레이너 메뉴
     public String requestTrainerMenu() throws IllegalAccessException {
         return requestMenuSelect(
+                "트레이너 메뉴",
                 "수업시간표 확인",
                 "수업 요일 선택하기",
                 "회원 출석체크",

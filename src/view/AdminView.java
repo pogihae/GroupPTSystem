@@ -10,6 +10,7 @@ public class AdminView extends BaseView{
 
     public String requestAdminMenu() throws IllegalAccessException {
         return requestMenuSelect(
+                "관리자 메뉴",
                 "회원가입 신청 목록",
                 "회원 목록",
                 "비회원 목록",
@@ -17,7 +18,7 @@ public class AdminView extends BaseView{
                 "남은 수업 스케줄",
                 "매출 및 인건비",
                 "뇨쇼 회원 확인",
-                "수업 연장 마케팅 전송"
+                "수업 연장 마케팅 메세지 전송"
         );
     }
 

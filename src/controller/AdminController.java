@@ -98,7 +98,7 @@ public class AdminController {
         adminView.viewTrainerList(trainers);
 
         // 입력받은 인덱스에 해당하는 트레이너의 상세 정보 확인
-        int trainerIndex = adminView.readInt();
+        int trainerIndex = adminView.readInt() - 1;
         Trainer trainer = trainers.get(trainerIndex);
 
         adminView.print(trainer.getName() + "님의 정보 확인할 연도: ");

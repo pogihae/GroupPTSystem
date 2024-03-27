@@ -170,6 +170,7 @@ public class MemberView extends BaseView{
     }
     public String requestMemberMenu() throws IllegalAccessException {
         return requestMenuSelect(
+                "회원 메뉴",
                 "수강권 결제",
                 "수업 예약",
                 "수업 변경 및 취소"

@@ -30,9 +30,6 @@ public abstract class BaseView {
         String input = scanner.nextLine().trim().toLowerCase();
         return input.equals("y");
     }
-    public void requestMenuSelect2(String... menus) {
-        System.out.print(formatMenu2(menus));
-    }
 
     public List<String> readLineBySeparate(String opt) {
         String line = readLine();
@@ -41,8 +38,8 @@ public abstract class BaseView {
                 .toList();
     }
 
-    public String requestMenuSelect(String... menus) throws IllegalAccessException {
-        System.out.print(formatMenu(menus));
+    public String requestMenuSelect(String title, String... menus) throws IllegalAccessException {
+        System.out.print(formatMenu(title, menus));
         String input = readLine();
 
         if (input.equals("#")) {
@@ -95,34 +92,21 @@ public abstract class BaseView {
         return " ".repeat(Math.max(0, space)) + line;
     }
 
-    private String formatMenu(String... menus) {
+    private String formatMenu(String title, String... menus) {
         //변경가능한 문자열
         StringBuilder sb = new StringBuilder();
-        sb.append("""
-                    메뉴 디자인 해야함             
-                """);
         sb.append("*******************\n");
-        sb.append("메뉴를 선택하세요.\n");
+        sb.append("*\t\t%s\n".formatted(title));
+        sb.append("*******************\n");
         for (int i=0; i< menus.length; i++) {
-            sb.append("%d. %s\n".formatted(i+1, menus[i]));
+            sb.append("*\t%d. %s\n".formatted(i+1, menus[i]));
         }
         if (UserService.loginedUser != null) {
-            sb.append("0. 로그아웃\n");
+            sb.append("*\t0. 로그아웃\n");
         }
-        sb.append("#. 종료\n");
+        sb.append("*\t#. 종료\n");
         sb.append("*******************\n");
-        sb.append("입력: ");
-        return sb.toString();
-    }
-    //로그인 전 완전 초기 메뉴
-    private String formatMenu2(String... menus) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("*******************\n");
-        for (int i=0; i< menus.length; i++) {
-            sb.append("%d. %s\n".formatted(i+1, menus[i]));
-        } //0이나 *누르면...?
-        sb.append("*******************\n");
-        sb.append("입력: ");
+        sb.append("\t입력: ");
         return sb.toString();
     }
 
