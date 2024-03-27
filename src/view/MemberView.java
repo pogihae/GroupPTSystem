@@ -4,6 +4,7 @@ import model.Member;
 import model.Reservation;
 import model.Trainer;
 import repository.GroupPTRepository;
+import util.Color;
 import util.Utils;
 
 import java.time.LocalDate;
@@ -47,7 +48,7 @@ public class MemberView extends BaseView{
                 "    (｡•ㅅ•｡)♡\n" +
                 " ┏--∪-∪━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
                 " ♡ " +choice+"번 옵션 , "+priceOfSelectedOption+"원 결제가 완료되었습니다 .。♡\n" +
-                " ┗-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"+ ColorView.ANSI_RESET);
+                " ┗-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"+ Color.ANSI_RESET);
         println(formatTitle("choice"+ choice + "번 옵션," + priceOfSelectedOption+ "원 결제가 완료되었습니다"));
     }
     public void displayInvalidOption() {
@@ -124,15 +125,15 @@ public class MemberView extends BaseView{
         return choice;
     }
     public void displayNoSessionsLeft() {
-        System.out.println(ColorView.RED+"!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!" + ColorView.ANSI_RESET);
+        System.out.println(Color.RED+"!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!" + Color.ANSI_RESET);
         //printlnError("!!!!!!!!!!남은 횟수가 없습니다. 재결제가 필요합니다!!!!!!!!!!");
     }
     public void displayReservationConfirmation(LocalDateTime selectedDateTime) {
-        System.out.println(ColorView.GREEN + "  　  /)⋈/)\n" +
+        System.out.println(Color.GREEN + "  　  /)⋈/)\n" +
                 "    (｡•ㅅ•｡)♡\n" +
                 " ┏--∪-∪━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
                 " ♡  \" 예약이 완료되었습니다. \"\n\t[ 예약일자: "+ selectedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " ]\n"
-                +" ┗-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"+ ColorView.ANSI_RESET);
+                +" ┗-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"+ Color.ANSI_RESET);
         //System.out.println("[ 예약일자: " + selectedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " ]\n");
     }
     public void displayInvalidChoice() {
