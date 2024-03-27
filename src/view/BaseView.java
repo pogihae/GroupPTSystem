@@ -1,6 +1,7 @@
 package view;
 
 import model.Reservation;
+import service.UserService;
 import util.Utils;
 
 import java.util.*;
@@ -37,24 +38,44 @@ public abstract class BaseView {
                 .toList();
     }
 
-    public void requestMenuSelect(String... menus) {
+    public String requestMenuSelect(String... menus) throws IllegalAccessException {
         System.out.print(formatMenu(menus));
-    }
+        String input = readLine();
 
-    public void handleNonMatchedMenu() {
-        throw new IllegalStateException("맞는 메뉴가 없습니다.");
+        if (input.equals("#")) {
+            System.out.println("시스템종료");
+            System.exit(0);
+        }
+
+        if (input.equals("0") && UserService.loginedUser != null) {
+            System.out.println("로그아웃");
+            UserService.logout();
+            return "0";
+        }
+
+        int start = 1;
+        int end = menus.length;
+        int inputInt = Integer.parseInt(input);
+
+        if (!(start <= inputInt && end >= inputInt)) {
+            throw new IllegalAccessException("맞는 메뉴가 없습니다.");
+        }
+
+        return input;
     }
 
     private String formatMenu(String... menus) {
         //변경가능한 문자열
         StringBuilder sb = new StringBuilder();
         sb.append("*******************\n");
-        sb.append("메뉴를 선택하세요.");
+        sb.append("메뉴를 선택하세요.\n");
         for (int i=0; i< menus.length; i++) {
             sb.append("%d. %s\n".formatted(i+1, menus[i]));
         }
-        sb.append("0. 이전 메뉴\n");
-        sb.append("#. 메인 메뉴\n");
+        if (UserService.loginedUser != null) {
+            sb.append("0. 로그아웃\n");
+        }
+        sb.append("#. 종료\n");
         sb.append("*******************\n");
         sb.append("입력: ");
         return sb.toString();

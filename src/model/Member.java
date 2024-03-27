@@ -29,14 +29,6 @@ public class Member extends User {
         this.remainSessionCount = member.remainSessionCount;
         this.payment = member.payment;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Member member) {
-            return this.getPhoneNumber().equals(member.getPhoneNumber());
-        }
-        return false;
-    }
 }
 //----------------------------------------------------------------------------------------------------------------------------
     //수업결제

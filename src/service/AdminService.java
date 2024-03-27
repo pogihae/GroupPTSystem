@@ -92,6 +92,7 @@ public class AdminService {
     public List<Member> getNoShowMembers() {
         List<List<Member>> noShowMemberLists = groupPTRepository.findAllReservations().stream()
                 .filter(r -> !r.getUsers().equals(r.getAttendants()))
+                .filter(r -> r.getType().equals(Reservation.Type.CLASS))
                 .map(r ->
                         r.getUsers().stream()
                                 .filter(u -> !r.getAttendants().contains(u))
@@ -120,10 +121,9 @@ public class AdminService {
     // 수업 연장 마케팅 전송
     public void sendMarketingMessage() {
         List<Member> membersWithFewSessionsLeft = groupPTRepository.findAllMembers().stream()
+                .filter(member -> member.getRole().equals(User.Role.MEMBER))
                 .filter(member -> {
-                    Payment payment = groupPTRepository.findPaymentByPhoneNumber(member.getPhoneNumber());
-                    int totalAttendanceCount = groupPTRepository.findReservationsByPhone(member.getPhoneNumber()).size();
-                    int remainingCount = payment.getPaymentOption().getSessions() - totalAttendanceCount;
+                    int remainingCount = member.getRemainSessionCount();
                     return remainingCount <= 3;
                 })
                 .toList();

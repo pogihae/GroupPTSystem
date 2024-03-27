@@ -20,28 +20,22 @@ public class AdminController {
         this.adminView = new AdminView();
     }
 
-    public void runAdmin() {
-        boolean isRunning = true;
-        while (isRunning) {
-            switch (adminView.requestAdminMenu()) {
-                //(회원가입 신청 목록)을 선택했을 경우
-                case "1" -> handleApproveUsers();
-                //(회원 목록 보기)을 선택했을 경우
-                case "2" -> handleAllMembers();
-                // 비회원 목록 가져오기
-                case "3" -> handleAllNonMembers();
-                //(트레이너 목록)을 선택했을 경우
-                case "4" -> handleAllTrainers();
-                //(수업 스케줄 확인)을 선택했을 경우
-                case "5" -> adminView.printReservations(adminService.getSchedule());
-                //(매출 및 인건비 확인)을 선택했을 경우
-                case "6" -> adminService.getRevenueAndLaborCost();
-                case "7" -> adminView.printNoShowMembers(adminService.getNoShowMembers());
-                case "8" -> adminService.sendMarketingMessage();
-                case "0" -> isRunning = false;
-                case "#" -> System.exit(0);
-                default -> adminView.handleNonMatchedMenu();
-            }
+    public void runAdmin() throws IllegalAccessException {
+        switch (adminView.requestAdminMenu()) {
+            //(회원가입 신청 목록)을 선택했을 경우
+            case "1" -> handleApproveUsers();
+            //(회원 목록 보기)을 선택했을 경우
+            case "2" -> handleAllMembers();
+            // 비회원 목록 가져오기
+            case "3" -> handleAllNonMembers();
+            //(트레이너 목록)을 선택했을 경우
+            case "4" -> handleAllTrainers();
+            //(수업 스케줄 확인)을 선택했을 경우
+            case "5" -> adminView.printReservations(adminService.getSchedule());
+            //(매출 및 인건비 확인)을 선택했을 경우
+            case "6" -> adminService.getRevenueAndLaborCost();
+            case "7" -> adminView.printNoShowMembers(adminService.getNoShowMembers());
+            case "8" -> adminService.sendMarketingMessage();
         }
     }
 

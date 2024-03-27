@@ -16,6 +16,19 @@ public class UserController {
     private final UserView view = new UserView();
     private final UserService userService = new UserService();
 
+    public void run() throws IllegalAccessException {
+        switch (view.requestUserMenus()) {
+            case "1" -> login();
+            case "2" -> signUp();
+            case "3" -> reserveConsultation();
+            case "4" -> checkMyReservation();
+        }
+    }
+
+    public boolean hasLoginedUser() {
+        return UserService.loginedUser != null;
+    }
+
     public void login() {
         String id = view.requestId();
         String pw = view.requestPw("login");
@@ -69,15 +82,7 @@ public class UserController {
         view.showSigned();
     }
 
-    public void consult(){
-        String choice = view.showConsultMenu();
-        switch (choice){
-            case "1" -> reserveConsultation();
-            case "2" -> checkMyReservation();
-        }
-    }
-
-    private Trainer requestTrainers(){
+    public Trainer requestTrainers(){
         view.showReserveConsultation();
         List<Trainer> trainers = userService.findAllTrainers();
         String choice = view.showTrainers(trainers);
@@ -144,7 +149,7 @@ public class UserController {
         view.showResult("예약이");
     }
 
-    public void checkMyReservation(){
+    public void checkMyReservation() throws IllegalAccessException {
         // 전화번호를 입력받는다.
         String phoneNumber = view.showCheckMyReservation();
         if(!userService.isDuplicatePhone(phoneNumber)){
@@ -171,7 +176,7 @@ public class UserController {
         view.showResult("예약 변경");
     }
 
-    public void cancelReservation(Reservation reservation){
+    public void cancelReservation(Reservation reservation) throws IllegalAccessException {
         if(view.confirmAction("정말로 취소하시겠습니까?")){
             userService.cancelReservation(reservation);
             view.showResult("예약 취소");

@@ -41,9 +41,6 @@ public class Trainer extends User {
     }
 
     public boolean setLessonDays(Utils.Day[] days) {
-        if (days.length > MAX_LESSON_DAY) {
-            return false;
-        }
         lessonDays = List.of(days);
         return true;
     }
@@ -52,13 +49,5 @@ public class Trainer extends User {
         super.update(trainer);
         this.grade = trainer.grade;
         this.lessonDays = trainer.lessonDays;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Trainer trainer) {
-            return this.getPhoneNumber().equals(trainer.getPhoneNumber());
-        }
-        return false;
     }
 }

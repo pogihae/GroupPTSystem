@@ -74,22 +74,28 @@ public class MemberController {
 
         //3. 사용자로부터 예약할 시간대 선택 받기
         int selectedSlotIndex = view.getReservationSlotChoice();
+        System.out.println("선택 체크 " +selectedSlotIndex);
         // 선택한 시간대에 예약 객체 생성
         if (slotIndexToDateTimeMap.containsKey(selectedSlotIndex)) {
             LocalDateTime selectedDateTime = slotIndexToDateTimeMap.get(selectedSlotIndex);
+
 
             // 예약 객체 생성
             //reservationOfSelectedTrainer 의 reservation 중 startDate가 selectedDateTime과 같으면 거기에 추가, 아니면 객체생성
             Reservation existingReservation = null;
             // 선택한 시간대에 해당하는 예약이 있는지 검사
             for (Reservation reservation : reservationOfSelectedTrainer) {
-                if (reservation.getStartDate().equals(selectedDateTime)) {
+                System.out.println(selectedDateTime);
+                System.out.println(reservation.getStartDate());
+                if (reservation.getStartDate().isEqual(selectedDateTime)) {
                     existingReservation = reservation;
+                    System.out.println("FOUND");
                     break; // 일치하는 예약을 찾았으므로 루프 탈출
                 }
             }
             service.makeReservation(member, existingReservation, selectedTrainer, selectedDateTime);
             view.displayReservationConfirmation(selectedDateTime);
+            System.out.println(existingReservation);
         } else {
             view.displayInvalidChoice();
         }
@@ -109,6 +115,10 @@ public class MemberController {
     // 강사/ 시간 >> 해당 예약 변경은 1번, 해당 예약 취소는 2번을 입력하세요
     public Reservation requestChangeReservation(Member member) {
         List<Reservation> reservationsByPhone = service.getReserationsOfUser(member);
+        if (reservationsByPhone.isEmpty()) {
+            System.out.println("예약목록없음");
+            return null;
+        }
         //예약된수업목록 출력
         view.displayReservationsOfUser(reservationsByPhone);
         //잔여 수업횟수/ 잔여 수업 사용 가능 일수 출력
@@ -123,6 +133,7 @@ public class MemberController {
     //예약정보확인 -> 변경하고싶은 인덱스를 누른 경우
     public void updateOrCancel(Member member){
         Reservation reservationToUpdate = requestChangeReservation(member);
+        if (reservationToUpdate == null) return;
         int choice = view.getUpdateOrCancel(reservationToUpdate);
         switch (choice){
             case 1: this.updateClassReservation(reservationToUpdate, member);
@@ -163,7 +174,7 @@ public class MemberController {
     }
 
 
-    public void handleMemberMenu(){
+    public void handleMemberMenu() throws IllegalAccessException {
         if (!UserService.getLoginedUserRole().equals(User.Role.MEMBER)) {
             throw new IllegalStateException("회원으로 로그인되어있지 않습니다,");
         }

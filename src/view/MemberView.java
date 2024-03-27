@@ -63,12 +63,14 @@ public class MemberView extends BaseView{
     public Map<Integer, LocalDateTime> displayReservationSlots(LocalDate today, LocalDate endDay, List<Utils.Day> workDays, List<Reservation> filteredReservations) {
         LocalTime startTime = LocalTime.of(13,0);
         LocalTime endTime = LocalTime.of(19,0);
+        today = LocalDate.from(today.atStartOfDay());
         //idx(1~), LocalDateTime 예약한시간
+        System.out.println("filtered: " + filteredReservations);
         Map<Integer, LocalDateTime> slotIndexToDateTimeMap = new HashMap<>();
         int slotIndex = 1;
         for (LocalDate date = today.plusDays(1); !date.isAfter(endDay); date = date.plusDays(1)) {
-
-            if (workDays.contains(Utils.getDay(date.atStartOfDay()))) {
+            System.out.println(Utils.getDay(date.plusDays(1).atStartOfDay()));
+            if (workDays.contains(Utils.getDay(date.plusDays(1).atStartOfDay()))) {
                 System.out.println("--------------------------------------------");
                 System.out.println("[ "+date + "]"+ "의 예약 가능한 시간:");
                 System.out.println("--------------------------------------------");
@@ -78,8 +80,18 @@ public class MemberView extends BaseView{
                     LocalDateTime slotStartDateTime = LocalDateTime.of(date, tempStartTime);
                     LocalDateTime slotEndDateTime = slotStartDateTime.plusHours(1);
 
-                    boolean isReserved = filteredReservations.stream()
-                            .anyMatch(reservation -> Utils.getDate(reservation.getStartDate()) == Utils.getDate(slotStartDateTime));
+                    boolean isReserved = false;
+                    for (Reservation reservation : filteredReservations) {
+                        int rDate = reservation.getStartDate().getDayOfMonth();
+                        int sDate = slotStartDateTime.getDayOfMonth();
+                        int rHour = reservation.getStartDate().getHour();
+                        int sHour = slotStartDateTime.getHour();
+
+                        if ((rDate == sDate) && (rHour == sHour)) {
+                            isReserved = true;
+                            break;
+                        }
+                    }
 
                     if (!isReserved) {
                         System.out.println("[ "+slotIndex + " ]"+ ". " + slotStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, E"))
@@ -156,14 +168,13 @@ public class MemberView extends BaseView{
     public void printLine(){
         System.out.println("--------------------------------------------");
     }
-    public String requestMemberMenu(){
-        requestMenuSelect(
+    public String requestMemberMenu() throws IllegalAccessException {
+        return requestMenuSelect(
                 "수강권 결제",
                 "수업 예약",
                 "수업 변경 및 취소"
                 //수업정보확인
         );
-        return readLine();
     }
 
 }

@@ -47,6 +47,14 @@ public class UserService {
         }
     }
 
+    public static void logout() {
+        if (loginedUser == null) {
+            throw new IllegalStateException("로그인된 유저가 없습니다.");
+        }
+
+        loginedUser = null;
+    }
+
     public List<Trainer> findAllTrainers(){
         List<Trainer> list = repository.findAllTrainers();
         return list;
