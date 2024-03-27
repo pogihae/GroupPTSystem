@@ -3,6 +3,7 @@ package view;
 import model.Reservation;
 import model.Trainer;
 import model.User;
+import util.Color;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +24,7 @@ public class UserView extends BaseView{
 
      */
     public void showMainScreen(){
-        String[] startLines = {ColorView.GREEN+
+        String[] startLines = {Color.GREEN+
                 "    ┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊",
                 "┊    ┊    ┊    ┊    ☆    ┊    ┊     ┊    ┊",
                 "┊    ┊    ┊     ✬        ✬     ┊    ┊    ┊",
@@ -35,7 +36,7 @@ public class UserView extends BaseView{
 
 
 
-                        +ColorView.ANSI_RESET};
+                        + Color.ANSI_RESET};
         addSpace(startLines);
     }
     public String requestUserMenus() throws IllegalAccessException {
