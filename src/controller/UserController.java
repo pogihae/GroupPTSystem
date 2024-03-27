@@ -56,7 +56,6 @@ public class UserController {
         int age = view.requestAge();
         String sex = view.requestSex();
         String id = view.requestId();
-        System.out.println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
         //정규표현식 확인
         if (!userService.isDuplicateId(id)) {
             view.printInvalid(1);
@@ -82,6 +81,7 @@ public class UserController {
         }
 
         int roleChoice = view.requestRole();
+        System.out.println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
         User.Role role = (roleChoice == 1) ? User.Role.TRAINER : User.Role.MEMBER;
         userService.signUp(name, phoneNumber, age, sex, id, pw, role);
         view.showSigned();
