@@ -24,24 +24,27 @@ public class UserView extends BaseView{
 
      */
     public void showMainScreen(){
-        String[] startLines = {Color.GREEN+
-                "    ┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊",
-                "┊    ┊    ┊    ┊    ☆    ┊    ┊     ┊    ┊",
-                "┊    ┊    ┊     ✬        ✬     ┊    ┊    ┊",
+        String[] startLines = {
+                "┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊    ┊",
+                "┊    ┊    ┊    ┊    ☆    ┊    ┊    ┊    ┊",
+                "┊    ┊    ┊     ✬        ✬    ┊    ┊    ┊",
                 "┊    ┊    ★      WELCOME      ★    ┊    ┊",
                 "┊    ☆                             ☆    ┊",
                 "✬            Group PT System            ✬",
-                "              에 오신 것을               ",
-                "                환영합니다                "
+                "                에 오신 것을               ",
+                "                 환영합니다              "
 
 
 
-                        + Color.ANSI_RESET};
-        addSpace(startLines);
+                        };
+        for(String line: startLines){
+            println(line);
+        }
     }
     public String requestUserMenus() throws IllegalAccessException {
+        print("\n\n\n");
+        print("                 MAIN MENU                   \n");
         return requestMenuSelect(
-                "메인 메뉴",
                 "로그인",
                 "회원가입",
                 "상담예약",
@@ -115,6 +118,8 @@ public class UserView extends BaseView{
     }
 
     public String showConsultMenu() throws IllegalAccessException {
+        print("\n\n\n");
+        print("                Consulting                  \n");
         return requestMenuSelect("상담 예약","상담 예약 확인");
     }
 
@@ -170,6 +175,8 @@ public class UserView extends BaseView{
     }
 
     public String myReservationMenu() throws IllegalAccessException {
+        print("\n\n\n");
+        print("              My Reservation                \n");
         return requestMenuSelect("상담 변경", "상담 취소");
     }
 

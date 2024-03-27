@@ -110,17 +110,16 @@ public abstract class BaseView {
     private String formatMenu(String title, String... menus) {
         //변경가능한 문자열
         StringBuilder sb = new StringBuilder();
-        sb.append("*\t\t%s\n".formatted(title));
-        sb.append("*******************\n");
+        sb.append("        .・*・.・*・.・*・.・*・.・*・.        \n");
         for (int i=0; i< menus.length; i++) {
-            sb.append("*\t%d. %s\n".formatted(i+1, menus[i]));
+            sb.append("\t\t\t\t%d. %s\t\t\t\t\t\n".formatted(i+1, menus[i]));
         }
         if (UserService.loginedUser != null) {
-            sb.append("*\t0. 로그아웃\n");
+            sb.append("\t\t\t\t0. 로그아웃\t\t\t\t\t\n");
         }
-        sb.append("*\t#. 종료\n");
-        sb.append("*******************\n");
-        sb.append("\t입력: ");
+        sb.append("\t\t\t\t#. 종료\t\t\t\t\t\t\n");
+        sb.append("        ・.*・.・*・.・*・.・*・.・*.・        \n\n");
+        sb.append("입력: ");
         return sb.toString();
     }
 
