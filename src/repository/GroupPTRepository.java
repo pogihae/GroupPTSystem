@@ -61,13 +61,13 @@ public class GroupPTRepository {
      * */
     public User findUserById(String id) {
         // 멤버 파일에서 검색 (비회원, 회원, 관리자)
-        User user = findAllMembers().stream()
+        User user = findAllMembersUtil().stream()
                 .filter(mUser -> mUser.getId().equals(id))
                 .findFirst().orElse(null);
 
         // 트레이너 파일에서 검색 (트레이너)
         if (user == null) {
-            user = findAllTrainers().stream()
+            user = findAllTrainersUtil().stream()
                     .filter(mUser -> mUser.getId().equals(id))
                     .findFirst().orElse(null);
         }
@@ -309,7 +309,7 @@ public class GroupPTRepository {
     private List<Object> readListFromFile(String fileName) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DIRECTORY + fileName))) {
             List<Object> res = (List<Object>) ois.readObject();
-            //System.out.println("TEST-REPO: read " + res);
+            System.out.println("TEST-REPO: read " + res);
             return new ArrayList<>(res);
         } catch (ClassNotFoundException | IOException e) {
             return new ArrayList<>();
@@ -320,7 +320,7 @@ public class GroupPTRepository {
 
     private void writeListToFile(String fileName, List<?> object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
-            //System.out.println("TEST-REPO: wrote " + object);
+            System.out.println("TEST-REPO: wrote " + object);
             oos.writeObject(object);
         } catch (IOException e) {
             throw new RuntimeException(e);

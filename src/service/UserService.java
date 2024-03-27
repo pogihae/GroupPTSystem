@@ -28,6 +28,7 @@ public class UserService {
         }
 
         User user = repository.findUserById(id);
+        System.out.println(user);
         if (user == null || !user.getPw().equals(pw)) {
             return false;
         }
@@ -41,6 +42,7 @@ public class UserService {
             user.setState(User.State.APPROVED);
             repository.saveTrainer(new Trainer(user));
         } else {
+            user.setState(User.State.APPROVED);
             repository.saveMember(new Member(user));
         }
     }
