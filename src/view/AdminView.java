@@ -154,7 +154,9 @@ public class AdminView extends BaseView {
 
 
     public void sendMarketingMessagesToMembers(List<Member> membersWithFewSessionsLeft){
-        System.out.println(Color.BLUE+"다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:");
+        System.out.println(Color.BLUE+"︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵＼ʕ •ᴥ•ʔ／︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵　\n" +
+                "　　　　　　다음 회원들에게 수업 연장 마케팅 메세지를 전송합니다:　　　　　\n" +
+                "︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵((ฅ)　(ฅ))︵‿︵‿︵‿︵‿︵‿︵‿︵‿︵\n");
         for (Member member : membersWithFewSessionsLeft) {
             System.out.println("이름: " + member.getName());
             System.out.println("성별: " + member.getSex());

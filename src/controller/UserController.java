@@ -34,7 +34,7 @@ public class UserController {
         view.showLoginScreen();
         String id = view.requestId();
         String pw = view.requestPw("login");
-
+        System.out.println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
         if (!userService.login(id, pw)) {
             view.printLoginFailed();
             return;
@@ -54,6 +54,7 @@ public class UserController {
         int age = view.requestAge();
         String sex = view.requestSex();
         String id = view.requestId();
+        System.out.println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
         //정규표현식 확인
         if(!userService.isDuplicateId(id)){
             view.printInvalid(1);

@@ -124,7 +124,10 @@ public abstract class BaseView {
     }
 
     public void printRequestInput(String target) {
-        print("[%s]를 입력해주세요: ".formatted(target));
+        print(".   /\\_/\\\n" +
+                "  /  • - • \\\n" +
+                "/ づ \uD83C\uDF38づ  " + "[%s]를 입력해주세요: ".formatted(target));
+        //print("[%s]를 입력해주세요: ".formatted(target));
     }
 
     public String formatTitle(String title) {

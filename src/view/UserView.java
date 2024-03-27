@@ -13,7 +13,9 @@ import java.util.Scanner;
 public class UserView extends BaseView{
     private final Scanner sc = new Scanner(System.in);
     public void showLoginScreen(){
-        //로그인 화면 ID, PW 입력하세요
+        println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
+        println("           [ 로그인 ]           ");
+        println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
     }
     /*
     ┊　　┊　　┊ 　 ┊    　┊　   ┊　 ┊
@@ -54,9 +56,9 @@ public class UserView extends BaseView{
 
 
     public void showSignupMenu() {
-        println("****************************");
+        println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
         println("        [ 회원 가입 ]");
-        println("****************************");
+        println("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
     }
 
     public void printLoginFailed() {
@@ -181,16 +183,16 @@ public class UserView extends BaseView{
     }
 
     public void showResult(String type){
-        println(type+" 완료 되었습니다.");
+        printSpecial(type+" 완료 되었습니다.\n");
     }
 
     public void printInvalid(int i) {
         switch (i){
-            case 1 -> println("중복된 아이디 입니다.");
-            case 2 -> println("중복된 전화번호 입니다.");
-            case 3 -> println("유효하지 않은 아이디 입니다.");
-            case 4 -> println("유효하지 않은 비밀번호 입니다.");
-            case 5 -> println("유효하지 않은 전화번호 입니다.");
+            case 1 -> printlnError("중복된 아이디 입니다.");
+            case 2 -> printlnError("중복된 전화번호 입니다.");
+            case 3 -> printlnError("유효하지 않은 아이디 입니다.");
+            case 4 -> printlnError("유효하지 않은 비밀번호 입니다.");
+            case 5 -> printlnError("유효하지 않은 전화번호 입니다.");
         }
 
     }
