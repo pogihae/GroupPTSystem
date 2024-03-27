@@ -113,7 +113,7 @@ public class UserView extends BaseView {
 
     public void showSigned() {
         println(SEPARATOR);
-        println("회원가입 신청이 완료되었습니다. 승인 메시지가 전송되면 로그인이 가능합니다.");
+        printSpecial("회원가입 신청이 완료되었습니다. 승인 메시지가 전송되면 로그인이 가능합니다.\n");
         println(SEPARATOR);
 
     }
