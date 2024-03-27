@@ -88,12 +88,12 @@ public class MainController {
     // 5번 트레이너: 금토일
     // (취소됨) 오늘 15시 수업 예약 / 멤버 4
     public void loadSampleData() {
-        System.out.println("-----테스트 데이터 저장중------");
+//        System.out.println("-----테스트 데이터 저장중------");
         final GroupPTRepository repository = GroupPTRepository.getInstance();
         //repository.reset();
 
         // 유저 저장
-        System.out.println("유저 저장");
+//        System.out.println("유저 저장");
         Member admin = new Member("관리자", "010-0000-0000", 21,
                 "male", "a1", "a1", User.Role.ADMIN);
         repository.saveMember(admin);
@@ -133,7 +133,7 @@ public class MainController {
         }
 
         // 모든 회원 승인
-        System.out.println("회원 승인");
+//        System.out.println("회원 승인");
         final TrainerService trainerService = new TrainerService();
         final AdminService adminService = new AdminService(trainerService);
 
@@ -141,7 +141,7 @@ public class MainController {
         adminService.approveUsers(List.of(members.get(0), members.get(1), members.get(2), members.get(8)));
 
         // 상담 예약 저장
-        System.out.println("상담 저장");
+//        System.out.println("상담 저장");
         final UserService userService = new UserService();
         userService.saveReservation(
                 new User("1번트레이너-15시상담", "010-1234-5678"),
@@ -153,7 +153,7 @@ public class MainController {
                 LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 0)));
 
         // 멤버 결제 및 예약
-        System.out.println("결제 및 예약");
+//        System.out.println("결제 및 예약");
         final MemberService memberService = new MemberService();
         memberService.processPayment(members.get(0), Payment.PaymentOption.OPTION_1);
         memberService.makeReservation(members.get(0), null, trainers.get(2), LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0)));
@@ -165,14 +165,14 @@ public class MainController {
         memberService.makeReservation(members.get(3), null, trainers.get(4), LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(17, 0)));
 
         // 예약 취소 오늘 15시 수업 예약 / 멤버 4
-        System.out.println("예약 취소");
+//        System.out.println("예약 취소");
         Reservation toCancel = repository.findReservationsByPhone(members.get(3).getPhoneNumber()).get(0);
 //        System.out.println("예약됨: " + toCancel.isReservedUser(members.get(3)));
 //        System.out.println("예약안됨: " + toCancel.isReservedUser(members.get(2)));
         memberService.cancelReservation(toCancel);
 
         // 동일 수업 다른 유저
-        System.out.println("동일 수업 다른 유저");
+//        System.out.println("동일 수업 다른 유저");
         Reservation toAdd = repository.findReservationsByPhone(members.get(0).getPhoneNumber()).get(0);
         memberService.makeReservation(members.get(1), toAdd, (Trainer) toAdd.getManager(), toAdd.getStartDate());
 
@@ -187,6 +187,7 @@ public class MainController {
                 random.nextInt(0, 9),
                 random.nextInt(0, 9)),
                 random.nextInt(3, 15), "female", "minor", "minor");
+
         repository.saveMember(minor);
         adminService.approveUsers(List.of(minor));
         memberService.processPayment(minor, Payment.PaymentOption.OPTION_2);
@@ -197,5 +198,7 @@ public class MainController {
         memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024, 1, 2), LocalTime.of(18, 0)));
         memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024, 1, 2), LocalTime.of(14, 0)));
         memberService.makeReservation(members.get(0), null, trainers.get(0), LocalDateTime.of(LocalDate.of(2024, 2, 2), LocalTime.of(17, 0)));
+
+        System.out.println("-----테스트 데이터 저장됨------");
     }
 }

@@ -53,7 +53,8 @@ public class TrainerView extends BaseView {
 
         List<User> users = reservation.getUsers();
         for (int i = 0; i < users.size(); i++) {
-            sb.append("%d. %s\n".formatted(i + 1, users.get(i)));
+            User user = users.get(i);
+            sb.append("%d. %s(%s)\n".formatted(i + 1, user.getName(), user.getPhoneNumber()));
         }
 
         sb.append(".   /\\_/\\\n" +
