@@ -38,15 +38,15 @@ public class MainController {
 
         while (userController.hasLoginedUser()) {
             switch (UserService.loginedUser.getRole()) {
-                case User.Role.ADMIN -> {
+                case ADMIN -> {
                     final AdminController adminController = new AdminController(new AdminService(new TrainerService()));
                     adminController.runAdmin();
                 }
-                case User.Role.TRAINER -> {
+                case TRAINER -> {
                     final TrainerController trainerController = new TrainerController();
                     trainerController.handleTrainerMenu();
                 }
-                case User.Role.MEMBER -> {
+                case MEMBER -> {
                     final MemberController memberController = new MemberController();
                     memberController.handleMemberMenu();
                 }

@@ -30,6 +30,9 @@ public abstract class BaseView {
         String input = scanner.nextLine().trim().toLowerCase();
         return input.equals("y");
     }
+    public void requestMenuSelect2(String... menus) {
+        System.out.print(formatMenu2(menus));
+    }
 
     public List<String> readLineBySeparate(String opt) {
         String line = readLine();
@@ -64,9 +67,40 @@ public abstract class BaseView {
         return input;
     }
 
+    public void showLogo(){
+        String[] logoLines = {ColorView.CYAN+
+                "      ██████╗ ██████╗  ██████╗ ██╗   ██╗██████╗     ██████╗ ████████╗    ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗",
+                "██╔════╝ ██╔══██╗██╔═══██╗██║   ██║██╔══██╗    ██╔══██╗╚══██╔══╝    ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║",
+                "██║  ███╗██████╔╝██║   ██║██║   ██║██████╔╝    ██████╔╝   ██║       ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║",
+                "██║   ██║██╔══██╗██║   ██║██║   ██║██╔═══╝     ██╔═══╝    ██║       ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║",
+                "╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║         ██║        ██║       ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║",
+                "    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝         ╚═╝        ╚═╝       ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝"+ColorView.ANSI_RESET,
+        };
+
+        addSpace(logoLines);
+
+    }
+    //가운데 정렬을 위한 공백 추가 함수
+    public void addSpace(String[] Lines){
+        for (String line : Lines) {
+            // 각 줄을 가운데 정렬하기 위해 앞에 공백 추가
+            String centeredLine = centerLine(line);
+            System.out.println(centeredLine);
+        }
+    }
+    // 문자열의 앞에 붙일 공백의 길이를 계산
+    public String centerLine(String line) {
+        int consoleWidth = 174;
+        int space = (consoleWidth - line.length()) / 2;
+        return " ".repeat(Math.max(0, space)) + line;
+    }
+
     private String formatMenu(String... menus) {
         //변경가능한 문자열
         StringBuilder sb = new StringBuilder();
+        sb.append("""
+                    메뉴 디자인 해야함             
+                """);
         sb.append("*******************\n");
         sb.append("메뉴를 선택하세요.\n");
         for (int i=0; i< menus.length; i++) {
@@ -76,6 +110,17 @@ public abstract class BaseView {
             sb.append("0. 로그아웃\n");
         }
         sb.append("#. 종료\n");
+        sb.append("*******************\n");
+        sb.append("입력: ");
+        return sb.toString();
+    }
+    //로그인 전 완전 초기 메뉴
+    private String formatMenu2(String... menus) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("*******************\n");
+        for (int i=0; i< menus.length; i++) {
+            sb.append("%d. %s\n".formatted(i+1, menus[i]));
+        } //0이나 *누르면...?
         sb.append("*******************\n");
         sb.append("입력: ");
         return sb.toString();
