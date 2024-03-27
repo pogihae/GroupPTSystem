@@ -92,7 +92,7 @@ public class AdminView extends BaseView {
         int remainingCount = member.getRemainSessionCount();
         int reservationCount = reservations.size();
 
-        println(
+        printSpecial(
                 "남은 횟수 : " + remainingCount + "회 /" +
                 "예약된 횟수 : " + reservationCount + "회 /" +
                 "출석 : " + totalAttendanceCount + "회 /" +
