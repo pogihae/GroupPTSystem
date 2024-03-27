@@ -11,14 +11,13 @@ import java.util.List;
 public class TrainerView extends BaseView {
 
     //트레이너 메뉴
-    public String requestTrainerMenu(){
-        requestMenuSelect(
+    public String requestTrainerMenu() throws IllegalAccessException {
+        return requestMenuSelect(
                 "수업시간표 확인",
                 "수업 요일 선택하기",
                 "회원 출석체크",
                 "수입 확인"
         );
-        return readLine();
     }
 
     //메뉴 1번(수업시간표 확인)을 선택했을 경우
@@ -53,7 +52,7 @@ public class TrainerView extends BaseView {
         System.out.println(sb);
 
         return Arrays.stream(readLine().split(","))
-                .mapToInt(Integer::parseInt)
+                .mapToInt(idx -> Integer.parseInt(idx) - 1)
                 .mapToObj(users::get)
                 .toList();
     }

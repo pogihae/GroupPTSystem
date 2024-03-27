@@ -64,12 +64,8 @@ public class Reservation implements Serializable {
         if (!reservation.id.equals(this.id)) {
             throw new IllegalArgumentException("NO MATCHED RESERVATION");
         }
-        this.type = reservation.type;
-        this.manager = reservation.manager;
         this.users = reservation.users;
         this.attendants = reservation.attendants;
-        this.startDate = reservation.startDate;
-        this.durationMinute = reservation.durationMinute;
     }
 
     /**
@@ -97,14 +93,14 @@ public class Reservation implements Serializable {
         if (!isReservedUser(user)) return false;
         //if (Utils.isOverDate(startDate)) return false;
         if (!LocalDateTime.now().isAfter(startDate)) return false;
-        return !attendants.contains(user);
+        return attendants.stream().anyMatch(u -> u.equals(user));
     }
 
     /**
      * 유저가 예약한 수업(상담)인지 여부를 알 수 있다.
      * */
     public boolean isReservedUser(User user) {
-        return users.contains(user);
+        return users.stream().anyMatch(u -> u.equals(user));
     }
 
     /**

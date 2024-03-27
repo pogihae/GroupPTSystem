@@ -11,6 +11,15 @@ import java.util.Scanner;
 
 public class UserView extends BaseView{
     private final Scanner sc = new Scanner(System.in);
+
+    public String requestUserMenus() throws IllegalAccessException {
+        return requestMenuSelect(
+                "로그인",
+                "회원가입",
+                "상담예약",
+                "상담확인"
+        );
+    }
     public void showSignupMenu() {
         println("*************************************************");
         println("형식에 맞는 양식을 작성해 주세요.");
@@ -74,9 +83,8 @@ public class UserView extends BaseView{
 
     }
 
-    public String showConsultMenu() {
-        requestMenuSelect("상담 예약","상담 예약 확인");
-        return readLine();
+    public String showConsultMenu() throws IllegalAccessException {
+        return requestMenuSelect("상담 예약","상담 예약 확인");
     }
 
     public void showReserveConsultation() {
@@ -122,14 +130,16 @@ public class UserView extends BaseView{
         return  readLine();
     }
     public void printReservation(Reservation reservation){
+        if (reservation == null) {
+            println("예약 없음");
+        }
         println("담당자 : "+reservation.getManager().getName());
         println("예약자명 : "+reservation.getUsers().get(0).getName()+"님");
         println("전화번호 : "+reservation.getUsers().get(0).getPhoneNumber());
     }
 
-    public String myReservationMenu() {
-        requestMenuSelect("상담 변경", "상담 취소");
-        return readLine();
+    public String myReservationMenu() throws IllegalAccessException {
+        return requestMenuSelect("상담 변경", "상담 취소");
     }
 
     public void showResult(String type){

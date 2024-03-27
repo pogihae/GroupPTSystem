@@ -15,7 +15,7 @@ public class TrainerController {
     private final TrainerService service = new TrainerService();
     private final TrainerView view = new TrainerView();
 
-    public void handleTrainerMenu() {
+    public void handleTrainerMenu() throws IllegalAccessException {
         if (!UserService.getLoginedUserRole().equals(User.Role.TRAINER)) {
             throw new IllegalStateException("트레이너로 로그인되어있지 않습니다,");
         }
@@ -32,7 +32,7 @@ public class TrainerController {
     }
 
     public void printTrainerTimeTable(Trainer trainer) {
-        view.printTrainerReservations(service.findReservationsByTrainer(trainer));
+        view.printTrainerReservations(service.findReservationsIsNotEnd(trainer));
     }
 
     public void setTrainerLessonDays(Trainer trainer) {

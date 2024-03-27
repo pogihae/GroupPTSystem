@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -33,21 +34,25 @@ public class MemberService {
         return groupPTRepository.findReservationsByTrainer(selectedTrainer);
     }
     public List<Reservation> findfilteredReservationsOfSelectedTrainer(Member member, List<Reservation> reservationOfSelectedTrainer){
+        int[] reservedDate = groupPTRepository.findReservationsByPhone(member.getPhoneNumber()).stream()
+                .mapToInt(r -> r.getStartDate().getDayOfMonth())
+                .toArray();
+        System.out.println(Arrays.toString(reservedDate));
         return reservationOfSelectedTrainer.stream()
-                .filter(reservation -> reservation.isReservedUser(member))
-                .filter(reservation -> reservation.isFull())
+                .filter(reservation -> reservation.isReservedUser(member) || reservation.isFull())
+                .filter(reservation -> Arrays.stream(reservedDate).anyMatch(date -> date == reservation.getStartDate().getDayOfMonth()))
                 .sorted(Comparator.comparing(Reservation::getStartDate))
                 .toList();
     }
     public void makeReservation(Member member, Reservation existingReservation, Trainer selectedTrainer, LocalDateTime selectedDateTime){
-        if (existingReservation != null) { //해당시간에 예약한 사람이 0명인 경우
+        if (existingReservation != null) {
+            System.out.println("ALREADY RESERVED");
             existingReservation.addUser(member);
             groupPTRepository.updateReservation(existingReservation);
-        } else {
+        } else { //해당시간에 예약한 사람이 0명인 경우
             Reservation newReservation = new Reservation(selectedTrainer, selectedDateTime);
             newReservation.setType(Reservation.Type.CLASS);
             newReservation.addUser(member);
-            newReservation.setManager(selectedTrainer);
             groupPTRepository.saveReservation(newReservation);
         }
         //횟수차감

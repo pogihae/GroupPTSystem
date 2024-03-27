@@ -65,12 +65,15 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof User other) {
-            if (this.id == null || other.id == null) {
-                return this.phoneNumber.equals(other.getPhoneNumber());
-            }
-            return this.id.equals(other.id);
+        User other = (User) obj;
+        if (this.id == null || other.id == null) {
+            return this.phoneNumber.equals(other.getPhoneNumber());
         }
-        return false;
+        return this.id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.phoneNumber.hashCode();
     }
 }

@@ -7,7 +7,10 @@ import repository.GroupPTRepository;
 import util.Utils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TrainerService {
     private final GroupPTRepository groupPTRepository = GroupPTRepository.getInstance();
@@ -26,6 +29,12 @@ public class TrainerService {
         return groupPTRepository.findReservationsByTrainer(trainer);
     }
 
+    public List<Reservation> findReservationsIsNotEnd(Trainer trainer) {
+        return findReservationsByTrainer(trainer).stream()
+                .filter(r -> !r.isEnd())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
     public Reservation findCurrentReservation(Trainer trainer) {
         LocalDateTime now = Utils.getCurrentTime();
 
@@ -33,7 +42,9 @@ public class TrainerService {
                 .filter(r -> Utils.getYear(r.getStartDate()) == now.getYear())
                 .filter(r -> Utils.getMonth(r.getStartDate()) == now.getMonth().getValue())
                 .filter(r -> Utils.getDate(r.getStartDate()) == now.getDayOfMonth())
-                .findFirst().orElse(null);
+                .filter(r -> !r.isEnd())
+                .min(Comparator.comparing(Reservation::getStartDate))
+                .orElse(null);
     }
 
     public boolean setLessonDays(Trainer trainer, Utils.Day... days) {
@@ -50,6 +61,7 @@ public class TrainerService {
 
     public List<User> getMinors(Reservation reservation) {
         return reservation.getUsers().stream()
+                .filter(u -> u.getRole() != null && u.getRole().equals(User.Role.MEMBER))
                 .filter(r -> r.getAge() < 20)
                 .toList();
     }

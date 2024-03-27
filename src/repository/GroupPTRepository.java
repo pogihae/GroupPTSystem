@@ -6,6 +6,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +51,31 @@ public class GroupPTRepository {
 
         return instance;
     }
+
+//    public void reset() {
+//        File[] files = {
+//                new File(DIRECTORY + MEMBER_FILE),
+//                new File(DIRECTORY + TRAINER_FILE),
+//                new File(DIRECTORY + RESERVATION_FILE),
+//                new File(DIRECTORY + PAYMENT_FILE)
+//        };
+//
+//        try {
+//            if (!new File(DIRECTORY).exists()) {
+//                Files.createDirectory(Paths.get(DIRECTORY));
+//            }
+//            for (File file : files) {
+//                if (file.exists()) {
+//                    file.renameTo(new File(DIRECTORY + file.getName() + "_" + LocalDateTime.now()));
+//                }
+//                if (!file.createNewFile()) {
+//                    throw new IOException("파일 생성 실패");
+//                }
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /*-----------유저 기능-----------*/
 
@@ -320,7 +346,7 @@ public class GroupPTRepository {
 
     private void writeListToFile(String fileName, List<?> object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DIRECTORY + fileName))) {
-            System.out.println("TEST-REPO: wrote " + object);
+            //System.out.println("TEST-REPO: wrote " + object);
             oos.writeObject(object);
         } catch (IOException e) {
             throw new RuntimeException(e);
